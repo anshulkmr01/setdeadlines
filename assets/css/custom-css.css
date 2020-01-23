@@ -1,0 +1,147 @@
+.main-container{
+	padding-top: 10%;
+}
+
+th{
+	font-size: 14px;
+    font-weight: 900;
+    color: #000;
+}
+table, .createCategory-container, .document-add, .categories-home, .category-container{
+	margin-top: 5%;
+}
+.categories-home small{
+	font-size: 95% !important;
+}
+.categories-table .btn{
+	    padding: 0rem 0.5rem;
+}
+.categories-table .alert{
+margin-top: 20px;
+}
+.big-button{
+	padding: 0.5rem 1.5rem !important;
+}
+.company{
+	margin-top: 10%;
+}
+
+
+/* Toggle List css */
+
+.collapsable-list {
+	font-weight: 900;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
+.collapsable-list:hover ,.collapsable-list:hover:after{
+  color: #000;
+  transition: all .2s ease-in-out;
+}
+
+.collapsable-list:after {
+  content: '\002B';
+  font-weight: 900;
+  margin-left: 5px;
+  transition: 0.2s;
+}
+
+.active-list:after {
+  content: "\2212";
+}
+
+.list-panel {
+  color: #FFF0E3;
+  max-height: 0;
+  margin-top: 20px;
+  overflow: hidden;
+  line-height: 25px;
+  font-family: "Marcellus SC", Sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  transition: max-height 0.2s ease-out;
+}
+.list-panel:before{
+	content: "";
+  display: block;
+  height: 2px;
+  width: 40px;
+  background-color: #000;
+  margin-bottom: 10px;
+}
+.list-panel div{
+  margin-bottom: 30px;
+}
+.list-panel{
+  text-decoration: none;
+  color: #000;
+  list-style: none;
+}
+
+.list-panel label{
+  cursor: pointer;
+}
+.list-panel label a, a{
+  text-decoration: none !important;
+}
+.list-panel:hover{
+  color: #000
+}
+.category-container .custom-control-label::before{
+  border: #adb5bd solid 1px;
+      top: 0.26rem;
+}
+
+.category-container .custom-checkbox .custom-control-label::before{
+  border-radius: 0px !important;
+}
+
+.modal-content{
+  border-radius: 0px;
+}
+.merge-message{
+  margin-top: 20px;
+}
+b{
+  font-weight: 900;
+}
+.margin-top-25{
+  margin-top: 25px;
+}
+@media (min-width: 576px)
+{.modal-dialog {
+    max-width: 85% !important;}
+  }
+
+table th{
+  cursor: default;
+}
+
+  /*Table sorting arrows*/
+
+table.sortable-table th.ascending,
+table.sortable-table th.descending{
+    background-repeat: no-repeat;
+    background-position-x: 95%;
+    background-position-y: center;
+    background-size: 20px;
+}
+table.sortable-table th.ascending {
+    background-image: url('../img/icons/icon-arrow-down.svg');
+}
+table.sortable-table th.descending{
+    background-image: url('../img/icons/icon-arrow-up.svg');
+}
+  /* Table sorting arrows end*/
+
+.list-none{
+  list-style: none;
+  padding: 0px;
+}
+.company{
+  display:none;
+}
+.table-label{
+  margin-top: 10%;
+}
