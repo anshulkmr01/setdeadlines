@@ -47,14 +47,27 @@
 				<div class="col-sm-7"></div>
 			</div>
 		</div>
-		<div class="container">
-			<?php if($rules){ ?>
+		<div class="container"><h3><div class="category-label">Secelt Rules for Case</div></h3>
+			<?php if($rules){
+				$caseId = $rules['caseId'];
+				unset($rules['caseId']);
+				echo $caseId;
+				 ?>
+			<?= form_open('user/MainController/calculateDays'); ?>
+			<div class="row">
+			<div class="form-group col-sm-3">
+		      <label for="exampleInputEmail1">Motion Date*</label>
+		      <input type="hidden" name="caseId" value="<?=$caseId?>">
+		      <?php echo form_input(['placeholder'=>'MM/YYYY','name'=>'motionDate','type'=>'date','class'=>'form-control','id'=>'docRevisedDate','aria-describedby'=>'docRevisedDate']); ?>
+		      <small id="editCategory" class="form-text text-muted">Select a Motion Date for the Case</small>
+		      <?php echo form_error('motionDate');?>
+			</div>
+			</div>
 			<table id="myTable" class="sortable-table">
-				<?= form_open('deleteSelectedRules'); ?>
 				<tr class="sorter-header">
 					<th class="no-sort">S.no</th>
 					<th>Rules</th>
-					<th class="no-sort" style="text-align: center;">Deadline in Days</th>
+					<th class="no-sort"><center><label><input type="checkbox" class="selectall" style="display:none;"/> <span style="cursor: pointer;">Select all</span></label></center></th>
 				</tr>
 					<?php
 						$i=0;
@@ -62,88 +75,24 @@
 						<tr>
 						<td><?= $i?></td>
 						<td><?= $rule->title;?><br>
-			     			 <small id="newCategory" class="form-text text-muted"><?= $rule->description;?></small>
+			     			 <small id="ruleDescription" class="form-text text-muted"><?= $rule->description;?></small>
 						</td>
-						<td style="text-align: center"><?= $rule->deadline_days;?><br>
-			     			<small id="newCategory" class="form-text text-muted">
-			     			 	<?php 	if($rule->day_type == "weekDay"){
-			     			 			if($rule->deadline_days == "1") echo "Week Day";
-			     			 			else echo "Week Days";
-			     			 			}
-			     			 			if($rule->day_type == "calendarDay"){
-			     			 			if($rule->deadline_days == "1") echo "Calendar Day";
-			     			 			else echo "Calendar Days";
-			     			 			}?>
-		     			 	</small>
-						</td>
+						<td><center><input type="checkbox" value="<?=$rule->ID ?>" name="ruleIds[]"></center></td>
 						</tr>
 					<?php endforeach  ?>
-						<?= form_close();?>
+
+						<tfoot>
+						<tr>
+							<td></td>
+							<td></td>
+							<td><center><?= form_submit(['value'=>'Go','class'=>'btn btn-primary']) ?></center></td>
+						</tr>
+						</tfoot>
 			</table>
+						<?= form_close();?>
 			<?php } else{echo "No data to show";} ?>
 		</div>
 	</div>
-	<!-- Modal Popup -->
-		<div class="modal fade" id="addRule" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title" id="exampleModalLongTitle">Law Calendar</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body">
-			  <fieldset>
-			    <legend>Add new Rule</legend>
-			    <span class="text-muted">Add new Rule By filling this form</span>
-				<?= form_open('addRule'); ?>
-			    <div class="form-group margin-top-25">
-			      <label for="ruleTitle">Title*</label>
-			      <?php echo form_input(['placeholder'=>'eg. Dedline','name'=>'ruleTitle','required'=>'required','value'=>set_value('ruleTitle'),'class'=>'form-control','id'=>'ruleTitle','aria-describedby'=>'ruleTitle']); ?>
-				  <?php echo form_error('ruleTitle');?>
-			      <small id="newCategory" class="form-text text-muted">Rule Name</small>
-			  	</div>
-
-			    <div class="form-group margin-top-25">
-			      <label for="ruleDescription">Description*</label>
-
-			      <?php echo form_input(['placeholder'=>'Rule is about','name'=>'ruleDescription','required'=>'required','value'=>set_value('ruleDescription'),'class'=>'form-control','id'=>'ruleDescription','aria-describedby'=>'ruleDescription']); ?>
-				  <?php echo form_error('ruleDescription');?>
-			      <small id="newCategory" class="form-text text-muted">A Decription about the Rule</small>
-			  	</div>
-
-			    <div class="form-group margin-top-25">
-			      <label for="deadLineDays">Days for Deadline*</label>
-
-			      <?php echo form_input(['placeholder'=>'Days in Number','name'=>'deadLineDays','type'=>'number','required'=>'required','value'=>set_value('deadLineDays'),'class'=>'form-control','id'=>'deadLineDays','aria-describedby'=>'deadLineDays']); ?>
-				  <?php echo form_error('deadLineDays');?>
-			      <small id="newCategory" class="form-text text-muted">Deadline days for Motion Date</small>
-			  	</div>
-
-			    <div class="form-group margin-top-25">
-			      <label for="deadLineDays">Day Type*</label>
-			      	 <div class="custom-control custom-radio">
-				      <input type="radio" id="customRadio1" name="dayType" value="calendarDay" class="custom-control-input" checked="">
-				      <label class="custom-control-label" for="customRadio1">Calendar Days</label>
-				    </div>
-				    <div class="custom-control custom-radio">
-				      <input type="radio" id="customRadio2" name="dayType" value="weekDay" class="custom-control-input">
-				      <label class="custom-control-label" for="customRadio2">Week Days</label>
-				    </div>
-			      <small id="newCategory" class="form-text text-muted">Select Calendar Days if you want to include Saturday & Sunday</small>
-			  	</div>
-			    <?php echo form_submit(['value'=>'Add','class'=>'btn btn-primary']); ?>
-			    <?= form_close(); ?>
-			  </fieldset>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-		<!--/ Moal Popup -->
 </body>
 	<?php 
 			globalJs(); 

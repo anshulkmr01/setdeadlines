@@ -64,7 +64,7 @@
 						<td><?= $i?></td>
 						<td><?= $case->title; ?></td>
 						<td>
-							<a data-toggle="modal" data-id="<?= $case->ID; ?>" data-item="<?= $case->title; ?>"  href="#editCase" class="btn btn-primary editCase">go</a>
+							<?= anchor("user/MainController/listedRules/{$case->ID}","Go", ['class'=>'btn btn-primary'])?>
 						</td>
 						</tr>
 					<?php endforeach  ?>
@@ -73,40 +73,6 @@
 			<?php } else{echo "No data to show";} ?>
 		</div>
 	</div>
-	<!-- Modal Popup -->
-		<div class="modal fade" id="addCase" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title" id="exampleModalLongTitle">Law Calendar</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body">
-			  <fieldset>
-			    <legend>Add new Case</legend>
-			    <span class="text-muted">Add new Case By filling this form</span>
-				<?= form_open('addCase'); ?>
-			    <div class="form-group margin-top-25">
-			      <label for="caseTitle">Title*</label>
-
-			      <?php echo form_input(['placeholder'=>'eg. Alex Divorce','name'=>'caseTitle','required'=>'required','value'=>set_value('caseTitle'),'class'=>'form-control','id'=>'caseTitle','aria-describedby'=>'caseTitle']); ?>
-				  <?php echo form_error('caseTitle');?>
-			      <small id="newCategory" class="form-text text-muted">Case Name</small>
-			  	</div>
-			    <?php echo form_submit(['value'=>'Add','class'=>'btn btn-primary']); ?>
-			    <?= form_close(); ?>
-			  </fieldset>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-		<!--/ Moal Popup -->
-
 </body>
 	<?php 
 			globalJs(); 

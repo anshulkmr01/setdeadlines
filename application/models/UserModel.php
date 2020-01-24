@@ -2,38 +2,6 @@
 
 	class UserModel extends CI_Model
 	{
-		public function get_categories(){
-
-        $parent = $this->db->get('documentcategories');
-        
-        $categories = $parent->result();
-        $i=0;
-        foreach($categories as $p_cat){
-
-            $categories[$i]->sub = $this->sub_categories($p_cat->CategoryId);
-            $i++;
-        }
-        return $categories;
-    }
-
-    public function sub_categories($id){
-
-        $this->db->select('*');
-        $this->db->from('documentnames');
-        $this->db->where('CategoryId', $id);
-
-        $child = $this->db->get();
-        $categories = $child->result();
-        $i=0;
-        foreach($categories as $p_cat){
-
-            $categories[$i]->sub = $this->sub_categories($p_cat->ID);
-            $i++;
-        }
-        return $categories;       
-    }
-    /////////////////////////////////////////////////////// Law Calendar
-
         //User Registration
         function addUser($userData){
             $key = (md5(time()));
@@ -186,6 +154,23 @@
                     return true;
                 }
             }
+
+            function getSelectedCases($caseId){
+            return $this->db->where(['ID'=>$caseId])->get('cases')->row('title');
+            }
+
+            function getSelectedRuleData($ruleId){
+                $rules = $this->db->where(['ID'=>$ruleId])->get('rules')->result();
+                    $rules[0]->sub = $this->ruleDeadlines($rules[0]->ID);
+                  
+                return $rules;
+            }
+
+
+            public function ruleDeadlines($id){
+                return $this->db->where(['rule_Id'=>$id])->get('deadlines')->result();       
+            }
+
 
 
 	}

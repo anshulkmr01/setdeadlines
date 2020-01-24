@@ -32,11 +32,38 @@
 	    }
 
 
-		function listedRules()
+		function listedRules($caseId)
 		{
 			//Loading Rule Page
 			$rules = $this->AdminModel->getRules();
+			$rules['caseId'] = $caseId;
 				$this->load->view('user/rules',['rules'=>$rules]);
+		}
+
+		function calculateDays(){
+			$rulesData = $this->input->post();
+			$caseId = $rulesData['caseId'];
+			$motionDate = $rulesData['motionDate'];
+
+			$this->form_validation->set_rules('motionDate','Motion Date','required',array('required'=>'%s is required'));
+			if($this->form_validation->run()){
+
+			$ruleIDs = $rulesData['ruleIds'];
+			$userId = $this->session->userData('userId');
+
+			$caseTitle = $this->UserModel->getSelectedCases($caseId);
+			foreach ($ruleIDs as $ruleID) {
+				$rulesFromDB[] = $this->UserModel->getSelectedRuleData($ruleID);
+			}
+				$rulesFromDB['caseTitle'] = $caseTitle;
+				$rulesFromDB['motionDate'] = $motionDate;
+				$this->load->view('user/reviewCase',['caseData'=>$rulesFromDB]);
+			}
+			else{
+				$rules = $this->AdminModel->getRules();
+				$rules['caseId'] = $caseId;
+				$this->load->view('user/rules',['rules'=>$rules]);
+			}
 		}
 
 	}
