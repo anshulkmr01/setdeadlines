@@ -173,7 +173,7 @@
 
             function saveCase($caseData){
                 $userId = $this->session->userData('userId');
-                $query = $this->db->insert('savedCases',['userID'=>$userId, 'caseID'=>$caseData['caseId'], 'motionDate'=>$caseData['motionDate']]);
+                $query = $this->db->insert('savedcases',['userID'=>$userId, 'caseID'=>$caseData['caseId'], 'motionDate'=>$caseData['motionDate']]);
 
                 $caseId = $caseData['caseId'];
                 $rules = $caseData['rules'];
