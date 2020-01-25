@@ -171,7 +171,79 @@
                 return $this->db->where(['rule_Id'=>$id])->get('deadlines')->result();       
             }
 
+            function saveCase($caseData){
+                $userId = $this->session->userData('userId');
+                $query = $this->db->insert('savedCases',['userID'=>$userId, 'caseID'=>$caseData['caseId'], 'motionDate'=>$caseData['motionDate']]);
+
+                $caseId = $caseData['caseId'];
+                $rules = $caseData['rules'];
+                if($query):
+                foreach ($rules as $rule) {
+
+                    $this->saveRules($caseId,$rule);
+                }
+                endif;
+                return $query;
+            }
+
+            function saveRules($caseId,$rule){
+                $query = $this->db->insert('savedrulesforsavedcases',['caseID'=>$caseId, 'ruleId'=>$rule]);
+                return $query;
+            }
+
+            function userCases(){
+                $userId = $this->session->userData('userId');
+                $cases = $this->db->where(['userId'=>$userId])->get('savedcases')->result();
+                if($cases):
+                    $i = 0;
+                    foreach ($cases as $case) {
+                       $cases[$i]->caseTitle = $this->userCaseDate($case->caseID);
+                       $i++;
+                    }
+                endif;
+                return $cases;
+            }
+
+            function userCaseDate($caseId){
+                $cases = $this->db->where(['ID'=>$caseId])->get('cases')->row('title');
+                return $cases;
+            }
 
 
+            function userRules($caseID){
+                $userId = $this->session->userData('userId');
+                $motionDate = $this->db->where(['userId'=>$userId,'caseID'=>$caseID])
+                                                                    ->get('savedcases')->row('motionDate');
+                $caseTitle = $this->db->where(['ID'=>$caseID])->get('cases')->row('title');
+
+                $rulesId = $this->db->select('ruleId')->where(['caseID'=>$caseID])
+                                                                    ->get('savedrulesforsavedcases')->result();
+                $userData['userId'] = $userId;
+                $userData['motionDate'] = $motionDate;
+                $userData['caseTitle'] = $caseTitle;
+              //  $userData['ruleId'] = $rulesId;
+
+                if($rulesId){
+                    foreach ($rulesId as $ruleId) {
+                        $userData['ruleData'][] = $this->userRulesDate($ruleId->ruleId);
+                    }
+                }
+
+                return $userData;
+            }
+
+            function userRulesDate($ruleId){
+                $rules = $this->db->where(['ID'=>$ruleId])->get('rules')->result();                
+
+                foreach ($rules as $rule) {
+                    $rules['deadlines'] = $this->userRuleDeadlines($rule->ID);
+                }
+                return $rules;
+            }
+
+            function userRuleDeadlines($ruleId){
+                $deadlines = $this->db->where(['rule_Id'=>$ruleId])->get('deadlines')->result();
+                return $deadlines;
+            }
 	}
 ?>

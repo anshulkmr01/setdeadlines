@@ -145,3 +145,11 @@ table.sortable-table th.descending{
 .table-label{
   margin-top: 10%;
 }
+.case{
+  margin-bottom: 20px !important;
+}
+.case span{
+  font-weight: 900;
+    font-size: 17px;
+    cursor: pointer;
+}

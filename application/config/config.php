@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //$config['base_url'] = 'http://localhost/LawCalendar';
-$config['base_url'] = 'http://maria.kbrostechno.com/';
+ $config['base_url'] = 'http://maria.kbrostechno.com/';
 /*
 |--------------------------------------------------------------------------
 | Index File

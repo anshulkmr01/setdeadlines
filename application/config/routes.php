@@ -76,6 +76,8 @@ $route['changeAdminCredentials'] = 'admin/AdminController/changeAdminCredentials
 $route['recoverAdminPassword'] = 'admin/AdminLogin/recoverAdminPassword';
 $route['adminRecoverPasswordSendEmail'] = 'admin/AdminLogin/adminRecoverPasswordSendEmail';
 
+$route['populatedRules'] = 'user/MainController/populatedRules';
+$route['populatedCase'] = 'user/MainController/populatedCase';
 $route['signupUser'] = 'user/UserController/signupUser';
 $route['loginUser'] = 'user/UserController/loginUser';
 $route['registerUser'] = 'user/UserController/registerUser';
@@ -88,6 +90,7 @@ $route['newPassword'] = 'user/UserController/newPassword';
 $route['setNewPassword'] = 'user/UserController/setNewPassword';
 $route['listedCases'] = 'user/MainController/listedCases';
 $route['listedRules'] = 'user/MainController/listedRules';
+$route['saveCase'] = 'user/MainController/saveCase';
 
 
 

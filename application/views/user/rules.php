@@ -51,7 +51,6 @@
 			<?php if($rules){
 				$caseId = $rules['caseId'];
 				unset($rules['caseId']);
-				echo $caseId;
 				 ?>
 			<?= form_open('user/MainController/calculateDays'); ?>
 			<div class="row">
@@ -60,7 +59,7 @@
 		      <input type="hidden" name="caseId" value="<?=$caseId?>">
 		      <?php echo form_input(['placeholder'=>'MM/YYYY','name'=>'motionDate','type'=>'date','class'=>'form-control','id'=>'docRevisedDate','aria-describedby'=>'docRevisedDate']); ?>
 		      <small id="editCategory" class="form-text text-muted">Select a Motion Date for the Case</small>
-		      <?php echo form_error('motionDate');?>
+		      <?php echo form_error('motionDate');?><?php echo form_error('ruleIds[]');?>
 			</div>
 			</div>
 			<table id="myTable" class="sortable-table">

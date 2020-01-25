@@ -46,6 +46,7 @@
 			$motionDate = $rulesData['motionDate'];
 
 			$this->form_validation->set_rules('motionDate','Motion Date','required',array('required'=>'%s is required'));
+			$this->form_validation->set_rules('ruleIds[]','Rule','required',array('required'=>'Select atleast one %s'));
 			if($this->form_validation->run()){
 
 			$ruleIDs = $rulesData['ruleIds'];
@@ -57,6 +58,7 @@
 			}
 				$rulesFromDB['caseTitle'] = $caseTitle;
 				$rulesFromDB['motionDate'] = $motionDate;
+				$rulesFromDB['caseId'] = $caseId;
 				$this->load->view('user/reviewCase',['caseData'=>$rulesFromDB]);
 			}
 			else{
@@ -64,6 +66,28 @@
 				$rules['caseId'] = $caseId;
 				$this->load->view('user/rules',['rules'=>$rules]);
 			}
+		}
+
+		function saveCase(){
+				$caseData = $this->input->post();
+				if($this->UserModel->saveCase($caseData)){
+					$this->session->set_flashdata('success','Case Populated in profile');
+					return redirect('listedCases');
+				}
+				else{
+					$this->session->set_flashdata('error','An Error occured');
+					return redirect('listedCases');
+				}
+		}
+
+		function populatedCase(){
+			$cases = $this->UserModel->userCases();
+			$this->load->view('user/populatedCase',['cases'=>$cases]);
+		}
+
+		function populatedRules($caseID){
+			$userData = $this->UserModel->userRules($caseID);
+			$this->load->view('user/populatedRules',['rulesData'=>$userData]);
 		}
 
 	}
