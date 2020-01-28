@@ -23,21 +23,20 @@
 				unset($caseData['caseId']);
 				 ?>
 			<?= form_open('saveCase') ?>
+			<input type="hidden" name="caseTitle" value="<?= $caseTitle ?>">
 			<input type="hidden" name="caseId" value="<?= $caseId ?>">
-			<legend>Case: <?= $caseTitle?></legend>
-			<small id="fileHelp" class="form-text">Motion Date: <?= date('m/d/Y', strtotime( $motionDate)); ?></small>
+			<center><legend>Review Case</legend></center>
+			<legend><?= $caseTitle?></legend>
+			<div class="motion-date">Motion Date: <?= date('m/d/Y', strtotime( $motionDate)); ?></div>
 			<input type="hidden" name="motionDate" value="<?= $motionDate ?>">
 			<div class="category-container">
-				<legend>Rules:</legend>
-				<small id="rules" class="form-text text-muted">Click on the plus icon to see deadlines for the rule</small>
-				<br>
 				<?php foreach ($caseData as $case) : ?>
 				<div class="category-list row">
 						<input type="hidden" name="rules[]" value="<?= $case[0]->ID ?>">
 					<div class="category col-sm-12"><label class="dateRevised" style="float: right;">Deadline Date</label>
 
-						<span class="collapsable-list"><?=$case[0]->title ?></span>
-		                <ul class="list-panel">
+						<span class="rule active-list"><?=$case[0]->title ?></span>
+		                <ul class="list-panel" style="max-height: fit-content">
 		                	<?php ?>
 		                    <div>
 		                    	<?php
@@ -51,7 +50,7 @@
 								  	  </label>
 								  		<label style="float: right; cursor: default;">
 								  	  	<?php if($deadline->day_type == "calendarDay") echo date('m/d/Y', strtotime($motionDate.'+'.$deadline->deadline_days.'days'));?>
-								  	  	<?php if($deadline->day_type == "weekDay") echo date('m/d/Y', strtotime($motionDate.'+'.$deadline->deadline_days.'weekdays'));?>
+								  	  	<?php if($deadline->day_type == "courtDay") echo date('m/d/Y', strtotime($motionDate.'+'.$deadline->deadline_days.'weekdays'));?>
 										</label>
 		                        </li>
 		                        <?php
@@ -61,7 +60,7 @@
 		                    		else{
 		                    			?>
 		                        <li>
-							      No Document is Listed for this Category
+							      No Deadline is Listed for this Rule
 		                        </li>
 		                        <?php
 		                    		}
@@ -72,7 +71,7 @@
 				</div>
 				<?php endforeach ?>
 			</div>
-			<?= form_submit(['class'=>'btn btn-primary','value'=>'Save']);?>
+			<?= form_submit(['class'=>'btn btn-primary margin-bottom-50','value'=>'Save Deadlines']);?>
 			<?= form_close(); ?>
 			<?php } else{echo "No data to show";} ?>
 		</div>

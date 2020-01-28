@@ -136,6 +136,22 @@
 			}
 		}
 
+		function dublicateRule($ruleId){
+
+		$this->db->where('ID', $ruleId);
+		   $query = $this->db->get('rules');
+		    foreach ($query->result() as $row){
+		       foreach($row as $key=>$val){
+		          if($key != 'ID'){
+		            /* Below code can be used instead of passing a data array directly to the insert or update functions */
+		            $this->db->set($key, $val);
+		          }//endif
+		       }//endforeach
+		    }//endforeach
+		    /* insert the new record into table*/
+		    return $this->db->insert('rules');
+		}
+
 		function deleteDeadline($deadlineId){
 			return $this->db->delete('deadlines',['ID'=>$deadlineId]);
 		}

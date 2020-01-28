@@ -172,8 +172,9 @@
             }
 
             function saveCase($caseData){
+
                 $userId = $this->session->userData('userId');
-                $query = $this->db->insert('savedcases',['userID'=>$userId, 'caseID'=>$caseData['caseId'], 'motionDate'=>$caseData['motionDate']]);
+                $query = $this->db->insert('savedcases',['userID'=>$userId, 'caseTitle'=>$caseData['caseTitle'], 'caseID'=>$caseData['caseId'], 'motionDate'=>$caseData['motionDate']]);
 
                 $caseId = $caseData['caseId'];
                 $rules = $caseData['rules'];
@@ -245,5 +246,77 @@
                 $deadlines = $this->db->where(['rule_Id'=>$ruleId])->get('deadlines')->result();
                 return $deadlines;
             }
+
+             function getcalender($year , $month){
+
+                $prefs = ['start_day' => 'monday',
+                    'month_type' => 'long',
+                    'day_type' => 'short',
+                    'show_next_prev' => TRUE,
+                    'next_prev_url' => base_url('user/MainController/calendar')];
+               $prefs['template'] = '
+            {table_open}<div class="table-responsive"><table border="0" cellpadding="0" cellspacing="0" class="table table-striped table-bordered calendar">{/table_open}
+
+            {heading_row_start}<tr>{/heading_row_start}
+
+            {heading_previous_cell}<th><a href="{previous_url}"><i class="fa fa-chevron-left fa-2x "></i></a></th>{/heading_previous_cell}
+            {heading_title_cell}<th class="text-center" colspan="{colspan}">{heading}</th>{/heading_title_cell}
+            {heading_next_cell}<th class="text-right"><a href="{next_url}"><i class="fa fa-chevron-right fa-2x"></i></a></th>{/heading_next_cell}
+
+            {heading_row_end}</tr>{/heading_row_end}
+
+            {week_row_start}<tr>{/week_row_start}
+            {week_day_cell}<td>{week_day}</td>{/week_day_cell}
+            {week_row_end}</tr>{/week_row_end}
+
+            {cal_row_start}<tr class="days">{/cal_row_start}
+            {cal_cell_start}<td class="day">{/cal_cell_start}
+
+            {cal_cell_content}
+                <div class="day_number">{day}</div>
+                <div class="content" style="margin-top: 10px;">{content}</div>
+            {/cal_cell_content}
+            {cal_cell_content_today}
+                <div class="day_number highlight">{day}</div>
+                <div class="content" style="margin-top: 10px;">{content}</div>
+            {/cal_cell_content_today}
+
+            {cal_cell_no_content}
+            <div class="day_number">{day}</div>
+            {/cal_cell_no_content}
+            {cal_cell_no_content_today}
+            <div class="day_number highlight">{day}</div>
+            {/cal_cell_no_content_today}
+            {cal_cell_blank}&nbsp;{/cal_cell_blank}
+
+            {cal_cell_end}</td>{/cal_cell_end}
+            {cal_row_end}</tr>{/cal_row_end}
+
+            {table_close}</table></div>{/table_close}
+        ';
+
+                    $this->load->library('calendar',$prefs); // Load calender library
+
+                    // $data = array(
+                    // 3  => 'check',
+                    // 7  => 'check1',
+                    // 13 => 'bar'
+                    // );
+                    $data = $this->get_calender_data($year,$month);
+                    return $this->calendar->generate($year , $month , $data);
+                }
+
+                public function get_calender_data($year , $month)
+                    {
+                        $query =  $this->db->select('date,content')->from('calendar')->like('date',"$year-$month",'after')->get();
+                        //echo $this->db->last_query();exit;
+                        $cal_data = array();
+                        foreach ($query->result() as $row) {
+                            $calendar_date = date("Y-m-j", strtotime($row->date)); // to remove leading zero from day format
+                            $cal_data[substr($calendar_date, 8,2)] = $row->content;
+                        }
+                        
+                        return $cal_data;
+                    }
 	}
 ?>

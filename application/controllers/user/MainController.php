@@ -17,8 +17,16 @@
 		function index()
 		{
 			//load User Homepage
-			$this->load->view('user/homepage');
+			//$this->load->view('user/homepage');
+			return redirect('listedCases');
 	    }
+
+
+		public function calendar($year = NULL , $month = NULL)
+			{
+				$data['calender'] = $this->UserModel->getcalender($year , $month);
+				$this->load->view('user/calview', $data);
+			}
 
 	    function listedCases(){
 	    	//Load Listed Cases in User Home Page
@@ -37,6 +45,7 @@
 			//Loading Rule Page
 			$rules = $this->AdminModel->getRules();
 			$rules['caseId'] = $caseId;
+			$rules['caseTitle'] = $caseTitle = $this->input->get('case');
 				$this->load->view('user/rules',['rules'=>$rules]);
 		}
 
@@ -46,7 +55,7 @@
 			$motionDate = $rulesData['motionDate'];
 
 			$this->form_validation->set_rules('motionDate','Motion Date','required',array('required'=>'%s is required'));
-			$this->form_validation->set_rules('ruleIds[]','Rule','required',array('required'=>'Select atleast one %s'));
+			$this->form_validation->set_rules('ruleIds[]','Rule','required',array('required'=>'Select a %s'));
 			if($this->form_validation->run()){
 
 			$ruleIDs = $rulesData['ruleIds'];

@@ -125,8 +125,8 @@
 				  <?php echo form_error('deadlineDescription');?>
 			      <small id="newCategory" class="form-text text-muted">A Decription about the Deadline</small>
 			  	</div>
-
-			    <div class="form-group margin-top-25">
+			  	<div class="row">
+			    <div class="form-group margin-top-25 col-sm-3">
 			      <label for="deadLineDays">Days for Deadline*</label>
 
 			      <?php echo form_input(['placeholder'=>'Days in Number','name'=>'deadLineDays','type'=>'number','required'=>'required','value'=>set_value('deadLineDays'),'class'=>'form-control','id'=>'deadLineDays','aria-describedby'=>'deadLineDays']); ?>
@@ -134,18 +134,18 @@
 			      <small id="newCategory" class="form-text text-muted">Deadline days for Motion Date</small>
 			  	</div>
 
-			    <div class="form-group margin-top-25">
+			    <div class="form-group margin-top-25 col-sm-4">
 			      <label for="deadLineDays">Day Type*</label>
-			      	 <div class="custom-control custom-radio">
-				      <input type="radio" id="customRadio1" name="dayType" value="calendarDay" class="custom-control-input" checked="">
-				      <label class="custom-control-label" for="customRadio1">Calendar Days</label>
-				    </div>
-				    <div class="custom-control custom-radio">
-				      <input type="radio" id="customRadio2" name="dayType" value="weekDay" class="custom-control-input">
-				      <label class="custom-control-label" for="customRadio2">Week Days</label>
-				    </div>
+			       <div class="form-group">
+					    <select class="custom-select" name="dayType" id="deadlineDayType">
+					      <option value="calendarDay">Calendar Days</option>
+					      <option value="courtDay">Court Days</option>
+					    </select>
+					 </div>
 			      <small id="newCategory" class="form-text text-muted">Select Calendar Days if you want to include Saturday & Sunday</small>
 			  	</div>
+			  	<div class="col-sm-5"></div>
+			  </div>
 			    <?php echo form_submit(['value'=>'Add','class'=>'btn btn-primary']); ?>
 			    <?= form_close(); ?>
 			  </fieldset>
@@ -201,7 +201,7 @@
 			      	 <div class="form-group">
 					    <select class="custom-select" name="dayUpdatedType" id="deadlineDayType">
 					      <option value="calendarDay">Calendar Days</option>
-					      <option value="weekDay">Week Days</option>
+					      <option value="courtDay">Court Days</option>
 					    </select>
 					 </div>
 			      <small id="newCategory" class="form-text text-muted">Select Calendar Days if you want to include Saturday & Sunday</small>

@@ -55,7 +55,7 @@
 				<tr class="sorter-header">
 					<th class="no-sort">S.no</th>
 					<th>Rules</th>
-					<th colspan="3" class="no-sort"><center>Action<center></th>
+					<th colspan="4" class="no-sort"><center>Action<center></th>
 					<th class="no-sort"><center><label><input type="checkbox" name="sample" class="selectall" style="display:none;"/> <span style="cursor: pointer;">Select all</span></label></center></th>
 				</tr>
 					<?php
@@ -73,6 +73,9 @@
 							<a data-toggle="modal" data-id="<?= $rule->ID; ?>" data-title="<?= $rule->title; ?>" data-desc="<?= $rule->description; ?>" href="#editRule" class="btn btn-primary editRule">Edit</a>
 						</td>
 						<td>
+							<?= anchor("admin/AdminController/dublicateRule/{$rule->ID}",'Dublicate',['class'=>'btn btn-primary']); ?>
+						</td>
+						<td>
 							<?= anchor("admin/AdminController/deleteRule/{$rule->ID}",'Delete',['class'=>'delete btn btn-danger']); ?>
 						</td>
 						<td><center><input type="checkbox" value="<?=$rule->ID ?>" name="ruleIds[]"></center></td>
@@ -86,7 +89,9 @@
 							<td></td>
 							<td></td>
 							<td></td>
-							<td><?= form_submit(['value'=>'Delete Selected','name'=>'submit','class'=>'delete btn btn-danger']) ?></td>
+							<td></td>
+							<td><?= form_submit(['value'=>'Dublicate','name'=>'dublicateRules','class'=>'btn btn-primary']) ?>
+								<?= form_submit(['value'=>'Delete','name'=>'deleteRules','class'=>'delete btn btn-danger']) ?></td>
 						</tr>
 						</tfoot>
 						<?= form_close();?>

@@ -48,7 +48,7 @@
 								  	  </label>
 								  	  <label style="float: right; cursor: default;">
 								  	  	<?php if($deadline->day_type == "calendarDay") echo date('m/d/Y', strtotime($motionDate.'+'.$deadline->deadline_days.'days'));?>
-								  	  	<?php if($deadline->day_type == "weekDay") echo date('m/d/Y', strtotime($motionDate.'+'.$deadline->deadline_days.'weekdays'));?>
+								  	  	<?php if($deadline->day_type == "courtDay") echo date('m/d/Y', strtotime($motionDate.'+'.$deadline->deadline_days.'weekdays'));?>
 										</label>
 		                        </li>
 		                        <?php

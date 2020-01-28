@@ -49,7 +49,8 @@
 			</div>
 		</div>
 		<div class="container">
-			<?php if(isset($cases)){ ?>
+			<?php if($cases){?>
+
 			<table id="myTable" class="sortable-table">
 				<tr class="sorter-header">
 					<th class="no-sort">S.no</th>

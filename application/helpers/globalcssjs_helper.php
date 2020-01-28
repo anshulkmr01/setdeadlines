@@ -10,6 +10,10 @@
 		<?php
 	}
 
+	function calendarCss(){
+		echo link_tag("assets/css/calendar.css");
+	}
+
 	function globalJs()
 	{
 		?>

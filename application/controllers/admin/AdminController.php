@@ -193,6 +193,18 @@
 			}
 		}
 
+		function dublicateRule($ruleId){
+
+			if($this->AdminModel->dublicateRule($ruleId)){
+				$this->session->set_flashdata('success', 'Rule cloned Successfully');
+		        return redirect('rules');
+			}
+			else{
+				$this->session->set_flashdata('error', 'Error');
+		        return redirect('rules');
+			}
+		}
+
 		function deleteDeadline($deadlineId){
 			if($ruleId = $this->session->userdata('ruleId'));
 			if($this->AdminModel->deleteDeadline($deadlineId)){
@@ -208,6 +220,7 @@
 
 		function deleteSelectedRules(){
 			$ruleIds = $this->input->post('ruleIds');
+			if($this->input->post('deleteRules')){
 
 			foreach ($ruleIds as $ruleId) {
 				if(!$this->AdminModel->deleteRule($ruleId)){
@@ -217,6 +230,19 @@
 			}
 				$this->session->set_flashdata('success', 'Rules Deleted Successfully');
 		        return redirect('rules');
+			}
+
+			if($this->input->post('dublicateRules')){
+
+			foreach ($ruleIds as $ruleId) {
+				if(!$this->AdminModel->dublicateRule($ruleId)){
+				$this->session->set_flashdata('error', 'Error in Cloning');
+		        return redirect('rules');
+				}
+			}
+			$this->session->set_flashdata('success', 'Rule cloned Successfully');
+		   	return redirect('rules');
+			}
 		}
 
 		function deleteSelectedDeadlines(){

@@ -47,18 +47,24 @@
 				<div class="col-sm-7"></div>
 			</div>
 		</div>
-		<div class="container"><h3><div class="category-label">Secelt Rules for Case</div></h3>
+		<div class="container navigation">
+			<div><?= anchor('listedCases','Home')?> / <?= $rules['caseTitle']?></div>
+		</div>
+		<div class="container"><h3><div class="category-label">Select Rules for Case</div></h3>
 			<?php if($rules){
 				$caseId = $rules['caseId'];
 				unset($rules['caseId']);
+				unset($rules['caseTitle']);
 				 ?>
 			<?= form_open('user/MainController/calculateDays'); ?>
 			<div class="row">
-			<div class="form-group col-sm-3">
+			<div class="form-group col-sm-2" style="max-width: 11%; line-height: 45px">
 		      <label for="exampleInputEmail1">Motion Date*</label>
+			</div>
+			<div class="form-group col-sm-3">
 		      <input type="hidden" name="caseId" value="<?=$caseId?>">
-		      <?php echo form_input(['placeholder'=>'MM/YYYY','name'=>'motionDate','type'=>'date','class'=>'form-control','id'=>'docRevisedDate','aria-describedby'=>'docRevisedDate']); ?>
-		      <small id="editCategory" class="form-text text-muted">Select a Motion Date for the Case</small>
+		      <?php echo form_input(['placeholder'=>'MM/YYYY','name'=>'motionDate','required'=>'required', 'type'=>'date','class'=>'form-control','id'=>'docRevisedDate','aria-describedby'=>'docRevisedDate']); ?>
+		      <small id="editCategory" class="form-text text-muted"></small>
 		      <?php echo form_error('motionDate');?><?php echo form_error('ruleIds[]');?>
 			</div>
 			</div>
@@ -66,7 +72,7 @@
 				<tr class="sorter-header">
 					<th class="no-sort">S.no</th>
 					<th>Rules</th>
-					<th class="no-sort"><center><label><input type="checkbox" class="selectall" style="display:none;"/> <span style="cursor: pointer;">Select all</span></label></center></th>
+					<th class="no-sort"></th>
 				</tr>
 					<?php
 						$i=0;
@@ -76,15 +82,15 @@
 						<td><?= $rule->title;?><br>
 			     			 <small id="ruleDescription" class="form-text text-muted"><?= $rule->description;?></small>
 						</td>
-						<td><center><input type="checkbox" value="<?=$rule->ID ?>" name="ruleIds[]"></center></td>
+						<td><center><input type="radio" value="<?=$rule->ID ?>" name="ruleIds[]" required="required"></center></td>
 						</tr>
 					<?php endforeach  ?>
 
 						<tfoot>
 						<tr>
-							<td></td>
-							<td></td>
-							<td><center><?= form_submit(['value'=>'Go','class'=>'btn btn-primary']) ?></center></td>
+							<th></th>
+							<th></th>
+							<th><center><?= form_submit(['value'=>'Select Rule','class'=>'btn btn-primary']) ?></center></th>
 						</tr>
 						</tfoot>
 			</table>

@@ -64,7 +64,7 @@
 						<td><?= $i?></td>
 						<td><?= $case->title; ?></td>
 						<td>
-							<?= anchor("user/MainController/listedRules/{$case->ID}","Go", ['class'=>'btn btn-primary'])?>
+							<?= anchor("user/MainController/listedRules/{$case->ID}/?case={$case->title}","View Deadlines", ['class'=>'btn btn-primary'])?>
 						</td>
 						</tr>
 					<?php endforeach  ?>
