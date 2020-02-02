@@ -7,18 +7,21 @@
 
   <div class="collapse navbar-collapse" id="navbarColor03">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <?= anchor('listedCases','Cases',array('class' => 'nav-link'));?>
+      <li class="nav-item">
+        <?= anchor('home','Home',array('class' => 'nav-link'));?>
       </li>
       <li class="nav-item">
-       <!-- <#?= anchor('listedRules','Rules',array('class' => 'nav-link'));?> -->
+        <?= anchor('userCases','Cases',array('class' => 'nav-link'));?>
+      </li>
+      <li class="nav-item">
+       <?= anchor('populatedCase','Saved Cases',array('class' => 'nav-link'));?>
       </li>
       <li class="nav-item">
         <!--a class="nav-link" href="#">About</a-->
       </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">
-        <a href="<?= base_url("adminSettings"); ?>"><button class="btn btn-secondary my-2 my-sm-0" type="button">Settings</button></a>
+        <a href="<?= base_url("userProfile"); ?>"><button class="btn btn-secondary my-2 my-sm-0" type="button">Profile</button></a>
       <form class="form-inline my-2 my-lg-0">
         <a href="<?= base_url("userLogout"); ?>"><button class="btn btn-secondary my-2 my-sm-0" type="button">Logout</button></a>
       </form>

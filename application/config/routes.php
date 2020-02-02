@@ -64,14 +64,20 @@ $route['adminSettings'] = 'admin/AdminController/adminSettings';
 $route['adminLogout'] = 'admin/AdminLogin/logout';
 $route['adduser'] = 'admin/AdminController/adduser';
 
-$route['addCase'] = 'admin/AdminController/addCase';
-$route['editCase'] = 'admin/AdminController/editCase';
-$route['deleteSelectedCases'] = 'admin/AdminController/deleteSelectedCases';
+$route['addCase'] = 'user/MainController/addCase';
+$route['AddNewCase'] = 'admin/AdminController/cases';
+$route['editCase'] = 'user/MainController/editCase';
+$route['deleteSelectedCases'] = 'user/MainController/deleteSelectedCases';
 $route['deleteSelectedRules'] = 'admin/AdminController/deleteSelectedRules';
+$route['deleteSelectedUserRules'] = 'user/MainController/deleteSelectedUserRules';
 $route['addRule'] = 'admin/AdminController/addRule';
+$route['addUserRule'] = 'user/MainController/addUserRule';
 $route['editDeadline'] = 'admin/AdminController/editDeadline';
+$route['editUserDeadline'] = 'user/MainController/editUserDeadline';
 $route['addDeadline'] = 'admin/AdminController/addDeadline';
+$route['addUserDeadline'] = 'user/MainController/addUserDeadline';
 $route['editRule'] = 'admin/AdminController/editRule';
+$route['editUserRule'] = 'user/MainController/editUserRule';
 $route['changeAdminCredentials'] = 'admin/AdminController/changeAdminCredentials';
 $route['recoverAdminPassword'] = 'admin/AdminLogin/recoverAdminPassword';
 $route['adminRecoverPasswordSendEmail'] = 'admin/AdminLogin/adminRecoverPasswordSendEmail';
@@ -88,9 +94,10 @@ $route['recoverPassword'] = 'user/UserController/recoverPassword';
 $route['recoverPasswordSendEmail'] = 'user/UserController/recoverPasswordSendEmail';
 $route['newPassword'] = 'user/UserController/newPassword';
 $route['setNewPassword'] = 'user/UserController/setNewPassword';
-$route['listedCases'] = 'user/MainController/listedCases';
+$route['userCases'] = 'user/MainController/userCases';
 $route['listedRules'] = 'user/MainController/listedRules';
 $route['saveCase'] = 'user/MainController/saveCase';
+$route['userProfile'] = 'user/MainController/userProfile';
 
 
 

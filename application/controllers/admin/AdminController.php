@@ -18,76 +18,9 @@
 		function index()
 		{
 			//$this->load->view('admin/dashboard');
-			return redirect('cases');
+			return redirect('rules');
 		}
-
-		function cases()
-		{
-			$cases = $this->AdminModel->getCases();
-			if($cases){
-				$this->load->view('admin/cases',['cases'=>$cases]);
-			}
-			else{
-				$this->load->view('admin/cases');
-			}
-			
-		}
-
-		function addCase(){
-
-			if ($this->form_validation->run('addCase'))
-			{
-				$title = $this->input->post('caseTitle');
-				if($this->AdminModel->addCase($title)){
-					$this->session->set_flashdata('success', 'Cases Added Successfully');
-			        return redirect('cases');
-				}
-			}
-			else
-			{
-				$this->session->set_flashdata('error',"Fields Can't be empty");
-			    return redirect('cases');
-			}
-		}
-
-		function editCase(){
-			$caseId = $this->input->post('caseId');
-			$caseTitle = $this->input->post('caseTitle');
-
-			if($this->AdminModel->editCase($caseId,$caseTitle)){
-				$this->session->set_flashdata('success', 'Cases Updated Successfully');
-		        return redirect('cases');
-			}
-			else{
-				$this->session->set_flashdata('error', 'Error in Updating Case');
-		        return redirect('cases');
-			}
-		}
-
-		function deleteCase($caseId){
-			if($this->AdminModel->deleteCase($caseId)){
-				$this->session->set_flashdata('success', 'Cases Deleted Successfully');
-		        return redirect('cases');
-			}
-			else{
-				$this->session->set_flashdata('error', 'Error in Deletion Case');
-		        return redirect('cases');
-			}
-		}
-
-		function deleteSelectedCases(){
-			$caseIds = $this->input->post('caseIds');
-
-			foreach ($caseIds as $caseId) {
-				if(!$this->AdminModel->deleteCase($caseId)){
-					$this->session->set_flashdata('error', 'Error in Deletion Case');
-			        return redirect('cases');
-				}
-			}
-				$this->session->set_flashdata('success', 'Case Deleted Successfully');
-		        return redirect('cases');
-		}
-
+		
 		function rules()
 		{
 			//Loading Rule Page
@@ -232,6 +165,7 @@
 		        return redirect('rules');
 			}
 
+			// for multiple submit button
 			if($this->input->post('dublicateRules')){
 
 			foreach ($ruleIds as $ruleId) {
@@ -261,7 +195,45 @@
 
 		function users()
 		{
-			$this->load->view('admin/users');
+			//Loading users Page
+			$users = $this->AdminModel->getUsers();
+			$this->load->view('admin/users',['users'=>$users]);
+		}
+
+		function deleteUser($userId){
+		if($this->AdminModel->deleteUser($userId)){
+				$this->session->set_flashdata('success', 'User Deleted Successfully');
+		        return redirect('users');
+			}
+			else{
+				$this->session->set_flashdata('error', 'Error in Deletion User');
+		        return redirect('users');
+			}			
+		}
+
+		function deleteSelectedUser(){
+
+			$userIds = $this->input->post('userIds');
+
+			foreach ($userIds as $userId) {
+				if(!$this->AdminModel->deleteUser($userId)){
+					$this->session->set_flashdata('error', 'Error in Deletion User');
+			        return redirect('users');
+				}
+			}
+				$this->session->set_flashdata('success', 'Users Deleted Successfully');
+		        return redirect('users');
+		}
+
+		function userProfile($userId){
+			if($this->AdminModel->ifUserExist($userId)){
+			$this->session->set_userdata('userId',$userId);
+			return redirect('home');
+			}
+			else{
+				$this->session->set_flashdata('error', 'No user found');
+		        return redirect('users');
+			}			
 		}
 
 		function adminSettings()

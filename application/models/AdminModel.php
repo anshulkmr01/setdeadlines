@@ -96,21 +96,16 @@
 		}
 
 		////////////////////////////////////////////////////////////// Law Calendar
-
-		function addCase($caseTitle){
-			return $this->db->insert('cases',['title'=>$caseTitle]);
+		function getUsers(){
+			return $this->db->get('users')->result();
 		}
 
-		function getCases(){
-			return $this->db->get('cases')->result();
+		function deleteUser($userId){
+			return $this->db->delete('users',['id'=>$userId]);
 		}
 
-		function editCase($caseId,$caseTitle){
-			return $this->db->where('ID',$caseId)->update('cases',['title'=>$caseTitle]);
-		}
-
-		function deleteCase($caseId){
-			return $this->db->delete('cases',['ID'=>$caseId]);
+		function ifUserExist($userId){
+			return $this->db->where(['id'=>$userId])->get('users')->row();
 		}
 
 		function addRule($ruleData){
@@ -124,6 +119,29 @@
 		function getRules(){
 			return $this->db->get('rules')->result();
 		}
+
+
+        public function getRulesData(){
+	        $parent = $this->db->get('rules');
+	        $categories = $parent->result();
+	        $i=0;
+	        foreach($categories as $p_cat){
+	            $categories[$i]->sub = $this->ruleDeadlines($p_cat->ID);
+	            $i++;
+	        }
+	        return $categories;
+   		 }
+
+	    public function ruleDeadlines($id){
+	        $child = $this->db->where('rule_id', $id)->get('deadlines');
+	        $categories = $child->result();
+	        $i=0;
+	        foreach($categories as $p_cat){
+	            $categories[$i]->sub = $this->ruleDeadlines($p_cat->ID);
+	            $i++;
+	        }
+	        return $categories;       
+	    }
 
 		function getDeadlines($ruleId){
 			return $this->db->where(['rule_id'=>$ruleId])->get('deadlines')->result();

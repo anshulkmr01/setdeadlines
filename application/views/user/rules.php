@@ -47,8 +47,11 @@
 				<div class="col-sm-7"></div>
 			</div>
 		</div>
-		<div class="container navigation">
-			<div><?= anchor('listedCases','Home')?> / <?= $rules['caseTitle']?></div>
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><?= anchor('userCases','Cases')?></li>
+				<li class="breadcrumb-item active"><?= $rules['caseTitle']?></li>
+			</ol>
 		</div>
 		<div class="container"><h3><div class="category-label">Select Rules for Case</div></h3>
 			<?php if($rules){
@@ -90,7 +93,7 @@
 						<tr>
 							<th></th>
 							<th></th>
-							<th><center><?= form_submit(['value'=>'Select Rule','class'=>'btn btn-primary']) ?></center></th>
+							<th><center><?= form_submit(['value'=>'Next','class'=>'btn btn-primary']) ?></center></th>
 						</tr>
 						</tfoot>
 			</table>

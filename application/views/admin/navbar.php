@@ -6,11 +6,14 @@
 
   <div class="collapse navbar-collapse" id="navbarColor03">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
+     <!--  <li class="nav-item">
         <?= anchor('cases','Cases',array('class' => 'nav-link active'));?>
-      </li>
+      </li> -->
       <li class="nav-item">
         <a class="nav-link" href="<?= base_url("rules"); ?>">Rules</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?= base_url("users"); ?>">Users</a>
       </li>
       <!--
       <li class="nav-item">

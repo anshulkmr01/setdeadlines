@@ -156,96 +156,178 @@
             }
 
             function getSelectedCases($caseId){
-            return $this->db->where(['ID'=>$caseId])->get('cases')->row('title');
+                $userId = $this->session->userdata('userId');
+            return $this->db->where(['ID'=>$caseId,'userID'=>$userId])->get('cases')->row('title');
             }
 
             function getSelectedRuleData($ruleId){
-                $rules = $this->db->where(['ID'=>$ruleId])->get('rules')->result();
+                $rules = $this->db->where(['ID'=>$ruleId])->get('userrules')->result();
                     $rules[0]->sub = $this->ruleDeadlines($rules[0]->ID);
-                  
                 return $rules;
             }
-
-
+            
             public function ruleDeadlines($id){
-                return $this->db->where(['rule_Id'=>$id])->get('deadlines')->result();       
+                return $this->db->where(['rule_Id'=>$id])->get('userdeadlines')->result();       
             }
 
             function saveCase($caseData){
 
                 $userId = $this->session->userData('userId');
-                $query = $this->db->insert('savedcases',['userID'=>$userId, 'caseTitle'=>$caseData['caseTitle'], 'caseID'=>$caseData['caseId'], 'motionDate'=>$caseData['motionDate']]);
+                $query = $this->db->insert('savedcases',['userID'=>$userId,'caseID'=>$caseData['caseID'],
+                    'caseTitle'=>$caseData['caseTitle'],
+                    'motionDate'=>$caseData['motionDate'],'ruleID'=>$caseData['ruleID'],
+                    'ruleTitle'=>$caseData['ruleTitle'],'ruleDescription'=>$caseData['ruleDescription']]);
 
-                $caseId = $caseData['caseId'];
-                $rules = $caseData['rules'];
                 if($query):
-                foreach ($rules as $rule) {
-
-                    $this->saveRules($caseId,$rule);
+                foreach ($caseData['deadlineData'] as $deadline) {
+                    $data = explode ("/amg/", $deadline);
+                   $this->saveDeadlines($data[0],$data[1],$data[2],$caseData['ruleID'],$caseData['caseID']);
                 }
                 endif;
                 return $query;
             }
 
-            function saveRules($caseId,$rule){
-                $query = $this->db->insert('savedrulesforsavedcases',['caseID'=>$caseId, 'ruleId'=>$rule]);
+            function saveDeadlines($deadlineTitle,$deadlineDesc,$deadlineDate,$ruleID,$caseID){
+                $query = $this->db->insert('saveddeadlinesforsavedcases',
+                    ['caseID'=>$caseID,
+                     'deadlineTitle'=>$deadlineTitle,
+                     'deadlineDescription'=>$deadlineDesc,
+                     'deadlineDate'=>$deadlineDate,
+                     'ruleID'=>$ruleID]);
                 return $query;
             }
 
             function userCases(){
                 $userId = $this->session->userData('userId');
                 $cases = $this->db->where(['userId'=>$userId])->get('savedcases')->result();
+                return $cases;
+            }
+
+            
+            function userSavedRules($caseID){
+                $userId = $this->session->userData('userId');
+                $cases = $this->db->where(['userId'=>$userId, 'caseID'=>$caseID])->get('savedcases')->result();
                 if($cases):
                     $i = 0;
                     foreach ($cases as $case) {
-                       $cases[$i]->caseTitle = $this->userCaseDate($case->caseID);
+                       $cases[$i]->caseDeadlines = $this->userSavedRulesDeadlines($case->ruleID, $case->caseID);
                        $i++;
                     }
                 endif;
                 return $cases;
             }
 
-            function userCaseDate($caseId){
-                $cases = $this->db->where(['ID'=>$caseId])->get('cases')->row('title');
+            function userSavedRulesDeadlines($ruleId,$caseID){
+                $cases = $this->db->where(['ruleID'=>$ruleId, 'caseID'=>$caseID])->get('saveddeadlinesforsavedcases')->result();
                 return $cases;
             }
 
 
-            function userRules($caseID){
+            function addCase($caseTitle){
                 $userId = $this->session->userData('userId');
-                $motionDate = $this->db->where(['userId'=>$userId,'caseID'=>$caseID])
-                                                                    ->get('savedcases')->row('motionDate');
-                $caseTitle = $this->db->where(['ID'=>$caseID])->get('cases')->row('title');
+                return $this->db->insert('cases',['title'=>$caseTitle, 'userID'=>$userId]);
+            }
 
-                $rulesId = $this->db->select('ruleId')->where(['caseID'=>$caseID])
-                                                                    ->get('savedrulesforsavedcases')->result();
-                $userData['userId'] = $userId;
-                $userData['motionDate'] = $motionDate;
-                $userData['caseTitle'] = $caseTitle;
-              //  $userData['ruleId'] = $rulesId;
+            function getUserCases(){
+                $userId = $this->session->userData('userId');
 
-                if($rulesId){
-                    foreach ($rulesId as $ruleId) {
-                        $userData['ruleData'][] = $this->userRulesDate($ruleId->ruleId);
-                    }
+                return $this->db->where(['userID'=>$userId])->get('cases')->result();
+            }
+
+            function editCase($caseId,$caseTitle){
+                return $this->db->where('ID',$caseId)->update('cases',['title'=>$caseTitle]);
+            }
+
+            function deleteCase($caseId){
+                return $this->db->delete('cases',['ID'=>$caseId]);
+            }
+
+            function addUserRule($ruleData){
+                $userID = $this->session->userdata('userId');
+                return $this->db->insert('userrules',['userID'=>$userID,'title'=>$ruleData['ruleTitle'],'description'=>$ruleData['ruleDescription']]);
+            }
+
+
+            function editUserRule($ruleUpdatedData){
+                return $this->db->where('ID',$ruleUpdatedData['ruleId'])
+                ->update('userrules'
+                    ,['title'=>$ruleUpdatedData['ruleUpdatedTitle']
+                    ,'description'=>$ruleUpdatedData['ruleDesc']]);
+            }
+
+
+            function deleteUserRule($ruleId){
+                //$this->db->delete('userrulesdeadlines',['ruleID'=>$ruleId]) && 
+                if($this->db->delete('userrules',['ID'=>$ruleId])){
+                    return true;
                 }
-
-                return $userData;
             }
 
-            function userRulesDate($ruleId){
-                $rules = $this->db->where(['ID'=>$ruleId])->get('rules')->result();                
-
-                foreach ($rules as $rule) {
-                    $rules['deadlines'] = $this->userRuleDeadlines($rule->ID);
-                }
-                return $rules;
+            function deleteUser($userId){
+                return $this->db->delete('users',['id'=>$userId]);
             }
 
-            function userRuleDeadlines($ruleId){
-                $deadlines = $this->db->where(['rule_Id'=>$ruleId])->get('deadlines')->result();
-                return $deadlines;
+
+            function dublicateUserRule($ruleId){
+
+            $this->db->where('ID', $ruleId);
+               $query = $this->db->get('userrules');
+                foreach ($query->result() as $row){
+                   foreach($row as $key=>$val){
+                      if($key != 'ID'){
+                        /* Below code can be used instead of passing a data array directly to the insert or update functions */
+                        $this->db->set($key, $val);
+                      }//endif
+                   }//endforeach
+                }//endforeach
+                /* insert the new record into table*/
+                return $this->db->insert('userrules');
             }
+
+
+            function importRule($ruleId){
+
+            $this->db->where('ID', $ruleId);
+               $query = $this->db->get('userrules');
+                foreach ($query->result() as $row){
+                   foreach($row as $key=>$val){
+                      if($key != 'ID'){
+                        /* Below code can be used instead of passing a data array directly to the insert or update functions */
+                        $this->db->set($key, $val);
+                      }//endif
+                   }//endforeach
+                }//endforeach
+                /* insert the new record into table*/
+                return $this->db->insert('userrules');
+            }
+
+            function getUserRules(){
+                $userID = $this->session->userdata('userId');
+                return $this->db->where('userID',$userID)->get('userrules')->result();
+            }
+
+            function getDeadlines($ruleId){
+                return $this->db->where(['rule_id'=>$ruleId])->get('userdeadlines')->result();
+            }
+
+            function editUserDeadline($deadlineUpdatedData){
+            return $this->db->where('ID',$deadlineUpdatedData['deadlineId'])
+            ->update('userdeadlines'
+                ,['title'=>$deadlineUpdatedData['deadlineUpdatedTitle']
+                ,'description'=>$deadlineUpdatedData['deadlineDesc']
+                ,'deadline_days'=>$deadlineUpdatedData['deadlineUpdatedDays']
+                ,'day_type'=>$deadlineUpdatedData['dayUpdatedType']]);
+            }
+
+
+            function addUserDeadline($deadlineData){
+                return $this->db->insert('userdeadlines',['title'=>$deadlineData['deadlineTitle'],'description'=>$deadlineData['deadlineDescription'], 'deadline_days'=>$deadlineData['deadLineDays'],'day_type'=>$deadlineData['dayType'],'rule_Id'=>$deadlineData['ruleId']]);
+            }
+
+            function deleteUserDeadline($deadlineId){
+                return $this->db->delete('userdeadlines',['ID'=>$deadlineId]);
+            }
+
 
              function getcalender($year , $month){
 

@@ -15,16 +15,10 @@
 	<!-- Search Bar -->
 		<div class="container-fluid margin-top-25">
 			<div class="container">
-				<div class="row">
-			<div class="col-sm-8">
-					<a data-toggle="modal" class="open-updateFields btn btn-primary btn-sm" href="#addRule">Add Rule</a>
-			</div>
-			<div class="col-sm-3">
-			<form class=" my-2 my-lg-0">
-		      <input class="form-control mr-sm-2" type="text" placeholder="Search Rule" id="myInput" onkeyup="myFunction()">
-		    </form>
-			</div>
-			</div>
+				<ol class="breadcrumb">
+				  <li class="breadcrumb-item"><a href="#">Home</a></li>
+				  <li class="breadcrumb-item active">Rules</li>
+				</ol>
 		    </div>
 		</div>
 	<!--/ Search Bar -->
@@ -32,7 +26,7 @@
 	<div class="container-fluid table categories-table">
 		<div class="message container">
 			<div class="row">
-				<div class="col-sm-5">
+				<div class="col-5">
 					<?php if($success = $this->session->flashdata('success')):?>
 				    	<div class="alert alert-success">
 				    		<?= $success; ?>
@@ -45,13 +39,47 @@
 				    	</div>
 				    <?php endif;?>
 				</div>
-				<div class="col-sm-7"></div>
+				<div class="col-7"></div>
+			</div>
+		</div>
+		<div class="container">
+			<ul class="nav nav-tabs">
+			  <li class="nav-item">
+			    <a class="nav-link active" data-toggle="tab" href="#home">My Rules</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="tab" href="#profile">Settings</a>
+			  </li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+			  <div class="tab-pane fade active show" id="home">
+			   	<!-- Search Bar -->
+		<div class="container-fluid margin-top-25">
+			<div class="container">
+				<div class="row">
+			<div class="col-8">
+					<a data-toggle="modal" class="open-updateFields btn btn-primary btn" href="#addRule">Add Rule</a>
+			</div>
+			<div class="col-3">
+			<form class=" my-2 my-lg-0">
+		      <input class="form-control mr-2" type="text" placeholder="Search Rule" id="myInput" onkeyup="myFunction()">
+		    </form>
+			</div>
+			</div>
+		    </div>
+		</div>
+	<!--/ Search Bar -->
+
+	<div class="container-fluid table categories-table">
+		<div class="message container">
+			<div class="row">
+				<div class="col-7"></div>
 			</div>
 		</div>
 		<div class="container">
 			<?php if($rules){ ?>
 			<table id="myTable" class="sortable-table">
-				<?= form_open('deleteSelectedRules'); ?>
+				<?= form_open('deleteSelectedUserRules'); ?>
 				<tr class="sorter-header">
 					<th class="no-sort">S.no</th>
 					<th>Rules</th>
@@ -67,30 +95,30 @@
 			     			 <small id="newCategory" class="form-text text-muted"><?= $rule->description;?></small>
 						</td>
 						<td>
-							<?= anchor("admin/AdminController/deadline/{$rule->ID}",'Deadlines',['class'=>'btn btn-primary']); ?>
+							<?= anchor("user/MainController/userDeadlines/{$rule->ID}",'Deadlines',['class'=>'btn btn-primary']); ?>
 						</td>
 						<td>
 							<a data-toggle="modal" data-id="<?= $rule->ID; ?>" data-title="<?= $rule->title; ?>" data-desc="<?= $rule->description; ?>" href="#editRule" class="btn btn-primary editRule">Edit</a>
 						</td>
 						<td>
-							<?= anchor("admin/AdminController/dublicateRule/{$rule->ID}",'Dublicate',['class'=>'btn btn-primary']); ?>
+							<?= anchor("user/MainController/dublicateRule/{$rule->ID}",'Dublicate',['class'=>'btn btn-primary']); ?>
 						</td>
 						<td>
-							<?= anchor("admin/AdminController/deleteRule/{$rule->ID}",'Delete',['class'=>'delete btn btn-danger']); ?>
+							<?= anchor("user/MainController/deleteUserRule/{$rule->ID}",'Delete',['class'=>'delete btn btn-danger']); ?>
 						</td>
 						<td><center><input type="checkbox" value="<?=$rule->ID ?>" name="ruleIds[]"></center></td>
 						</tr>
 					<?php endforeach  ?>
 						<tfoot>
 						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td><?= form_submit(['value'=>'Dublicate','name'=>'dublicateRules','class'=>'btn btn-primary']) ?>
-								<?= form_submit(['value'=>'Delete','name'=>'deleteRules','class'=>'delete btn btn-danger']) ?></td>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th><?= form_submit(['value'=>'Dublicate','name'=>'dublicateRules','class'=>'btn btn-primary']) ?>
+								<?= form_submit(['value'=>'Delete','name'=>'deleteRules','class'=>'delete btn btn-danger']) ?></th>
 						</tr>
 						</tfoot>
 						<?= form_close();?>
@@ -112,7 +140,7 @@
 			  <fieldset>
 			    <legend>Add new Rule</legend>
 			    <span class="text-muted">Add new Rule By filling this form</span>
-				<?= form_open('addRule'); ?>
+				<?= form_open('addUserRule'); ?>
 			    <div class="form-group margin-top-25">
 			      <label for="ruleTitle">Title*</label>
 			      <?php echo form_input(['placeholder'=>'eg. Dedline','name'=>'ruleTitle','required'=>'required','value'=>set_value('ruleTitle'),'class'=>'form-control','id'=>'ruleTitle','aria-describedby'=>'ruleTitle']); ?>
@@ -152,7 +180,7 @@
 		      <div class="modal-body">
 			  <fieldset>
 			    <legend>Upadate Rule</legend>
-				<?= form_open('editRule'); ?>
+				<?= form_open('editUserRule'); ?>
 				<input type="hidden" name="ruleId" id="ruleId">
 			     <div class="form-group margin-top-25">
 			      <label for="ruleUpdatedTitle">Title*</label>
@@ -179,11 +207,18 @@
 		  </div>
 		</div>
 		<!--/ Moal Popup -->
+			  </div>
+			  <div class="tab-pane fade show" id="profile">
+			    bv
+			  </div>
+			</div>
+		</div>
+	</div>
 </body>
 	<?php 
 			globalJs(); 
 	?>
-	<script type="text/javascript">
+<script type="text/javascript">
 	
 // Setting Value of Docnament in Modal for update//
 	$(document).on("click", ".editRule", function () {

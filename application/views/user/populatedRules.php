@@ -15,40 +15,42 @@
 	<div class="container-fluid categories-home">
 		<div class="container">
 			<?php if(isset($rulesData)){
-				$caseTitle = $rulesData['caseTitle'];
-				$motionDate = $rulesData['motionDate'];
-				unset($rulesData['caseTitle']);
-				unset($rulesData['motionDate']);
-				unset($rulesData['userId']);
+				foreach ($rulesData as $rules) :
 				 ?>
-			<legend>Case: <?= $caseTitle?></legend>
-			<small id="fileHelp" class="form-text">Motion Date: <?= date('m/d/Y', strtotime($motionDate)); ?></small>
-			<input type="hidden" name="motionDate" value="<?= $motionDate ?>">
-			<div class="category-container">
+
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><?=anchor('userCases','Cases')?></li>
+				<li class="breadcrumb-item"><a href="<?=base_url('populatedCase')?>">Saved Cases</a></li>
+				<li class="breadcrumb-item active"><?= $rules->caseTitle?></li>
+			</ol>
+
+			<legend>Case: <?= $rules->caseTitle?></legend>
+			<small id="fileHelp" class="form-text">Motion Date: <?= date('m/d/Y', strtotime($rules->motionDate)); ?></small>
+			<div class="category-container"><!-- 
 				<legend>Rules:</legend>
 				<small id="rules" class="form-text text-muted">Click on the plus icon to see deadlines for the rule</small>
-				<br>
-				<?php foreach ($rulesData as $rules) :?>
+				<br> -->
 
 				<div class="category-list row">
 					<div class="category col-sm-12"><label class="dateRevised" style="float: right;">Deadline Date</label>
-						<?php foreach ($rules as $rule) :?>
-							<span class="collapsable-list"><?=$rule[0]->title ?></span>
-							<ul class="list-panel">
+						<span class="active-list" style="font-size: 18px; font-weight: 900"><?=$rules->ruleTitle ?></span>
+						<br>
+						<small class="form-text text-muted" ><?=$rules->ruleDescription ?></small>
+							<ul class="list-panel" style="max-height:fit-content;">
 		                	<?php ?>
 		                    <div>
 		                    	<?php
-		                    		if(!empty($rule['deadlines'])){
+		                    		if(!empty($rules->caseDeadlines)){
 
-		                    			foreach($rule['deadlines'] as $deadline){
+		                    			foreach($rules->caseDeadlines as $deadline){
 		                    	?>
 		                        <li>
-								      <label>
-								      		<?= $deadline->title ?>
+								      <label style="padding-bottom: 15px">
+								      		<?= $deadline->deadlineTitle ?>
+											<small class="form-text text-muted" ><?=$deadline->deadlineDescription ?></small>
 								  	  </label>
 								  	  <label style="float: right; cursor: default;">
-								  	  	<?php if($deadline->day_type == "calendarDay") echo date('m/d/Y', strtotime($motionDate.'+'.$deadline->deadline_days.'days'));?>
-								  	  	<?php if($deadline->day_type == "courtDay") echo date('m/d/Y', strtotime($motionDate.'+'.$deadline->deadline_days.'weekdays'));?>
+								  	  	<?= $deadline->deadlineDate?>
 										</label>
 		                        </li>
 		                        <?php
@@ -65,7 +67,6 @@
 		                        ?>
 		                    </div>
 		                </ul>
-		                <?php endforeach ?>
 					</div>
 				</div>
 				<?php endforeach ?>

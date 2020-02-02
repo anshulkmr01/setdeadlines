@@ -22,9 +22,20 @@
 				unset($caseData['motionDate']);
 				unset($caseData['caseId']);
 				 ?>
+
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><?= anchor('userCases','Cases')?></li>
+				<li class="breadcrumb-item"><a href="#" onclick="goBack()"><?= $caseTitle?></a></li>
+				<li class="breadcrumb-item active">Review Case</li>
+				<script>
+				function goBack() {
+				  window.history.back();
+				}
+				</script>
+			</ol>
 			<?= form_open('saveCase') ?>
 			<input type="hidden" name="caseTitle" value="<?= $caseTitle ?>">
-			<input type="hidden" name="caseId" value="<?= $caseId ?>">
+			<input type="hidden" name="caseID" value="<?= $caseId ?>">
 			<center><legend>Review Case</legend></center>
 			<legend><?= $caseTitle?></legend>
 			<div class="motion-date">Motion Date: <?= date('m/d/Y', strtotime( $motionDate)); ?></div>
@@ -32,7 +43,9 @@
 			<div class="category-container">
 				<?php foreach ($caseData as $case) : ?>
 				<div class="category-list row">
-						<input type="hidden" name="rules[]" value="<?= $case[0]->ID ?>">
+						<input type="hidden" name="ruleID" value="<?= $case[0]->ID ?>">
+						<input type="hidden" name="ruleTitle" value="<?= $case[0]->title?>">
+						<input type="hidden" name="ruleDescription" value="<?= $case[0]->description?>">
 					<div class="category col-sm-12"><label class="dateRevised" style="float: right;">Deadline Date</label>
 
 						<span class="rule active-list"><?=$case[0]->title ?></span>
@@ -49,8 +62,10 @@
 								      		<?= $deadline->title ?>
 								  	  </label>
 								  		<label style="float: right; cursor: default;">
-								  	  	<?php if($deadline->day_type == "calendarDay") echo date('m/d/Y', strtotime($motionDate.'+'.$deadline->deadline_days.'days'));?>
-								  	  	<?php if($deadline->day_type == "courtDay") echo date('m/d/Y', strtotime($motionDate.'+'.$deadline->deadline_days.'weekdays'));?>
+								  	  	<?php if($deadline->day_type == "calendarDay") $date = date('m/d/Y', strtotime($motionDate.'+'.$deadline->deadline_days.'days'));?>
+								  	  	<?php if($deadline->day_type == "courtDay") $date = date('m/d/Y', strtotime($motionDate.'+'.$deadline->deadline_days.'weekdays'));?>
+								  	  	<?= $date ?>
+								      <input type="hidden" value="<?= $deadline->title ?>/amg/<?= $deadline->description ?>/amg/ <?= $date ?>" name="deadlineData[]">
 										</label>
 		                        </li>
 		                        <?php
