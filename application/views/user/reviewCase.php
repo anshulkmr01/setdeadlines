@@ -64,7 +64,7 @@
 								  		<label style="float: right; cursor: default;">
 								  	  	<?php if($deadline->day_type == "calendarDay") $date = date('m/d/Y', strtotime($motionDate.'+'.$deadline->deadline_days.'days'));?>
 								  	  	<?php if($deadline->day_type == "courtDay") $date = date('m/d/Y', strtotime($motionDate.'+'.$deadline->deadline_days.'weekdays'));?>
-								  	  	<?= $date ?>
+								  	  	< ?= $date ?>
 								      <input type="hidden" value="<?= $deadline->title ?>/amg/<?= $deadline->description ?>/amg/ <?= $date ?>" name="deadlineData[]">
 										</label>
 		                        </li>
