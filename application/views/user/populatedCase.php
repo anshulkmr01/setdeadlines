@@ -68,7 +68,7 @@
 						<tr class="case">
 						<td><?= $i?></td>
 						<td>
-							<span class=""><a href="user/MainController/populatedRules/<?= $case->caseID ?>"><?= $case->caseTitle?></a></span>
+							<span class=""><a href="user/MainController/populatedRules/<?= $case->ID ?>/<?= $case->caseID ?>"><?= $case->caseTitle?></a></span>
 								<small id="motionDate" class="form-text text-muted">
 									Motion Date: <?= date('m/d/Y', strtotime( $case->motionDate)); ?>
 								</small>

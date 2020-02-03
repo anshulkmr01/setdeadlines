@@ -238,8 +238,8 @@
 			$this->load->view('user/populatedCase',['cases'=>$cases]);
 		}
 
-		function populatedRules($caseID){
-			$userData = $this->UserModel->userSavedRules($caseID);
+		function populatedRules($caseNo,$caseID){
+			$userData = $this->UserModel->userSavedRules($caseNo,$caseID);
 			$this->load->view('user/populatedRules',['rulesData'=>$userData]);
 		}
 

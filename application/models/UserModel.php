@@ -204,9 +204,9 @@
             }
 
             
-            function userSavedRules($caseID){
+            function userSavedRules($caseNo,$caseID){
                 $userId = $this->session->userData('userId');
-                $cases = $this->db->where(['userId'=>$userId, 'caseID'=>$caseID])->get('savedcases')->result();
+                $cases = $this->db->where(['userId'=>$userId, 'ID'=>$caseNo])->get('savedcases')->result();
                 if($cases):
                     $i = 0;
                     foreach ($cases as $case) {
