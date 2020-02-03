@@ -214,6 +214,13 @@
 			}
 		}
 
+		function importRule($ruleId){
+			if($this->UserModel->importRule($ruleId)){
+				$this->session->set_flashdata('success','Rule Added')	;
+			}
+			return redirect('home');
+		}
+
 		function saveCase(){
 				$caseData = $this->input->post();
 				if($this->UserModel->saveCase($caseData)){

@@ -65,7 +65,7 @@
 						<td><?= $rule->title;?><br>
 			     			 <small id="newCategory" class="form-text text-muted"><?= $rule->description;?></small>
 						</td>
-						<td>
+						<td style="text-align: center;">
 							<?= anchor("user/MainController/importRule/{$rule->ID}",'Import',['class'=>'btn btn-primary']); ?>
 						</td>
 						<td><center><!-- <input type="checkbox" value="<?=$rule->ID ?>" name="ruleIds[]"> --></center></td>
@@ -79,7 +79,7 @@
 										<td style="padding:10px 10px 10px 70px;"><?= $deadline->title?><br>
 											<small id="newCategory" class="form-text text-muted"><?= $deadline->description;?></small>
 										</td>
-										<td style="padding:10px 10px 10px 70px;"><?= $deadline->deadline_days?><br>
+										<td style="padding:10px 10px 10px 70px; text-align: center;"><?= $deadline->deadline_days?><br>
 											<small id="newCategory" class="form-text text-muted"><?= $deadline->day_type;?></small>
 										</td>
 									</tr>

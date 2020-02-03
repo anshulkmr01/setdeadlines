@@ -60,7 +60,7 @@
 		                    		else{
 		                    			?>
 		                        <li>
-							      No Document is Listed for this Category
+							      No Deadline for this rule
 		                        </li>
 		                        <?php
 		                    		}

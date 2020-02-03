@@ -54,7 +54,7 @@
 			</ol>
 		</div>
 		<div class="container"><h3><div class="category-label">Select Rules for Case</div></h3>
-			<?php if($rules){
+			<?php if(isset($rules[0])){
 				$caseId = $rules['caseId'];
 				unset($rules['caseId']);
 				unset($rules['caseTitle']);
@@ -98,7 +98,7 @@
 						</tfoot>
 			</table>
 						<?= form_close();?>
-			<?php } else{echo "No data to show";} ?>
+			<?php } else{echo "No Rules have been added by User";} ?>
 		</div>
 	</div>
 </body>
