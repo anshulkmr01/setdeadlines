@@ -155,6 +155,15 @@
                 }
             }
 
+            //User setting new Password
+            function changePassword($changePasswordData){
+                $userId = $this->session->userdata('userId');
+                $existPassword = $this->db->where('id',$userId)->get('users')->row('password');
+                if($existPassword == md5($changePasswordData['currentPassword'])){
+                    return $this->db->where('id',$userId)->update('users',['password'=>md5($changePasswordData['newPassword'])]);
+                }
+            }
+
             function getSelectedCases($caseId){
                 $userId = $this->session->userdata('userId');
             return $this->db->where(['ID'=>$caseId,'userID'=>$userId])->get('cases')->row('title');

@@ -22,7 +22,6 @@
 			//return redirect('userCases');
 	    }
 
-
 		public function calendar($year = NULL , $month = NULL)
 			{
 				$data['calender'] = $this->UserModel->getcalender($year , $month);
@@ -184,6 +183,29 @@
 				$this->session->set_flashdata('success', 'Deadline Deleted Successfully');
 		        return redirect('user/MainController/userDeadlines/'.$ruleId);
 		}
+
+	    function changePassword(){
+	    	$this->form_validation->set_rules('currentPassword','Current Password','required',array('required'=>'%s is required'));
+	    	$this->form_validation->set_rules('newPassword','New Password','required',array('required'=>'%s is required'));
+	    	if($this->form_validation->run()){
+	    		$changePasswordData = $this->input->post();
+	    		
+	    		if($this->UserModel->changePassword($changePasswordData)){
+	    			$this->session->set_flashdata('success', 'Password Successfully Changed. Login Again');
+	    			$this->session->unset_userdata('userId');
+	    			return redirect('loginUser');
+	    		}
+	    		else {
+	    			$this->session->set_flashdata('error','current password is incorrect');
+	    			$userRules = $this->UserModel->getUserRules();
+					$this->load->view('user/userProfile',['rules'=>$userRules,'settings'=>'on']);
+	    		}
+	    	}
+	    	else{
+	    		$userRules = $this->UserModel->getUserRules();
+				$this->load->view('user/userProfile',['rules'=>$userRules,'settings'=>'on']);
+	    	}
+	    }
 
 
 		function calculateDays(){

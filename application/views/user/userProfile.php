@@ -17,7 +17,7 @@
 			<div class="container">
 				<ol class="breadcrumb">
 				  <li class="breadcrumb-item"><a href="#">Home</a></li>
-				  <li class="breadcrumb-item active">Rules</li>
+				  <li class="breadcrumb-item active">Profile</li>
 				</ol>
 		    </div>
 		</div>
@@ -38,17 +38,22 @@
 				    		<?= $error; ?>
 				    	</div>
 				    <?php endif;?>
+				    <?php if($warning = $this->session->flashdata('warning')):?>
+				    	<div class="alert alert-warning">
+				    		<?php $warning = $warning; ?>
+				    	</div>
+				    <?php endif;?>
 				</div>
 				<div class="col-7"></div>
 			</div>
 		</div>
 		<div class="container">
-			<ul class="nav nav-tabs">
+			<ul class="nav nav-tabs" id="myTab">
 			  <li class="nav-item">
-			    <a class="nav-link active" data-toggle="tab" href="#home">My Rules</a>
+			    <a class="nav-link active" data-toggle="tab" id="home-tab" href="#home">My Rules</a>
 			  </li>
 			  <li class="nav-item">
-			    <a class="nav-link" data-toggle="tab" href="#profile">Settings</a>
+			    <a class="nav-link" data-toggle="tab" id="settings-tab" href="#profile">Settings</a>
 			  </li>
 			</ul>
 			<div id="myTabContent" class="tab-content">
@@ -167,49 +172,77 @@
 		</div>
 		<!--/ Moal Popup -->
 
-		<!-- Modal Popup -->
-		<div class="modal fade" id="editRule" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title" id="exampleModalLongTitle">Law Calendar</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body">
-			  <fieldset>
-			    <legend>Upadate Rule</legend>
-				<?= form_open('editUserRule'); ?>
-				<input type="hidden" name="ruleId" id="ruleId">
-			     <div class="form-group margin-top-25">
-			      <label for="ruleUpdatedTitle">Title*</label>
-			      <?= form_input(['placeholder'=>'eg. Dedline','name'=>'ruleUpdatedTitle','required'=>'required','value'=>set_value('ruleUpdatedTitle'),'class'=>'form-control','id'=>'ruleUpdatedTitle','aria-describedby'=>'ruleUpdatedTitle']); ?>
-				  <?= form_error('ruleUpdatedTitle');?>
-			      <small id="newCategory" class="form-text text-muted">Rule Name</small>
-			  	</div>
+				<!-- Modal Popup -->
+				<div class="modal fade" id="editRule" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLongTitle">Law Calendar</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+					  <fieldset>
+					    <legend>Upadate Rule</legend>
+						<?= form_open('editUserRule'); ?>
+						<input type="hidden" name="ruleId" id="ruleId">
+					     <div class="form-group margin-top-25">
+					      <label for="ruleUpdatedTitle">Title*</label>
+					      <?= form_input(['placeholder'=>'eg. Dedline','name'=>'ruleUpdatedTitle','required'=>'required','value'=>set_value('ruleUpdatedTitle'),'class'=>'form-control','id'=>'ruleUpdatedTitle','aria-describedby'=>'ruleUpdatedTitle']); ?>
+						  <?= form_error('ruleUpdatedTitle');?>
+					      <small id="newCategory" class="form-text text-muted">Rule Name</small>
+					  	</div>
 
-			    <div class="form-group margin-top-25">
-			      <label for="ruleDesc">Description*</label>
+					    <div class="form-group margin-top-25">
+					      <label for="ruleDesc">Description*</label>
 
-			      <?= form_input(['placeholder'=>'Rule is about','name'=>'ruleDesc','required'=>'required','value'=>set_value('ruleDesc'),'class'=>'form-control','id'=>'ruleDesc','aria-describedby'=>'ruleDesc']); ?>
-				  <?= form_error('ruleDesc');?>
-			      <small id="newCategory" class="form-text text-muted">A Decription about the Rule</small>
-			  	</div>
-			    <?php echo form_submit(['value'=>'Update','class'=>'btn btn-primary']); ?>
-			    <?= form_close(); ?>
-			  </fieldset>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-		<!--/ Moal Popup -->
+					      <?= form_input(['placeholder'=>'Rule is about','name'=>'ruleDesc','required'=>'required','value'=>set_value('ruleDesc'),'class'=>'form-control','id'=>'ruleDesc','aria-describedby'=>'ruleDesc']); ?>
+						  <?= form_error('ruleDesc');?>
+					      <small id="newCategory" class="form-text text-muted">A Decription about the Rule</small>
+					  	</div>
+					    <?php echo form_submit(['value'=>'Update','class'=>'btn btn-primary']); ?>
+					    <?= form_close(); ?>
+					  </fieldset>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+				<!--/ Moal Popup -->
 			  </div>
+
 			  <div class="tab-pane fade show" id="profile">
-			    bv
+			    <div><label>Google Account</label>
+				</div>
+			    <div><a href="#" class="btn btn-primary">Connect</a>
+			    <small class="form-text text-muted">Connected Google Account will be used to save Motion Date into Google Calendar</small></div>
+
+			  <hr>
+			  <div class="col-sm-6">
+				<?= form_open('user/MainController/changePassword'); ?>
+				  <fieldset>
+				    <legend>Change Password</legend>
+				    <div class="form-group">
+				      <label for="password">Current Password*</label>
+				      <?= form_input(['placeholder'=>'Current Password','name'=>'currentPassword','class'=>'form-control','id'=>'currentPassword','aria-describedby'=>'currentPassword']); ?>
+					  <?= form_error('currentPassword');?>
+				  	</div>
+
+				    <div class="form-group">
+				      <label for="password">New Password*</label>
+				      <?= form_input(['placeholder'=>'New Password','name'=>'newPassword','class'=>'form-control','id'=>'newPassword','aria-describedby'=>'newPassword']); ?>
+				      <small id="newPassword" class="form-text text-muted"></small>
+					  <?php echo form_error('newPassword');?>
+				  	</div>
+
+				    <div class="form-group">
+				  	</div>
+				    <?= form_submit(['value'=>'Change','class'=>'btn btn-primary']); ?>
+				  </fieldset>
+				</div>
 			  </div>
 			</div>
 		</div>
@@ -231,5 +264,19 @@
      $("#ruleUpdatedTitle").val(RuleTitle);
      $("#ruleDesc").val(RuleDesc);
 });
+
+//--------------------------------------
+
+
+$(document).ready(function(){
+var val = "<?= $settings ?>";
+if (val) {
+	$('#home-tab').removeClass( "active");
+	$('#settings-tab').addClass( "active");
+	$('#home').removeClass( "active show");
+	$('#profile').addClass( "active show");
+}
+});
+
 </script>
 </html>
