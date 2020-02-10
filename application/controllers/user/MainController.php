@@ -227,6 +227,9 @@
 				$rulesFromDB['caseTitle'] = $caseTitle;
 				$rulesFromDB['motionDate'] = $motionDate;
 				$rulesFromDB['caseId'] = $caseId;
+				if($rulesData['holiday']){
+					$rulesFromDB['holiday'] = $rulesData['holiday']; // number of holidays	
+				}
 				$this->load->view('user/reviewCase',['caseData'=>$rulesFromDB]);
 			}
 			else{

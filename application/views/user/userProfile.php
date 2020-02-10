@@ -267,7 +267,7 @@
 
 //--------------------------------------
 
-
+/*
 $(document).ready(function(){
 var val = "<?= $settings ?>";
 if (val) {
@@ -277,6 +277,6 @@ if (val) {
 	$('#profile').addClass( "active show");
 }
 });
-
+*/
 </script>
 </html>

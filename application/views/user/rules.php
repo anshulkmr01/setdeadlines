@@ -71,6 +71,17 @@
 		      <?php echo form_error('motionDate');?><?php echo form_error('ruleIds[]');?>
 			</div>
 			</div>
+
+			<div class="row">
+			<div class="form-group col-sm-2" style="max-width: 11%; line-height: 45px">
+		      <label for="exampleInputEmail1">Holidays</label>
+			</div>
+			<div class="form-group col-sm-3">
+		      <?php echo form_input(['placeholder'=>'','name'=>'holiday', 'type'=>'number','class'=>'form-control','id'=>'docRevisedDate','aria-describedby'=>'docRevisedDate']); ?>
+		      <small id="editCategory" class="form-text text-muted">Enter the number of holidays</small>
+			</div>
+			</div>
+
 			<table id="myTable" class="sortable-table">
 				<tr class="sorter-header">
 					<th class="no-sort">S.no</th>

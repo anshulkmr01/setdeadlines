@@ -15,12 +15,17 @@
 	<div class="container-fluid categories-home">
 		<div class="container">
 			<?php if($caseData){
+				$holidayNumber = 0;
 				$caseTitle = $caseData['caseTitle'];
 				$motionDate = $caseData['motionDate'];
 				$caseId = $caseData['caseId'];
 				unset($caseData['caseTitle']);
 				unset($caseData['motionDate']);
 				unset($caseData['caseId']);
+				if(isset($caseData['holiday'])){
+					$holidayNumber = $caseData['holiday'];
+					unset($caseData['holiday']);	
+				}
 				 ?>
 
 			<ol class="breadcrumb">
@@ -39,6 +44,7 @@
 			<center><legend>Review Case</legend></center>
 			<legend><?= $caseTitle?></legend>
 			<div class="motion-date">Motion Date: <?= date('m/d/Y', strtotime( $motionDate)); ?></div>
+			<div class="motion-date">Number of Holidays: <?= $holidayNumber; ?></div>
 			<input type="hidden" name="motionDate" value="<?= $motionDate ?>">
 			<div class="category-container">
 				<?php foreach ($caseData as $case) : ?>
@@ -61,10 +67,11 @@
 								      <label>
 								      		<?= $deadline->title ?>
 								  	  </label>
-								  	  <?= $date = "" ?>
+								  	  <?php $date = "" ?>
+								  	  <?php $numberOfDays =  $deadline->deadline_days + $holidayNumber; ?>
 								  		<label style="float: right; cursor: default;">
-								  	  	<?php if($deadline->day_type == "calendarDay") $date = date('m/d/Y', strtotime($motionDate.'+'.$deadline->deadline_days.'days'));?>
-								  	  	<?php if($deadline->day_type == "courtDay") $date = date('m/d/Y', strtotime($motionDate.'+'.$deadline->deadline_days.'weekdays'));?>
+								  	  	<?php if($deadline->day_type == "calendarDay") $date = date('m/d/Y', strtotime($motionDate.'+'.$numberOfDays.'days'));?>
+								  	  	<?php if($deadline->day_type == "courtDay") $date = date('m/d/Y', strtotime($motionDate.'+'.$numberOfDays.'weekdays'));?>
 								  	  	<?= $date ?>
 								      <input type="hidden" value="<?= $deadline->title ?>/amg/<?= $deadline->description ?>/amg/ <?= $date ?>" name="deadlineData[]">
 										</label>
