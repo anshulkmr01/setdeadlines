@@ -247,7 +247,7 @@
 		}
 
 		function saveCase(){	
-			require_once(base_url(''));
+			require_once('google-calendar-api.php');
 			if(!isset($_SESSION['access_token'])) {
 					$this->session->set_flashdata('warning','Connect Google Account Before Saving Dates');
 					 return redirect('userProfile');
