@@ -246,9 +246,24 @@
 			return redirect('home');
 		}
 
-		function saveCase(){
+		function saveCase(){	
+			require_once(base_url(''));
+			if(!isset($_SESSION['access_token'])) {
+					$this->session->set_flashdata('warning','Connect Google Account Before Saving Dates');
+					 return redirect('userProfile');
+			}
 				$caseData = $this->input->post();
 				if($this->UserModel->saveCase($caseData)){
+
+					foreach ($caseData['deadlineData'] as $deadlines) {
+					 $deadlines = explode ("/amg/", $deadlines);
+						if(!$this->saveEventInGoogle($deadlines[0],date('Y-m-d', strtotime($deadlines[2])))){
+
+					$this->session->set_flashdata('error','Date could not save to Google calendar');
+					return redirect('userCases');
+						}
+					}
+					
 					$this->session->set_flashdata('success','Case Populated in profile');
 					return redirect('userCases');
 				}
@@ -257,7 +272,25 @@
 					return redirect('userCases');
 				}
 		}
+		function saveEventInGoogle($eventTitle,$eventDate){
+			try {
+				// Get event details
+				$capi = new GoogleCalendarApi();
 
+				// Get user calendar timezone
+				$user_timezone = $capi->GetUserCalendarTimezone($_SESSION['access_token']);
+
+				// Create event on primary calendar
+				$event_id = $capi->CreateCalendarEvent('primary', $eventTitle, 1,$eventDate, $user_timezone, $_SESSION['access_token']);
+				return $event_id;
+				
+				//echo json_encode([ 'event_id' => $event_id ]);
+			}
+			catch(Exception $e) {
+				header('Bad Request', true, 400);
+			    echo json_encode(array( 'error' => 1, 'message' => $e->getMessage() ));
+			}
+		}
 		function populatedCase(){
 			$cases = $this->UserModel->userCases();
 			$this->load->view('user/populatedCase',['cases'=>$cases]);
@@ -354,6 +387,14 @@
 			$this->session->set_flashdata('success', 'Rule cloned Successfully');
 		   	return redirect('userProfile');
 			}
+		}
+
+		
+
+		function googleDisconnect(){
+			session_start();
+			unset($_SESSION['access_token']);
+			return redirect('userProfile');
 		}
 
 		//Adding Cases by user

@@ -7,6 +7,44 @@
 			globalCss(); 
 	?>
 	<!--/ Global Css using Helper -->
+	<?php
+	//session_start();
+
+	require_once('google-calendar-api.php');
+	require_once('settings.php');
+	$isGooogleConnected = false;
+	// Google passes a parameter 'code' in the Redirect Url
+	if(isset($_GET['code'])) {
+		try {
+			$capi = new GoogleCalendarApi();
+			
+			// Get the access token 
+			$data = $capi->GetAccessToken(CLIENT_ID, CLIENT_REDIRECT_URL, CLIENT_SECRET, $_GET['code']);
+			
+			// Save the access token as a session variable
+			$_SESSION['access_token'] = $data['access_token'];
+
+			// Redirect to the page where user can create event
+			header('Location: userProfile');
+			exit();
+		}
+		catch(Exception $e) {
+			echo $e->getMessage();
+			exit();
+		}
+	}
+
+	if(isset($_SESSION['access_token'])) {
+	$isGooogleConnected = true;
+	}
+
+		//Login Url
+		$login_url = 'https://accounts.google.com/o/oauth2/auth?scope='
+		.urlencode('https://www.googleapis.com/auth/calendar')
+		. '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL)
+		. '&response_type=code&client_id=' . CLIENT_ID . '&access_type=online';
+
+	?>
 </head>
 <body>
 	<!-- Navbar -->
@@ -40,7 +78,7 @@
 				    <?php endif;?>
 				    <?php if($warning = $this->session->flashdata('warning')):?>
 				    	<div class="alert alert-warning">
-				    		<?php $warning = $warning; ?>
+				    		<?= $warning; ?>
 				    	</div>
 				    <?php endif;?>
 				</div>
@@ -217,9 +255,13 @@
 			  <div class="tab-pane fade show" id="profile">
 			    <div><label>Google Account</label>
 				</div>
-			    <div><a href="#" class="btn btn-primary">Connect</a>
-			    <small class="form-text text-muted">Connected Google Account will be used to save Motion Date into Google Calendar</small></div>
-
+				<?php if(!$isGooogleConnected){?>
+					<div><a href="<?= $login_url ?>" class="btn btn-primary">Connect</a>
+			   		 <small class="form-text text-muted">Connected Google Account will be used to save Motion Date into Google Calendar</small></div>
+			   		 <?php } else {?>
+			   		 	<div><a href="<?= base_url('user/MainController/googleDisconnect')?>" class="btn btn-primary">Disconnect</a>
+			   		 <small class="form-text text-muted">Disconnect From Connected Google</small></div>
+			   		 <?php }?>
 			  <hr>
 			  <div class="col-sm-6">
 				<?= form_open('user/MainController/changePassword'); ?>
