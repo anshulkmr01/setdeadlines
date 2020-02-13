@@ -18,7 +18,9 @@
 		{
 			//load rules by admin on User Homepage
 			$rules = $this->AdminModel->getRulesData();
-			$this->load->view('user/homepage',['rules'=>$rules]);
+			$userRules = $this->UserModel->getUserRules();
+
+			$this->load->view('user/homepage',['rules'=>$rules,'userrules'=>$userRules]);
 			//return redirect('userCases');
 	    }
 

@@ -306,7 +306,7 @@
                 $userID = $this->session->userdata('userId');
                 foreach ($ruleData['rule'] as $rule) {
                     $this->db->insert('userrules',['userID'=>$userID,
-                            'title'=>$rule->title,'description'=>$rule->description]);
+                            'title'=>$rule->title,'description'=>$rule->description,'rule_id'=>$ruleId]);
                     $last_id = $this->db->insert_id();
                 }//endif
 
@@ -339,7 +339,10 @@
                 ,'day_type'=>$deadlineUpdatedData['dayUpdatedType']]);
             }
 
+            function ifRule(){
 
+            }
+            
             function addUserDeadline($deadlineData){
                 return $this->db->insert('userdeadlines',['title'=>$deadlineData['deadlineTitle'],'description'=>$deadlineData['deadlineDescription'], 'deadline_days'=>$deadlineData['deadLineDays'],'day_type'=>$deadlineData['dayType'],'rule_Id'=>$deadlineData['ruleId']]);
             }

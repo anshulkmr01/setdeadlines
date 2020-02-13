@@ -65,9 +65,33 @@
 						<td><?= $rule->title;?><br>
 			     			 <small id="newCategory" class="form-text text-muted"><?= $rule->description;?></small>
 						</td>
+						<?php
+						$flag = 0;
+						 if($userrules){ 
+							foreach ($userrules as $key) {
+							if ($key->rule_id == $rule->ID) {
+								$flag = 1;
+								?>
+						<td style="text-align: center;">
+							<?= anchor("user/MainController/importRule/{$rule->ID}",'Imported',['class'=>'btn btn-primary disabled']); ?>
+						</td>
+
+								<?php
+								break;
+							}
+							}}
+
+
+							if($flag == 0){
+								?>
+								
 						<td style="text-align: center;">
 							<?= anchor("user/MainController/importRule/{$rule->ID}",'Import',['class'=>'btn btn-primary']); ?>
 						</td>
+								<?php
+							}
+							?>
+
 						<td><center><!-- <input type="checkbox" value="<?=$rule->ID ?>" name="ruleIds[]"> --></center></td>
 						</tr>
 							<?php
