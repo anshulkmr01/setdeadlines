@@ -285,11 +285,11 @@
 				$user_timezone = $capi->GetUserCalendarTimezone($_SESSION['access_token']);
 
 				// Create event on primary calendar
-				$event_id = $capi->CreateCalendarEvent('primary', $eventTitle, 1,$eventDate, $user_timezone, $_SESSION['access_token']);
+				$event_id = $capi->CreateCalendarEvent('primary', $eventTitle, 1,$eventDate, $user_timezone, $_SESSION['access_token']);echo json_encode([ 'event_id' => $event_id ]);
+				exit();
 				return $event_id;
 				
-				echo json_encode([ 'event_id' => $event_id ]);
-				exit();
+				
 			}
 			catch(Exception $e) {
 				header('Bad Request', true, 400);
