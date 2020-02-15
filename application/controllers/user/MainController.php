@@ -277,7 +277,7 @@
 			$i = 0;
 			foreach ($caseData['deadlineData'] as $deadlines) {
 					 $deadlines = explode ("/amg/", $deadlines);
-						$caseData['deadlineData'][$i] .= $this->saveEventInGoogle($deadlines[0],date('Y-m-d', strtotime($deadlines[2])));
+						$caseData['deadlineData'][$i] .= '/amg/'.$this->saveEventInGoogle($deadlines[0],date('Y-m-d', strtotime($deadlines[2])));
 
 					$i++;
 					}
