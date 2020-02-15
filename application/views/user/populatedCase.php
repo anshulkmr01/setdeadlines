@@ -60,7 +60,7 @@
 				<tr class="sorter-header">
 					<th class="no-sort">S.no</th>
 					<th>Cases</th>
-					<th colspan="1" class="no-sort"><center><center></th>
+					<th colspan="1" class="no-sort"><center>Action<center></th>
 				</tr>
 					<?php
 						$i=0;
@@ -73,6 +73,7 @@
 									Motion Date: <?= date('m/d/Y', strtotime( $case->motionDate)); ?>
 								</small>
 						</td>
+						<td><?= anchor("user/MainController/deleteSavedCase/{$case->caseID}",'Delete',['class'=>'delete btn btn-danger']);?></td>
 						</tr>
 					<?php endforeach  ?>
 						<?= form_close();?>

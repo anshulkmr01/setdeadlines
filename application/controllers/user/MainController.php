@@ -292,6 +292,21 @@
 			    echo json_encode(array( 'error' => 1, 'message' => $e->getMessage() ));
 			}
 		}
+
+		function deleteSavedCase($caseID){
+			if($deadlineGoogleID = $this->UserModel->deleteSavedCase($caseID)){
+				$capi = new GoogleCalendarApi();
+				$access_token = $_SESSION['access_token'];
+				// deleting event on the primary calendar
+				$calendar_id = 'primary';
+				foreach ($deadlineGoogleID as $event_id) {
+					// Event on primary calendar
+					$capi->DeleteCalendarEvent($event_id, $calendar_id, $access_token);
+				}
+				$this->session->set_flashdata("success","Case Deleted Successfully");
+				return redirect('populatedCase');
+			}
+		}
 		function populatedCase(){
 			$cases = $this->UserModel->userCases();
 			$this->load->view('user/populatedCase',['cases'=>$cases]);

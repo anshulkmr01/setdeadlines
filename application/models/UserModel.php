@@ -193,13 +193,6 @@
                    $this->saveDeadlines($data[0],$data[1],$data[2],$data[3],$caseData['ruleID'],$caseData['caseID']);
                 }
                 endif;
-                
-
-                    echo "<pre>";
-                    print_r($data);
-                    echo "<hr>";
-                    print_r($data[3]);
-                    exit();
                 return $query;
             }
 
@@ -212,6 +205,14 @@
                      'deadlineGoogleID'=>$deadlineGoogleID,
                      'ruleID'=>$ruleID]);
                 return $query;
+            }
+
+            function deleteSavedCase($caseID){
+                $deadlineGoogleID = $this->db->select('deadlineGoogleID')->where('caseID',$caseID)->get('saveddeadlinesforsavedcases')->result();
+                if($this->db->delete('savedcases',['caseID'=>$caseID]) && $this->db->delete('saveddeadlinesforsavedcases',['caseID'=>$caseID])){
+                    return $deadlineGoogleID;   
+                }
+
             }
 
             function userCases(){
