@@ -273,8 +273,11 @@
 					return redirect('userCases');
 				}
 		}
+
 		function saveEventInGoogle($eventTitle,$eventDate){
 			try {
+
+				require_once('google-calendar-api.php');
 				// Get event details
 				$capi = new GoogleCalendarApi();
 
@@ -285,7 +288,8 @@
 				$event_id = $capi->CreateCalendarEvent('primary', $eventTitle, 1,$eventDate, $user_timezone, $_SESSION['access_token']);
 				return $event_id;
 				
-				//echo json_encode([ 'event_id' => $event_id ]);
+				echo json_encode([ 'event_id' => $event_id ]);
+				exit();
 			}
 			catch(Exception $e) {
 				header('Bad Request', true, 400);
