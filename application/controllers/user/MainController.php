@@ -281,7 +281,7 @@
 					}
 
 					echo "<pre>";
-					print_r($caseData['deadlineData']);
+					print_r($caseData);
 					exit();
 		}
 
