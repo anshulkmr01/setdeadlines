@@ -190,18 +190,19 @@
                 if($query):
                 foreach ($caseData['deadlineData'] as $deadline) {
                     $data = explode ("/amg/", $deadline);
-                   $this->saveDeadlines($data[0],$data[1],$data[2],$caseData['ruleID'],$caseData['caseID']);
+                   $this->saveDeadlines($data[0],$data[1],$data[2],$data[3],$caseData['ruleID'],$caseData['caseID']);
                 }
                 endif;
                 return $query;
             }
 
-            function saveDeadlines($deadlineTitle,$deadlineDesc,$deadlineDate,$ruleID,$caseID){
+            function saveDeadlines($deadlineTitle,$deadlineDesc,$deadlineDate,$deadlineGoogleID,$ruleID,$caseID){
                 $query = $this->db->insert('saveddeadlinesforsavedcases',
                     ['caseID'=>$caseID,
                      'deadlineTitle'=>$deadlineTitle,
                      'deadlineDescription'=>$deadlineDesc,
                      'deadlineDate'=>$deadlineDate,
+                     'deadlineGoogleID'=>$deadlineGoogleID,
                      'ruleID'=>$ruleID]);
                 return $query;
             }

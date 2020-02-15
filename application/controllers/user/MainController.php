@@ -252,39 +252,22 @@
 			return redirect('home');
 		}
 
-		function jsaveCase(){	
-				if($this->UserModel->saveCase($caseData)){
-
-					foreach ($caseData['deadlineData'] as $deadlines) {
-					 $deadlines = explode ("/amg/", $deadlines);
-						if(!$this->saveEventInGoogle($deadlines[0],date('Y-m-d', strtotime($deadlines[2])))){
-
-					$this->session->set_flashdata('error','Date could not save to Google calendar');
-					return redirect('userCases');
-						}
-					}
-					
-					$this->session->set_flashdata('success','Case Populated in profile');
-					return redirect('userCases');
-				}
-				else{
-					$this->session->set_flashdata('error','An Error occured');
-					return redirect('userCases');
-				}
-		}
 		function saveCase(){
 			$caseData = $this->input->post();
 			$i = 0;
 			foreach ($caseData['deadlineData'] as $deadlines) {
 					 $deadlines = explode ("/amg/", $deadlines);
 						$caseData['deadlineData'][$i] .= '/amg/'.$this->saveEventInGoogle($deadlines[0],date('Y-m-d', strtotime($deadlines[2])));
-
 					$i++;
 					}
-
-					echo "<pre>";
-					print_r($caseData);
-					exit();
+					if($this->UserModel->saveCase($caseData)){
+						$this->session->set_flashdata('success','Case Populated in profile');
+						return redirect('userCases');
+					}
+					else{
+						$this->session->set_flashdata('warning','Data have set in calendar but not in database');
+						return redirect('userCases');
+					}
 		}
 
 		function saveEventInGoogle($eventTitle,$eventDate){
