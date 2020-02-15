@@ -8,12 +8,6 @@
 			parent::__construct();
 			if(!$this->session->userdata('userId'))
 				return redirect('loginUser');
-
-			if(!isset($_SESSION['access_token'])) {
-					$this->session->set_flashdata('warning','Connect Google Account Before Saving Dates');
-					 return redirect('user/UserProfile');
-			}
-
 			$this->load->model('AdminModel');
 			$this->load->model('UserModel');
 			$this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
