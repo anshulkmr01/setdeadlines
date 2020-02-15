@@ -17,11 +17,17 @@
        <?= anchor('populatedCase','Saved Cases',array('class' => 'nav-link'));?>
       </li>
       <li class="nav-item">
+       <?= anchor('userRules','My Rules',array('class' => 'nav-link'));?>
+      </li>
+      <li class="nav-item">
         <!--a class="nav-link" href="#">About</a-->
       </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">
-        <a href="<?= base_url("userProfile"); ?>"><button class="btn btn-secondary my-2 my-sm-0" type="button">Profile</button></a>
+        <?php if($this->session->userdata('adminId')){?>
+        <a href="<?= base_url("users"); ?>"><button class="btn btn-secondary my-2 my-sm-0" type="button">All Users</button></a>
+      <?php }?>
+        <a href="<?= base_url("userProfile"); ?>"><button class="btn btn-secondary my-2 my-sm-0" type="button">Settings</button></a>
       <form class="form-inline my-2 my-lg-0">
         <a href="<?= base_url("userLogout"); ?>"><button class="btn btn-secondary my-2 my-sm-0" type="button">Logout</button></a>
       </form>

@@ -9,6 +9,11 @@
 			if(!$this->session->userdata('userId'))
 				return redirect('loginUser');
 
+			if(!isset($_SESSION['access_token'])) {
+					$this->session->set_flashdata('warning','Connect Google Account Before Saving Dates');
+					 return redirect('user/UserProfile');
+			}
+
 			$this->load->model('AdminModel');
 			$this->load->model('UserModel');
 			$this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
@@ -22,6 +27,11 @@
 
 			$this->load->view('user/homepage',['rules'=>$rules,'userrules'=>$userRules]);
 			//return redirect('userCases');
+	    }
+
+	    function userRules(){
+			$userRules = $this->UserModel->getUserRules();
+			$this->load->view('user/userRules',['rules'=>$userRules]);
 	    }
 
 		public function calendar($year = NULL , $month = NULL)
@@ -52,8 +62,7 @@
 		}
 
 		function userProfile(){
-			$userRules = $this->UserModel->getUserRules();
-			$this->load->view('user/userProfile',['rules'=>$userRules]);
+			$this->load->view('user/userProfile');
 		}
 
 		function editUserRule(){
@@ -62,16 +71,16 @@
 
 			if($this->UserModel->editUserRule($ruleUpdatedData)){
 				$this->session->set_flashdata('success', 'Rule Updated Successfully');
-		        return redirect('userProfile');
+		        return redirect('userRules');
 			}
 			else{
 				$this->session->set_flashdata('error', 'Error in Updating Rule');
-		        return redirect('userProfile');
+		        return redirect('userRules');
 				}
 			}
 			else{
 				$this->session->set_flashdata('error', 'Fill Required Fields');
-		        return redirect('userProfile');
+		        return redirect('userRules');
 			}
 		}
 
@@ -79,11 +88,11 @@
 
 			if($this->UserModel->dublicateUserRule($ruleId)){
 				$this->session->set_flashdata('success', 'Rule cloned Successfully');
-		        return redirect('userProfile');
+		        return redirect('userRules');
 			}
 			else{
 				$this->session->set_flashdata('error', 'Error');
-		        return redirect('userProfile');
+		        return redirect('userRules');
 			}
 		}
 
@@ -93,16 +102,16 @@
 				$ruleData = $this->input->post();
 				if($this->UserModel->addUserRule($ruleData)){
 					$this->session->set_flashdata('success',"Rule Added Successfully");
-					return redirect('userProfile');
+					return redirect('userRules');
 				}
 				else{
 					$this->session->set_flashdata('error',"Adding Rule Failed");
-					return redirect('userProfile');
+					return redirect('userRules');
 				}
 			}
 			else{
 				$this->session->set_flashdata('error',"Fields Can't be empty");
-				return redirect('userProfile');
+				return redirect('userRules');
 			}
 
 		}
@@ -110,11 +119,11 @@
 		function deleteUserRule($ruleId){
 			if($this->UserModel->deleteUserRule($ruleId)){
 				$this->session->set_flashdata('success', 'Rule Deleted Successfully');
-		        return redirect('userProfile');
+		        return redirect('userRules');
 			}
 			else{
 				$this->session->set_flashdata('error', 'Error in Deletion Case');
-		        return redirect('userProfile');
+		        return redirect('userRules');
 			}
 		}
 
@@ -249,11 +258,6 @@
 		}
 
 		function saveCase(){	
-			require_once('google-calendar-api.php');
-			if(!isset($_SESSION['access_token'])) {
-					$this->session->set_flashdata('warning','Connect Google Account Before Saving Dates');
-					 return redirect('userProfile');
-			}
 				$caseData = $this->input->post();
 				if($this->UserModel->saveCase($caseData)){
 
@@ -371,11 +375,11 @@
 			foreach ($ruleIds as $ruleId) {
 				if(!$this->UserModel->deleteUserRule($ruleId)){
 					$this->session->set_flashdata('error', 'Error in Deletion Rule');
-			        return redirect('userProfile');
+			        return redirect('userRules');
 				}
 			}
 				$this->session->set_flashdata('success', 'Rules Deleted Successfully');
-		        return redirect('userProfile');
+		        return redirect('userRules');
 			}
 
 			if($this->input->post('dublicateRules')){
@@ -383,11 +387,11 @@
 			foreach ($ruleIds as $ruleId) {
 				if(!$this->UserModel->dublicateUserRule($ruleId)){
 				$this->session->set_flashdata('error', 'Error in Cloning');
-		        return redirect('userProfile');
+		        return redirect('userRules');
 				}
 			}
 			$this->session->set_flashdata('success', 'Rule cloned Successfully');
-		   	return redirect('userProfile');
+		   	return redirect('userRules');
 			}
 		}
 

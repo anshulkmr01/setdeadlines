@@ -83,6 +83,7 @@ $route['recoverAdminPassword'] = 'admin/AdminLogin/recoverAdminPassword';
 $route['adminRecoverPasswordSendEmail'] = 'admin/AdminLogin/adminRecoverPasswordSendEmail';
 
 $route['populatedRules'] = 'user/MainController/populatedRules';
+$route['userRules'] = 'user/MainController/userRules';
 $route['populatedCase'] = 'user/MainController/populatedCase';
 $route['signupUser'] = 'user/UserController/signupUser';
 $route['loginUser'] = 'user/UserController/loginUser';

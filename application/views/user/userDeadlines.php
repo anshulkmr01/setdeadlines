@@ -16,8 +16,8 @@
 		<div class="container-fluid margin-top-25">
 			<div class="container">
 				<ol class="breadcrumb">
-				  <li class="breadcrumb-item"><a href="#">Home</a></li>
-				  <li class="breadcrumb-item"><?= anchor('userProfile','Rules')?></li>
+				  <li class="breadcrumb-item"><?= anchor('userCases','Cases')?></li>
+				  <li class="breadcrumb-item"><?= anchor('userRules','Rules')?></li>
 				  <li class="breadcrumb-item active">Deadlines</li>
 				</ol>
 		    </div>

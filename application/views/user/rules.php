@@ -77,7 +77,7 @@
 		      <label for="exampleInputEmail1">Holidays</label>
 			</div>
 			<div class="form-group col-sm-3">
-		      <?php echo form_input(['placeholder'=>'','name'=>'holiday', 'type'=>'number','class'=>'form-control','id'=>'docRevisedDate','aria-describedby'=>'docRevisedDate']); ?>
+		      <?php echo form_input(['placeholder'=>'','name'=>'holiday','min'=>0, 'type'=>'number','class'=>'form-control','id'=>'docRevisedDate','aria-describedby'=>'docRevisedDate']); ?>
 		      <small id="editCategory" class="form-text text-muted">Enter the number of holidays</small>
 			</div>
 			</div>
