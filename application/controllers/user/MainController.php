@@ -60,11 +60,6 @@
 			$rules['caseTitle'] = $caseTitle = $this->input->get('case');
 				$this->load->view('user/rules',['rules'=>$rules]);
 		}
-
-		function userProfile(){
-			$this->load->view('user/userProfile');
-		}
-
 		function editUserRule(){
 			if($this->form_validation->run('rule-update')){
 			$ruleUpdatedData = $this->input->post();
@@ -400,7 +395,7 @@
 		function googleDisconnect(){
 			session_start();
 			unset($_SESSION['access_token']);
-			return redirect('userProfile');
+			return redirect('user/UserProfile');
 		}
 
 		//Adding Cases by user

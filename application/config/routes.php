@@ -98,7 +98,7 @@ $route['setNewPassword'] = 'user/UserController/setNewPassword';
 $route['userCases'] = 'user/MainController/userCases';
 $route['listedRules'] = 'user/MainController/listedRules';
 $route['saveCase'] = 'user/MainController/saveCase';
-$route['userProfile'] = 'user/MainController/userProfile';
+$route['userProfile'] = 'user/UserProfile';
 
 
 
