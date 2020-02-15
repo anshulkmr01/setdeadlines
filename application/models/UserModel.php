@@ -193,6 +193,13 @@
                    $this->saveDeadlines($data[0],$data[1],$data[2],$data[3],$caseData['ruleID'],$caseData['caseID']);
                 }
                 endif;
+                
+
+                    echo "<pre>";
+                    print_r($data);
+                    echo "<hr>";
+                    print_r($data[3]);
+                    exit();
                 return $query;
             }
 
