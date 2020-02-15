@@ -252,8 +252,7 @@
 			return redirect('home');
 		}
 
-		function saveCase(){	
-				$caseData = $this->input->post();
+		function jsaveCase(){	
 				if($this->UserModel->saveCase($caseData)){
 
 					foreach ($caseData['deadlineData'] as $deadlines) {
@@ -273,6 +272,18 @@
 					return redirect('userCases');
 				}
 		}
+		function saveCase(){
+			$caseData = $this->input->post();
+
+			foreach ($caseData['deadlineData'] as $deadlines) {
+					 $deadlines = explode ("/amg/", $deadlines);
+						$caseData['deadlineData'] = $this->saveEventInGoogle($deadlines[0],date('Y-m-d', strtotime($deadlines[2])));
+					}
+
+					echo "<pre>";
+					print_r($caseData['deadlineData']);
+					exit();
+		}
 
 		function saveEventInGoogle($eventTitle,$eventDate){
 			try {
@@ -285,11 +296,11 @@
 				$user_timezone = $capi->GetUserCalendarTimezone($_SESSION['access_token']);
 
 				// Create event on primary calendar
-				$event_id = $capi->CreateCalendarEvent('primary', $eventTitle, 1,$eventDate, $user_timezone, $_SESSION['access_token']);echo json_encode([ 'event_id' => $event_id ]);
-				exit();
+				$event_id = $capi->CreateCalendarEvent('primary', $eventTitle, 1,$eventDate, $user_timezone, $_SESSION['access_token']);
 				return $event_id;
 				
-				
+				echo json_encode([ 'event_id' => $event_id ]);
+				exit();
 			}
 			catch(Exception $e) {
 				header('Bad Request', true, 400);
