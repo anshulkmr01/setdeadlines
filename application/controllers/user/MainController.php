@@ -285,8 +285,7 @@
 				$event_id = $capi->CreateCalendarEvent('primary', $eventTitle, 1,$eventDate, $user_timezone, $_SESSION['access_token']);
 				return $event_id;
 				
-				echo json_encode([ 'event_id' => $event_id ]);
-				exit();
+				//echo json_encode([ 'event_id' => $event_id ]);
 			}
 			catch(Exception $e) {
 				header('Bad Request', true, 400);
