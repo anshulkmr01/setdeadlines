@@ -8,16 +8,16 @@
   <div class="collapse navbar-collapse" id="navbarColor03">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <?= anchor('home','Home',array('class' => 'nav-link'));?>
-      </li>
-      <li class="nav-item">
         <?= anchor('userCases','Cases',array('class' => 'nav-link'));?>
       </li>
       <li class="nav-item">
-       <?= anchor('populatedCase','Saved Cases',array('class' => 'nav-link'));?>
+       <?= anchor('populatedCase','Deadlines',array('class' => 'nav-link'));?>
       </li>
       <li class="nav-item">
        <?= anchor('userRules','My Rules',array('class' => 'nav-link'));?>
+      </li>
+      <li class="nav-item">
+        <?= anchor('home','Import Rules',array('class' => 'nav-link'));?>
       </li>
       <li class="nav-item">
         <!--a class="nav-link" href="#">About</a-->

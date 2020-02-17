@@ -55,8 +55,8 @@
 				<tr class="sorter-header">
 					<th class="no-sort">S.no</th>
 					<th>Cases</th>
-					<th colspan="3" class="no-sort"><center>Action<center></th>
-					<th class="no-sort"><center><label><input type="checkbox" name="sample" class="selectall" style="display:none;"/> <span style="cursor: pointer;">Select all</span></label></center></th>
+					<th colspan="2" class="no-sort"><center>Action<center></th>
+					<th class="no-sort"><center><label><input type="checkbox" name="sample" class="selectall" style="display:none;"/> <span style="cursor: pointer;">Select</span></label></center></th>
 				</tr>
 					<?php
 						$i=0;
@@ -65,20 +65,20 @@
 						<td><?= $i?></td>
 						<td><?= $case->title; ?></td>
 						<td>
-							<?= anchor("user/MainController/listedRules/{$case->ID}/?case={$case->title}","Next", ['class'=>'btn btn-primary'])?>
+							<a data-toggle="modal" data-id="<?= $case->ID; ?>" data-item="<?= $case->title; ?>"  href="#editCase" class="btn btn-primary editCase">Rename</a>
 						</td>
 						<td>
-							<a data-toggle="modal" data-id="<?= $case->ID; ?>" data-item="<?= $case->title; ?>"  href="#editCase" class="btn btn-primary editCase">Edit</a>
+							<?= anchor("user/MainController/listedRules/{$case->ID}/?case={$case->title}","Add Deadline", ['class'=>'btn btn-primary'])?>
 						</td>
+						<!-- 
 						<td>
-							<?= anchor("user/MainController/deleteCase/{$case->ID}",'Delete',['class'=>'delete btn btn-danger']); ?>
-						</td>
+							<#?=anchor("user/MainController/deleteCase/{$case->ID}",'Delete',['class'=>'delete btn btn-danger']); ?>
+						</td> -->
 						<td><center><input type="checkbox" value="<?=$case->ID ?>" name="caseIds[]"></center></td>
 						</tr>
 					<?php endforeach  ?>
 						<tfoot>
 						<tr>
-							<th></th>
 							<th></th>
 							<th></th>
 							<th></th>

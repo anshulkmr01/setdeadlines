@@ -57,10 +57,10 @@ class GoogleCalendarApi
 		return $data['items'];
 	}
 
-	public function CreateCalendarEvent($calendar_id, $summary, $all_day, $event_time, $event_timezone, $access_token) {
+	public function CreateCalendarEvent($calendar_id, $summary,$description, $all_day, $event_time, $event_timezone, $access_token) {
 		$url_events = 'https://www.googleapis.com/calendar/v3/calendars/' . $calendar_id . '/events';
 
-		$curlPost = array('summary' => $summary);
+		$curlPost = array('summary' => $summary,'description' => $description);
 		if($all_day == 1) {
 			$curlPost['start'] = array('date' => $event_time);
 			$curlPost['end'] = array('date' => $event_time);
@@ -82,6 +82,37 @@ class GoogleCalendarApi
 			throw new Exception('Error : Failed to create event');
 
 		return $data['id'];
+	}
+
+	public function DeleteCalendarEvent($event_id, $calendar_id, $access_token) {
+		$url_events = 'https://www.googleapis.com/calendar/v3/calendars/' . $calendar_id . '/events/' . $event_id;
+
+		$ch = curl_init();		
+		curl_setopt($ch, CURLOPT_URL, $url_events);		
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);		
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');		
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer '. $access_token, 'Content-Type: application/json'));		
+		$data = json_decode(curl_exec($ch), true);
+		$http_code = curl_getinfo($ch,CURLINFO_HTTP_CODE);
+		if($http_code != 204) 
+			throw new Exception('Error : Failed to delete event');
+	}
+
+	public function GetUserProfileInfo($access_token) {	
+		$url = 'https://www.googleapis.com/oauth2/v2/userinfo?fields=name,email,gender,id,picture,verified_email';			
+		
+		$ch = curl_init();		
+		curl_setopt($ch, CURLOPT_URL, $url);		
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer '. $access_token));
+		$data = json_decode(curl_exec($ch), true);
+		$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);		
+		if($http_code != 200) 
+			throw new Exception('Error : Failed to get user information');
+			
+		return $data;
 	}
 }
 

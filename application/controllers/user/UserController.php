@@ -135,7 +135,7 @@
 					$this->session->set_userdata('userId',$userId);
 
 					//Redired Authenticated to User Homepage
-					return redirect('home');
+					return redirect('userCases');
 			}
 			else{
 				$this->session->set_flashdata('error','Wrong password');

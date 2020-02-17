@@ -36,22 +36,12 @@
                         'field' => 'ruleTitle',
                         'label' => 'Rule Title',
                         'rules' => 'required|trim'
-                ),
-                array(
-                        'field' => 'ruleDescription',
-                        'label' => 'Rule Description',
-                        'rules' => 'required|trim'
                 )
             ),
         'rule-update' => array(
                 array(
                         'field' => 'ruleUpdatedTitle',
                         'label' => 'Rule Title',
-                        'rules' => 'required|trim'
-                ),
-                array(
-                        'field' => 'ruleDesc',
-                        'label' => 'Rule Description',
                         'rules' => 'required|trim'
                 )
             ),

@@ -78,7 +78,7 @@
 							<a data-toggle="modal" data-id="<?= $rule->ID; ?>" data-title="<?= $rule->title; ?>" data-desc="<?= $rule->description; ?>" href="#editRule" class="btn btn-primary editRule">Edit</a>
 						</td>
 						<td>
-							<?= anchor("user/MainController/dublicateRule/{$rule->ID}",'Dublicate',['class'=>'btn btn-primary']); ?>
+							<?= anchor("user/MainController/dublicateRule/{$rule->ID}",'Duplicate',['class'=>'btn btn-primary']); ?>
 						</td>
 						<td>
 							<?= anchor("user/MainController/deleteUserRule/{$rule->ID}",'Delete',['class'=>'delete btn btn-danger']); ?>
@@ -94,8 +94,8 @@
 							<th></th>
 							<th></th>
 							<th></th>
-							<th><?= form_submit(['value'=>'Dublicate','name'=>'dublicateRules','class'=>'btn btn-primary']) ?>
-								<?= form_submit(['value'=>'Delete','name'=>'deleteRules','class'=>'delete btn btn-danger']) ?></th>
+							<th><!-- <#?= form_submit(['value'=>'Dublicate','name'=>'dublicateRules','class'=>'btn btn-primary']) ?> --><center>
+								<?= form_submit(['value'=>'Delete','name'=>'deleteRules','class'=>'delete btn btn-danger']) ?></center></th>
 						</tr>
 						</tfoot>
 						<?= form_close();?>
@@ -127,10 +127,9 @@
 			  	</div>
 
 			    <div class="form-group margin-top-25">
-			      <label for="ruleDescription">Description*</label>
+			      <label for="ruleDescription">Description</label>
 
-			      <?php echo form_input(['placeholder'=>'Rule is about','name'=>'ruleDescription','required'=>'required','value'=>set_value('ruleDescription'),'class'=>'form-control','id'=>'ruleDescription','aria-describedby'=>'ruleDescription']); ?>
-				  <?php echo form_error('ruleDescription');?>
+			      <?php echo form_input(['placeholder'=>'Rule is about','name'=>'ruleDescription','value'=>set_value('ruleDescription'),'class'=>'form-control','id'=>'ruleDescription','aria-describedby'=>'ruleDescription']); ?>
 			      <small id="newCategory" class="form-text text-muted">A Decription about the Rule</small>
 			  	</div>
 			    <?php echo form_submit(['value'=>'Add','class'=>'btn btn-primary']); ?>
@@ -169,10 +168,9 @@
 					  	</div>
 
 					    <div class="form-group margin-top-25">
-					      <label for="ruleDesc">Description*</label>
+					      <label for="ruleDesc">Description</label>
 
-					      <?= form_input(['placeholder'=>'Rule is about','name'=>'ruleDesc','required'=>'required','value'=>set_value('ruleDesc'),'class'=>'form-control','id'=>'ruleDesc','aria-describedby'=>'ruleDesc']); ?>
-						  <?= form_error('ruleDesc');?>
+					      <?= form_input(['placeholder'=>'Rule is about','name'=>'ruleDesc','value'=>set_value('ruleDesc'),'class'=>'form-control','id'=>'ruleDesc','aria-describedby'=>'ruleDesc']); ?>
 					      <small id="newCategory" class="form-text text-muted">A Decription about the Rule</small>
 					  	</div>
 					    <?php echo form_submit(['value'=>'Update','class'=>'btn btn-primary']); ?>

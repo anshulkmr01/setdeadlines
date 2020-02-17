@@ -14,12 +14,23 @@
 					 return redirect('user/UserProfile');
 			}
 
+			require_once('google-calendar-api.php');
 			$this->load->model('AdminModel');
 			$this->load->model('UserModel');
 			$this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
 		}
 
 		function index()
+		{
+			// //load rules by admin on User Homepage
+			// $rules = $this->AdminModel->getRulesData();
+			// $userRules = $this->UserModel->getUserRules();
+
+			// $this->load->view('user/homepage',['rules'=>$rules,'userrules'=>$userRules]);
+			// //return redirect('userCases');
+	    }
+
+		function importRules()
 		{
 			//load rules by admin on User Homepage
 			$rules = $this->AdminModel->getRulesData();
@@ -257,7 +268,7 @@
 			$i = 0;
 			foreach ($caseData['deadlineData'] as $deadlines) {
 					 $deadlines = explode ("/amg/", $deadlines);
-						$caseData['deadlineData'][$i] .= '/amg/'.$this->saveEventInGoogle($deadlines[0],date('Y-m-d', strtotime($deadlines[2])));
+					$caseData['deadlineData'][$i] .= '/amg/'.$this->saveEventInGoogle($deadlines[0],$deadlines[1],date('Y-m-d', strtotime($deadlines[2])));
 					$i++;
 					}
 					if($this->UserModel->saveCase($caseData)){
@@ -270,10 +281,9 @@
 					}
 		}
 
-		function saveEventInGoogle($eventTitle,$eventDate){
+		function saveEventInGoogle($eventTitle,$eventDesc,$eventDate){
 			try {
 
-				require_once('google-calendar-api.php');
 				// Get event details
 				$capi = new GoogleCalendarApi();
 
@@ -281,9 +291,8 @@
 				$user_timezone = $capi->GetUserCalendarTimezone($_SESSION['access_token']);
 
 				// Create event on primary calendar
-				$event_id = $capi->CreateCalendarEvent('primary', $eventTitle, 1,$eventDate, $user_timezone, $_SESSION['access_token']);
+				$event_id = $capi->CreateCalendarEvent('primary', $eventTitle,$eventDesc,1,$eventDate, $user_timezone, $_SESSION['access_token']);
 				return $event_id;
-				
 				echo json_encode([ 'event_id' => $event_id ]);
 				exit();
 			}
@@ -292,7 +301,7 @@
 			    echo json_encode(array( 'error' => 1, 'message' => $e->getMessage() ));
 			}
 		}
-
+		
 		function deleteSavedCase($caseID){
 			if($deadlineGoogleID = $this->UserModel->deleteSavedCase($caseID)){
 				$capi = new GoogleCalendarApi();
@@ -301,9 +310,13 @@
 				$calendar_id = 'primary';
 				foreach ($deadlineGoogleID as $event_id) {
 					// Event on primary calendar
-					$capi->DeleteCalendarEvent($event_id, $calendar_id, $access_token);
+				$capi->DeleteCalendarEvent($event_id->deadlineGoogleID, $calendar_id, $access_token);
 				}
 				$this->session->set_flashdata("success","Case Deleted Successfully");
+				return redirect('populatedCase');
+			}
+			else{
+				$this->session->set_flashdata("error","No deadline GoogleId Found");
 				return redirect('populatedCase');
 			}
 		}
@@ -312,8 +325,8 @@
 			$this->load->view('user/populatedCase',['cases'=>$cases]);
 		}
 
-		function populatedRules($caseNo,$caseID){
-			$userData = $this->UserModel->userSavedRules($caseNo,$caseID);
+		function populatedRules($caseID){
+			$userData = $this->UserModel->userSavedRules($caseID);
 			$this->load->view('user/populatedRules',['rulesData'=>$userData]);
 		}
 

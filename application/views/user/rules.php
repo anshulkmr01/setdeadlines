@@ -61,8 +61,8 @@
 				 ?>
 			<?= form_open('user/MainController/calculateDays'); ?>
 			<div class="row">
-			<div class="form-group col-sm-2" style="max-width: 11%; line-height: 45px">
-		      <label for="exampleInputEmail1">Motion Date*</label>
+			<div class="form-group col-sm-2" style="max-width: 15%; line-height: 45px">
+		      <label for="exampleInputEmail1">Trigger Date*</label>
 			</div>
 			<div class="form-group col-sm-3">
 		      <input type="hidden" name="caseId" value="<?=$caseId?>">
@@ -73,7 +73,7 @@
 			</div>
 
 			<div class="row">
-			<div class="form-group col-sm-2" style="max-width: 11%; line-height: 45px">
+			<div class="form-group col-sm-2" style="max-width: 15%; line-height: 45px">
 		      <label for="exampleInputEmail1">Holidays</label>
 			</div>
 			<div class="form-group col-sm-3">

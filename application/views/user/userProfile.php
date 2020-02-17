@@ -12,12 +12,12 @@
 
 	require_once('google-calendar-api.php');
 	require_once('settings.php');
+	$capi = new GoogleCalendarApi();
 	$isGooogleConnected = false;
+	$error = "";
 	// Google passes a parameter 'code' in the Redirect Url
 	if(isset($_GET['code'])) {
 		try {
-			$capi = new GoogleCalendarApi();
-			
 			// Get the access token 
 			$data = $capi->GetAccessToken(CLIENT_ID, CLIENT_REDIRECT_URL, CLIENT_SECRET, $_GET['code']);
 			
@@ -39,10 +39,7 @@
 	}
 
 		//Login Url
-		$login_url = 'https://accounts.google.com/o/oauth2/auth?scope='
-		.urlencode('https://www.googleapis.com/auth/calendar')
-		. '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL)
-		. '&response_type=code&client_id=' . CLIENT_ID . '&access_type=online';
+		$login_url = 'https://accounts.google.com/o/oauth2/auth?scope=' . urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar') . '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID . '&access_type=online';
 
 	?>
 </head>
@@ -50,13 +47,32 @@
 	<!-- Navbar -->
 		<?php include 'navbar.php'?>
 	<!--/ Navbar -->
+		<?php 
+		if(isset($_SESSION['access_token'])){
+		try{
+		$user_info = $capi->GetUserProfileInfo($_SESSION['access_token']);
+		}
+		catch(Exception $e){
+			$error = $e->getMessage();
+		}}
+	?>
 	<!-- Search Bar -->
 		<div class="container-fluid margin-top-25">
 			<div class="container">
 				<ol class="breadcrumb">
 				  <li class="breadcrumb-item"><a href="home">Home</a></li>
 				  <li class="breadcrumb-item active">Settings</li>
-				</ol>
+				 </ol>
+				  <?php
+				  if (isset($user_info['email'])) {
+				  	?>
+				  	<strong style="font-weight: 900"><?= $user_info['email']?></strong>
+				  	<?php
+				  }
+				  else{
+				  	echo $error;
+				  }
+				  ?>
 		    </div>
 		</div>
 	<!--/ Search Bar -->
@@ -87,7 +103,7 @@
 		</div>
 		<div class="container">
 			  <div class="tab-pane fade show" id="profile">
-			    <div><label>Google Account</label>
+			    <div><label>Google Account</label> 
 				</div>
 				<?php if(!$isGooogleConnected){?>
 					<div><a href="<?= $login_url ?>" class="btn btn-primary">Connect</a>

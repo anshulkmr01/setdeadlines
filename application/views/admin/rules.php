@@ -73,7 +73,7 @@
 							<a data-toggle="modal" data-id="<?= $rule->ID; ?>" data-title="<?= $rule->title; ?>" data-desc="<?= $rule->description; ?>" href="#editRule" class="btn btn-primary editRule">Edit</a>
 						</td>
 						<td>
-							<?= anchor("admin/AdminController/dublicateRule/{$rule->ID}",'Dublicate',['class'=>'btn btn-primary']); ?>
+							<?= anchor("admin/AdminController/dublicateRule/{$rule->ID}",'Duplicate',['class'=>'btn btn-primary']); ?>
 						</td>
 						<td>
 							<?= anchor("admin/AdminController/deleteRule/{$rule->ID}",'Delete',['class'=>'delete btn btn-danger']); ?>
@@ -89,8 +89,9 @@
 							<td></td>
 							<td></td>
 							<td></td>
-							<td><?= form_submit(['value'=>'Dublicate','name'=>'dublicateRules','class'=>'btn btn-primary']) ?>
-								<?= form_submit(['value'=>'Delete','name'=>'deleteRules','class'=>'delete btn btn-danger']) ?></td>
+							<td><!-- <#?= form_submit(['value'=>'Dublicate','name'=>'dublicateRules','class'=>'btn btn-primary']) ?> -->
+							<center>
+								<?= form_submit(['value'=>'Delete','name'=>'deleteRules','class'=>'delete btn btn-danger']) ?></center></td>
 						</tr>
 						</tfoot>
 						<?= form_close();?>

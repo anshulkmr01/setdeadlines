@@ -51,7 +51,7 @@
 		<div class="container">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><?=anchor('userCases','Cases')?></li>
-				<li class="breadcrumb-item active">Saved Cases</li>
+				<li class="breadcrumb-item active">Saved Deadlines</li>
 			</ol>
 			<?php if($cases){
 				?>
@@ -68,12 +68,12 @@
 						<tr class="case">
 						<td><?= $i?></td>
 						<td>
-							<span class=""><a href="user/MainController/populatedRules/<?= $case->ID ?>/<?= $case->caseID ?>"><?= $case->caseTitle?></a></span>
+							<span class=""><a href="user/MainController/populatedRules/<?= $case->ID ?>"><?= $case->caseTitle?></a></span>
 								<small id="motionDate" class="form-text text-muted">
 									Motion Date: <?= date('m/d/Y', strtotime( $case->motionDate)); ?>
 								</small>
 						</td>
-						<td><?= anchor("user/MainController/deleteSavedCase/{$case->caseID}",'Delete',['class'=>'delete btn btn-danger']);?></td>
+						<td><?= anchor("user/MainController/deleteSavedCase/{$case->ID}",'Delete',['class'=>'delete btn btn-danger']);?></td>
 						</tr>
 					<?php endforeach  ?>
 						<?= form_close();?>

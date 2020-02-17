@@ -184,32 +184,32 @@
                 $userId = $this->session->userData('userId');
                 $query = $this->db->insert('savedcases',['userID'=>$userId,'caseID'=>$caseData['caseID'],
                     'caseTitle'=>$caseData['caseTitle'],
-                    'motionDate'=>$caseData['motionDate'],'ruleID'=>$caseData['ruleID'],
+                    'motionDate'=>$caseData['motionDate'],
                     'ruleTitle'=>$caseData['ruleTitle'],'ruleDescription'=>$caseData['ruleDescription']]);
+                $last_id = $this->db->insert_id();
 
                 if($query):
                 foreach ($caseData['deadlineData'] as $deadline) {
                     $data = explode ("/amg/", $deadline);
-                   $this->saveDeadlines($data[0],$data[1],$data[2],$data[3],$caseData['ruleID'],$caseData['caseID']);
+                   $this->saveDeadlines($data[0],$data[1],$data[2],$data[3],$last_id);
                 }
                 endif;
                 return $query;
             }
 
-            function saveDeadlines($deadlineTitle,$deadlineDesc,$deadlineDate,$deadlineGoogleID,$ruleID,$caseID){
+            function saveDeadlines($deadlineTitle,$deadlineDesc,$deadlineDate,$deadlineGoogleID,$caseID){
                 $query = $this->db->insert('saveddeadlinesforsavedcases',
                     ['caseID'=>$caseID,
                      'deadlineTitle'=>$deadlineTitle,
                      'deadlineDescription'=>$deadlineDesc,
                      'deadlineDate'=>$deadlineDate,
-                     'deadlineGoogleID'=>$deadlineGoogleID,
-                     'ruleID'=>$ruleID]);
+                     'deadlineGoogleID'=>$deadlineGoogleID]);
                 return $query;
             }
 
             function deleteSavedCase($caseID){
                 $deadlineGoogleID = $this->db->select('deadlineGoogleID')->where('caseID',$caseID)->get('saveddeadlinesforsavedcases')->result();
-                if($this->db->delete('savedcases',['caseID'=>$caseID]) && $this->db->delete('saveddeadlinesforsavedcases',['caseID'=>$caseID])){
+                if($this->db->delete('savedcases',['ID'=>$caseID]) && $this->db->delete('saveddeadlinesforsavedcases',['caseID'=>$caseID])){
                     return $deadlineGoogleID;   
                 }
 
@@ -222,21 +222,21 @@
             }
 
             
-            function userSavedRules($caseNo,$caseID){
+            function userSavedRules($caseID){
                 $userId = $this->session->userData('userId');
-                $cases = $this->db->where(['userId'=>$userId, 'ID'=>$caseNo])->get('savedcases')->result();
+                $cases = $this->db->where(['userId'=>$userId, 'ID'=>$caseID])->get('savedcases')->result();
                 if($cases):
                     $i = 0;
                     foreach ($cases as $case) {
-                       $cases[$i]->caseDeadlines = $this->userSavedRulesDeadlines($case->ruleID, $case->caseID);
+                       $cases[$i]->caseDeadlines = $this->userSavedRulesDeadlines($case->ID);
                        $i++;
                     }
                 endif;
                 return $cases;
             }
 
-            function userSavedRulesDeadlines($ruleId,$caseID){
-                $cases = $this->db->where(['ruleID'=>$ruleId, 'caseID'=>$caseID])->get('saveddeadlinesforsavedcases')->result();
+            function userSavedRulesDeadlines($caseID){
+                $cases = $this->db->where(['caseID'=>$caseID])->get('saveddeadlinesforsavedcases')->result();
                 return $cases;
             }
 
