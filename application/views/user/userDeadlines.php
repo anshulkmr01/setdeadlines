@@ -160,7 +160,7 @@
 
 			      <?php echo form_input(['placeholder'=>'Days in Number','name'=>'deadLineDays','type'=>'number','required'=>'required','value'=>set_value('deadLineDays'),'class'=>'form-control','id'=>'deadLineDays','aria-describedby'=>'deadLineDays']); ?>
 				  <?php echo form_error('deadLineDays');?>
-			      <small id="newCategory" class="form-text text-muted">Deadline days for Motion Date</small>
+			      <small id="newCategory" class="form-text text-muted">Deadline days for Trigger Date</small>
 			  	</div>
 
 			    <div class="form-group margin-top-25 col-sm-4">
@@ -222,7 +222,7 @@
 
 			      <?php echo form_input(['placeholder'=>'Days in Number','name'=>'deadlineUpdatedDays','type'=>'number','required'=>'required','value'=>set_value('deadlineUpdatedDays'),'class'=>'form-control','id'=>'deadlineUpdatedDays','aria-describedby'=>'deadlineUpdatedDays']); ?>
 				  <?php echo form_error('deadlineUpdatedDays');?>
-			      <small id="newCategory" class="form-text text-muted">Deadline days for Motion Date</small>
+			      <small id="newCategory" class="form-text text-muted">Deadline days for Trigger Date</small>
 			  	</div>
 
 			    <div class="form-group margin-top-25">

@@ -230,7 +230,7 @@
 			$caseId = $rulesData['caseId'];
 			$motionDate = $rulesData['motionDate'];
 
-			$this->form_validation->set_rules('motionDate','Motion Date','required',array('required'=>'%s is required'));
+			$this->form_validation->set_rules('motionDate','Trigger Date','required',array('required'=>'%s is required'));
 			$this->form_validation->set_rules('ruleIds[]','Rule','required',array('required'=>'Select a %s'));
 			if($this->form_validation->run()){
 

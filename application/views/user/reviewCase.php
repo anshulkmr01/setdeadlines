@@ -43,7 +43,7 @@
 			<input type="hidden" name="caseID" value="<?= $caseId ?>">
 			<center><legend>Review Case</legend></center>
 			<legend><?= $caseTitle?></legend>
-			<div class="motion-date">Motion Date: <?= date('m/d/Y', strtotime( $motionDate)); ?></div>
+			<div class="motion-date">Trigger Date: <?= date('m/d/Y', strtotime( $motionDate)); ?></div>
 			<div class="motion-date">Number of Holidays: <?= $holidayNumber; ?></div>
 			<input type="hidden" name="motionDate" value="<?= $motionDate ?>">
 			<div class="category-container">

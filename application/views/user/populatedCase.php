@@ -70,7 +70,7 @@
 						<td>
 							<span class=""><a href="user/MainController/populatedRules/<?= $case->ID ?>"><?= $case->caseTitle?></a></span>
 								<small id="motionDate" class="form-text text-muted">
-									Motion Date: <?= date('m/d/Y', strtotime( $case->motionDate)); ?>
+									Trigger Date: <?= date('m/d/Y', strtotime( $case->motionDate)); ?>
 								</small>
 						</td>
 						<td><?= anchor("user/MainController/deleteSavedCase/{$case->ID}",'Delete',['class'=>'delete btn btn-danger']);?></td>

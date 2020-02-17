@@ -25,7 +25,7 @@
 			</ol>
 
 			<legend>Case: <?= $rules->caseTitle?></legend>
-			<small id="fileHelp" class="form-text">Motion Date: <?= date('m/d/Y', strtotime($rules->motionDate)); ?></small>
+			<small id="fileHelp" class="form-text">Trigger Date: <?= date('m/d/Y', strtotime($rules->motionDate)); ?></small>
 			<div class="category-container"><!-- 
 				<legend>Rules:</legend>
 				<small id="rules" class="form-text text-muted">Click on the plus icon to see deadlines for the rule</small>

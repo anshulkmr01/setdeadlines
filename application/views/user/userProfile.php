@@ -66,7 +66,7 @@
 				  <?php
 				  if (isset($user_info['email'])) {
 				  	?>
-				  	<strong style="font-weight: 900"><?= $user_info['email']?></strong>
+				  	Connected Account: <strong style="font-weight: 900"><?= $user_info['email']?></strong>
 				  	<?php
 				  }
 				  else{
@@ -107,7 +107,7 @@
 				</div>
 				<?php if(!$isGooogleConnected){?>
 					<div><a href="<?= $login_url ?>" class="btn btn-primary">Connect</a>
-			   		 <small class="form-text text-muted">Connected Google Account will be used to save Motion Date into Google Calendar</small></div>
+			   		 <small class="form-text text-muted">Connected Google Account will be used to save deadlines into Google Calendar</small></div>
 			   		 <?php } else {?>
 			   		 	<div><a href="<?= base_url('user/MainController/googleDisconnect')?>" class="btn btn-primary">Disconnect</a>
 			   		 <small class="form-text text-muted">Disconnect From Connected Google</small></div>
