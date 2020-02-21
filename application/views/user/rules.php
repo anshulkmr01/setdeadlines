@@ -116,6 +116,9 @@
 							<?php
 						}
 					}
+					else{
+						echo "No Holiday to show";
+					}
 				?>
 			</div>
 		</div>
