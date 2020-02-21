@@ -11,7 +11,7 @@
         <?= anchor('userCases','Cases',array('class' => 'nav-link'));?>
       </li>
       <li class="nav-item">
-       <?= anchor('populatedCase','Deadlines',array('class' => 'nav-link'));?>
+       <?= anchor('populatedCase','Saved Deadlines',array('class' => 'nav-link'));?>
       </li>
       <li class="nav-item">
        <?= anchor('userRules','My Rules',array('class' => 'nav-link'));?>
@@ -28,6 +28,7 @@
         <a href="<?= base_url("users"); ?>"><button class="btn btn-secondary my-2 my-sm-0" type="button">All Users</button></a>
       <?php }?>
         <a href="<?= base_url("userProfile"); ?>"><button class="btn btn-secondary my-2 my-sm-0" type="button">Settings</button></a>
+      </form>
       <form class="form-inline my-2 my-lg-0">
         <a href="<?= base_url("userLogout"); ?>"><button class="btn btn-secondary my-2 my-sm-0" type="button">Logout</button></a>
       </form>

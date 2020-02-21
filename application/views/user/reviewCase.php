@@ -15,17 +15,12 @@
 	<div class="container-fluid categories-home">
 		<div class="container">
 			<?php if($caseData){
-				$holidayNumber = 0;
 				$caseTitle = $caseData['caseTitle'];
 				$motionDate = $caseData['motionDate'];
 				$caseId = $caseData['caseId'];
 				unset($caseData['caseTitle']);
 				unset($caseData['motionDate']);
 				unset($caseData['caseId']);
-				if(isset($caseData['holiday'])){
-					$holidayNumber = $caseData['holiday'];
-					unset($caseData['holiday']);	
-				}
 				 ?>
 
 			<ol class="breadcrumb">
@@ -44,7 +39,6 @@
 			<center><legend>Review Case</legend></center>
 			<legend><?= $caseTitle?></legend>
 			<div class="motion-date">Trigger Date: <?= date('m/d/Y', strtotime( $motionDate)); ?></div>
-			<div class="motion-date">Number of Holidays: <?= $holidayNumber; ?></div>
 			<input type="hidden" name="motionDate" value="<?= $motionDate ?>">
 			<div class="category-container">
 				<?php foreach ($caseData as $case) : ?>
@@ -68,10 +62,25 @@
 								      		<?= $deadline->title ?>
 								  	  </label>
 								  	  <?php $date = "" ?>
-								  	  <?php $numberOfDays =  $deadline->deadline_days + $holidayNumber; ?>
+								  	  <?php $numberOfDays =  $deadline->deadline_days; ?>
 								  		<label style="float: right; cursor: default;">
 								  	  	<?php if($deadline->day_type == "calendarDay") $date = date('m/d/Y', strtotime($motionDate.'+'.$numberOfDays.'days'));?>
-								  	  	<?php if($deadline->day_type == "courtDay") $date = date('m/d/Y', strtotime($motionDate.'+'.$numberOfDays.'weekdays'));?>
+
+								  	  	<?php if($deadline->day_type == "courtDay"){
+								  	  		$date = date('m/d/Y', strtotime($motionDate.'+'.$numberOfDays.'weekdays'));
+								  	  		$count = 0; $i = 0;
+								  	  		foreach ($holidays as $holiday) {
+											if(strtotime($holiday->date) > strtotime($motionDate) && strtotime($holiday->date) <= strtotime($date)){
+												$count++;
+												if(date('D',strtotime($holiday->date)) == "Sun" || date('D',strtotime($holiday->date)) == "Sat"){
+													$count--;
+												}
+											}
+											}
+											$date = date('m/d/Y', strtotime($date.'+'.$count.'weekdays')); 
+								  	  		}
+
+								  	  	?>
 								  	  	<?= $date ?>
 								      <input type="hidden" value="<?= $deadline->title ?>/amg/<?= $deadline->description ?>/amg/ <?= $date ?>" name="deadlineData[]">
 										</label>

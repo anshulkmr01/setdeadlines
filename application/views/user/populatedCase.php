@@ -60,6 +60,7 @@
 				<tr class="sorter-header">
 					<th class="no-sort">S.no</th>
 					<th>Cases</th>
+					<th>Deadlines</th>
 					<th colspan="1" class="no-sort"><center>Action<center></th>
 				</tr>
 					<?php
@@ -73,6 +74,13 @@
 									Trigger Date: <?= date('m/d/Y', strtotime( $case->motionDate)); ?>
 								</small>
 						</td>
+						<td><?php if ($case->caseDeadlines) {
+							foreach($case->caseDeadlines as $deadline){
+									?>
+									<div><li><?= $deadline->deadlineTitle?></li></div>
+									<?php
+							}
+						}?></td>
 						<td><?= anchor("user/MainController/deleteSavedCase/{$case->ID}",'Delete',['class'=>'delete btn btn-danger']);?></td>
 						</tr>
 					<?php endforeach  ?>

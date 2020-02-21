@@ -31,43 +31,43 @@
 				<small id="rules" class="form-text text-muted">Click on the plus icon to see deadlines for the rule</small>
 				<br> -->
 
-				<div class="category-list row">
-					<div class="category col-sm-12"><label class="dateRevised" style="float: right;">Deadline Date</label>
-						<span class="active-list" style="font-size: 18px; font-weight: 900"><?=$rules->ruleTitle ?></span>
-						<br>
-						<small class="form-text text-muted" ><?=$rules->ruleDescription ?></small>
-							<ul class="list-panel" style="max-height:fit-content;">
-		                	<?php ?>
-		                    <div>
-		                    	<?php
-		                    		if(!empty($rules->caseDeadlines)){
+				<div class="table">
+					<table id="myTable" class="sortable-table">
 
-		                    			foreach($rules->caseDeadlines as $deadline){
-		                    	?>
-		                        <li>
-								      <label style="padding-bottom: 15px">
-								      		<?= $deadline->deadlineTitle ?>
-											<small class="form-text text-muted" ><?=$deadline->deadlineDescription ?></small>
-								  	  </label>
-								  	  <label style="float: right; cursor: default;">
-								  	  	<?= $deadline->deadlineDate?>
-										</label>
-		                        </li>
+						
+						<tr class="sorter-header">
+							<th class="no-sort">S.no</th>
+							<th class="is-date">Deadlines</th><th>Deadline Date</th>
+						</tr>
+							<?php
+	                    		if(!empty($rules->caseDeadlines)){
+	                    				$i = 0;
+	                    			foreach($rules->caseDeadlines as $deadline){
+	                    				$i++;
+	                    	?>
+						<tr>
+	                    	<td><?= $i; ?></td>
+							<td><?= $deadline->deadlineTitle ?><br>
+									<small class="form-text text-muted" ><?=$deadline->deadlineDescription?></small>
+							</td>
+							<td>
+								<?= date('d/m/Y', strtotime($deadline->deadlineDate)); ?>
+							</td>
+						</tr>
 		                        <?php
 		                        	}
 		                    		}
 
 		                    		else{
 		                    			?>
-		                        <li>
-							      No Deadline for this rule
-		                        </li>
+							<td>No Deadline available for this rule</td>
+							<td></td>
+
 		                        <?php
 		                    		}
 		                        ?>
-		                    </div>
-		                </ul>
-					</div>
+						</tr>
+					</table>
 				</div>
 				<?php endforeach ?>
 			</div>

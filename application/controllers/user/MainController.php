@@ -67,9 +67,10 @@
 		{
 			//Loading Rule Page
 			$rules = $this->UserModel->getUserRules();
+			$holidays = $this->UserModel->getUserHolidays($this->session->userData('userId'));
 			$rules['caseId'] = $caseId;
 			$rules['caseTitle'] = $caseTitle = $this->input->get('case');
-				$this->load->view('user/rules',['rules'=>$rules]);
+				$this->load->view('user/rules',['rules'=>$rules,'holidays'=>$holidays]);
 		}
 		function editUserRule(){
 			if($this->form_validation->run('rule-update')){
@@ -128,9 +129,44 @@
 		        return redirect('userRules');
 			}
 			else{
-				$this->session->set_flashdata('error', 'Error in Deletion Case');
 		        return redirect('userRules');
 			}
+		}
+
+		function addHoliday(){
+			$this->form_validation->set_rules('holidayTitle','Holiday Name','required',array('required'=>'%s is required'));
+	    	$this->form_validation->set_rules('holidayDate','Date','required',array('required'=>'%s is required'));
+	    	if($this->form_validation->run()){
+	    		$holidayData = $this->input->post();
+	    		if($this->UserModel->addHolidays($holidayData, $this->session->userData('userId'))){
+
+	    			$this->session->set_flashdata('success', 'Holiday Added');
+	    			return redirect('userProfile');
+	    		}
+	    		else{
+
+	    			$this->session->set_flashdata('error', 'adding Holidays Failed');
+	    			return redirect('userProfile');
+	    		}
+
+	    	}
+	    	else{
+	    		$this->session->set_flashdata('error', 'Fill Required fields');
+	    		return redirect('userProfile');
+	    	}
+		}
+
+		function deleteHoliday($holidayId){
+
+	    		if($this->UserModel->deleteHoliday($holidayId, $this->session->userData('userId'))){
+	    			$this->session->set_flashdata('success', 'Holiday deleted');
+	    			return redirect('userProfile');
+	    		}
+	    		else
+	    		{
+	    			$this->session->set_flashdata('error', 'Error in Holiday deletion');
+	    			return redirect('userProfile');
+	    		}
 		}
 
 
@@ -215,39 +251,40 @@
 	    		else {
 	    			$this->session->set_flashdata('error','current password is incorrect');
 	    			$userRules = $this->UserModel->getUserRules();
-					$this->load->view('user/userProfile',['rules'=>$userRules,'settings'=>'on']);
+					$this->load->view('user/userProfile');
 	    		}
 	    	}
 	    	else{
 	    		$userRules = $this->UserModel->getUserRules();
-				$this->load->view('user/userProfile',['rules'=>$userRules,'settings'=>'on']);
+				$this->load->view('user/userProfile');
 	    	}
 	    }
 
 
 		function calculateDays(){
 			$rulesData = $this->input->post();
-			$caseId = $rulesData['caseId'];
-			$motionDate = $rulesData['motionDate'];
 
 			$this->form_validation->set_rules('motionDate','Trigger Date','required',array('required'=>'%s is required'));
 			$this->form_validation->set_rules('ruleIds[]','Rule','required',array('required'=>'Select a %s'));
 			if($this->form_validation->run()){
 
+			$caseId = $rulesData['caseId'];
+			$motionDate = $rulesData['motionDate'];
 			$ruleIDs = $rulesData['ruleIds'];
-			$userId = $this->session->userData('userId');
 
-			$caseTitle = $this->UserModel->getSelectedCases($caseId);
+			$userId = $this->session->userData('userId'); //Getting User Id form Session
+			$holidays = $this->UserModel->getUserHolidays($userId); // Getting Holiday dates
+
+			$caseTitle = $this->UserModel->getSelectedCases($caseId); // Getting Case Title from case Id
+
 			foreach ($ruleIDs as $ruleID) {
-				$rulesFromDB[] = $this->UserModel->getSelectedRuleData($ruleID);
+				$rulesFromDB[] = $this->UserModel->getSelectedRuleData($ruleID); // Getting selected rules using ID
 			}
 				$rulesFromDB['caseTitle'] = $caseTitle;
 				$rulesFromDB['motionDate'] = $motionDate;
 				$rulesFromDB['caseId'] = $caseId;
-				if($rulesData['holiday']){
-					$rulesFromDB['holiday'] = $rulesData['holiday']; // number of holidays	
-				}
-				$this->load->view('user/reviewCase',['caseData'=>$rulesFromDB]);
+
+				$this->load->view('user/reviewCase',['caseData'=>$rulesFromDB,'holidays'=>$holidays]);
 			}
 			else{
 				$rules = $this->UserModel->getUserRules();

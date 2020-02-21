@@ -53,6 +53,10 @@
 				<li class="breadcrumb-item active"><?= $rules['caseTitle']?></li>
 			</ol>
 		</div>
+		<div class="container">
+		<div class="row">
+			<div class="col-sm-8">
+				
 		<div class="container"><h3><div class="category-label">Select Rules for Case</div></h3>
 			<?php if(isset($rules[0])){
 				$caseId = $rules['caseId'];
@@ -61,27 +65,16 @@
 				 ?>
 			<?= form_open('user/MainController/calculateDays'); ?>
 			<div class="row">
-			<div class="form-group col-sm-2" style="max-width: 15%; line-height: 45px">
+			<div class="form-group col-sm-3" style="max-width: 20%; line-height: 45px">
 		      <label for="exampleInputEmail1">Trigger Date*</label>
 			</div>
-			<div class="form-group col-sm-3">
+			<div class="form-group col-sm-4">
 		      <input type="hidden" name="caseId" value="<?=$caseId?>">
 		      <?php echo form_input(['placeholder'=>'MM/YYYY','name'=>'motionDate','required'=>'required', 'type'=>'date','class'=>'form-control','id'=>'docRevisedDate','aria-describedby'=>'docRevisedDate']); ?>
 		      <small id="editCategory" class="form-text text-muted"></small>
 		      <?php echo form_error('motionDate');?><?php echo form_error('ruleIds[]');?>
 			</div>
 			</div>
-
-			<div class="row">
-			<div class="form-group col-sm-2" style="max-width: 15%; line-height: 45px">
-		      <label for="exampleInputEmail1">Holidays</label>
-			</div>
-			<div class="form-group col-sm-3">
-		      <?php echo form_input(['placeholder'=>'','name'=>'holiday','min'=>0, 'type'=>'number','class'=>'form-control','id'=>'docRevisedDate','aria-describedby'=>'docRevisedDate']); ?>
-		      <small id="editCategory" class="form-text text-muted">Enter the number of holidays</small>
-			</div>
-			</div>
-
 			<table id="myTable" class="sortable-table">
 				<tr class="sorter-header">
 					<th class="no-sort">S.no</th>
@@ -111,6 +104,22 @@
 						<?= form_close();?>
 			<?php } else{echo "No Rules have been added by User";} ?>
 		</div>
+			</div><div class="col-sm-4">
+				<?php
+					if (isset($holidays)) {
+						?>
+						<div><h3>Holidays</h3></div>
+						<?php
+						foreach ($holidays as $holiday) {
+							?>
+							<div class="row"><label class="col-sm-6" style="font-weight: 900"><?= $holiday->title?></label><label class="col-sm-6"><?= date("M / d / Y", strtotime($holiday->date)) ?></label></div>
+							<?php
+						}
+					}
+				?>
+			</div>
+		</div>
+	</div>
 	</div>
 </body>
 	<?php 

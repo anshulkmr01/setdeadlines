@@ -218,6 +218,13 @@
             function userCases(){
                 $userId = $this->session->userData('userId');
                 $cases = $this->db->where(['userId'=>$userId])->get('savedcases')->result();
+                 if($cases):
+                    $i = 0;
+                    foreach ($cases as $case) {
+                       $cases[$i]->caseDeadlines = $this->userSavedRulesDeadlines($case->ID);
+                       $i++;
+                    }
+                endif;
                 return $cases;
             }
 
@@ -347,10 +354,6 @@
                 ,'deadline_days'=>$deadlineUpdatedData['deadlineUpdatedDays']
                 ,'day_type'=>$deadlineUpdatedData['dayUpdatedType']]);
             }
-
-            function ifRule(){
-
-            }
             
             function addUserDeadline($deadlineData){
                 return $this->db->insert('userdeadlines',['title'=>$deadlineData['deadlineTitle'],'description'=>$deadlineData['deadlineDescription'], 'deadline_days'=>$deadlineData['deadLineDays'],'day_type'=>$deadlineData['dayType'],'rule_Id'=>$deadlineData['ruleId']]);
@@ -360,6 +363,17 @@
                 return $this->db->delete('userdeadlines',['ID'=>$deadlineId]);
             }
 
+            function addHolidays($holidayData, $userId){
+                 return $this->db->insert('userholidays',['userId'=>$userId,'title'=>$holidayData['holidayTitle'], 'date'=>$holidayData['holidayDate']]);
+            }
+
+            function deleteHoliday($holidayData, $userId){
+                  return $this->db->delete('userholidays',['ID'=>$holidayData, 'userId'=> $userId]);
+            }
+
+            function getUserHolidays($userId){
+                return $this->db->where('userId',$userId)->get('userHolidays')->result();
+            }
 
              function getcalender($year , $month){
 
