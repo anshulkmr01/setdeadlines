@@ -372,7 +372,7 @@
             }
 
             function getUserHolidays($userId){
-                return $this->db->where('userId',$userId)->get('userHolidays')->result();
+                return $this->db->where('userId',$userId)->get('userholidays')->result();
             }
 
              function getcalender($year , $month){
