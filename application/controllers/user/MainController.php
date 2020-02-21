@@ -9,7 +9,7 @@
 			if(!$this->session->userdata('userId'))
 				return redirect('loginUser');
 
-			if(!isset($_SESSION['access_token'])) {
+			if(isset($_SESSION['access_token'])) {
 					$this->session->set_flashdata('warning','Connect Google Account to Continue');
 					 return redirect('user/UserProfile');
 			}
