@@ -150,7 +150,7 @@
 						<div class="col-sm-1"></div>
 						<div class="col-sm-7" class="table">
 							<?php
-								if(isset($holidays)) {
+								if($holidays) {
 									?>
 									<div><h3>Holidays</h3></div>
 									<?php

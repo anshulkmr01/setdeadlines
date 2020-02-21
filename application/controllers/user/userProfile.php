@@ -10,8 +10,7 @@
 		
 		function index(){
 			$this->load->model('UserModel');
-			$userId = $this->session->userData('userId'); //Getting User Id form Session
-			$holidays = $this->UserModel->getUserHolidays($userId); // Getting Holiday dates
+			$holidays = $this->UserModel->getUserHolidays($this->session->userData('userId'));
 			$this->load->view('user/userProfile',['holidays'=>$holidays]);
 		}
 	}
