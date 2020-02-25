@@ -105,6 +105,8 @@
 											array('required' => '%s is Required'));
 
 			if($this->form_validation->run()){
+				if($this->UserModel->checkIfUserExist($userdata)){
+
 				if($this->UserModel->addUser($userdata)){
 				$this->session->set_flashdata('success','Registered successfully, Please check you email and complete verification');
 				return redirect('loginUser');
@@ -113,6 +115,8 @@
 				$this->session->set_flashdata('error','Adding user to database failed');
 				return redirect('loginUser');
 			}
+		}
+
 		}
 		else{
 			$this->load->view('user/signup');

@@ -9,7 +9,7 @@
 			if(!$this->session->userdata('userId'))
 				return redirect('loginUser');
 
-			if(isset($_SESSION['access_token'])) {
+			if(!isset($_SESSION['access_token'])) {
 					$this->session->set_flashdata('warning','Connect Google Account to Continue');
 					 return redirect('user/UserProfile');
 			}
@@ -305,7 +305,7 @@
 			$i = 0;
 			foreach ($caseData['deadlineData'] as $deadlines) {
 					 $deadlines = explode ("/amg/", $deadlines);
-					$caseData['deadlineData'][$i] .= '/amg/'.$this->saveEventInGoogle($deadlines[0],$deadlines[1],date('Y-m-d', strtotime($deadlines[2])));
+					$caseData['deadlineData'][$i] .= '/amg/'.$this->saveEventInGoogle($caseData['caseTitle']. " [".$deadlines[0]."]",$deadlines[1],date('Y-m-d', strtotime($deadlines[2])));
 					$i++;
 					}
 					if($this->UserModel->saveCase($caseData)){
