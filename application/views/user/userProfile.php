@@ -159,7 +159,7 @@
 										?>
 											<tr>
 											<td style="font-weight: 900"><?= $holiday->title?></td>
-											<td><?= date("M / d / Y", strtotime($holiday->date)) ?></td>
+											<td><?= date("F d , Y", strtotime($holiday->date)) ?></td>
 											<td><a href="user/MainController/deleteHoliday/<?= $holiday->ID ?>" class="delete" style="color: #e70808; font-weight: 900"> Delete</a></td>
 											</tr>
 										<?php

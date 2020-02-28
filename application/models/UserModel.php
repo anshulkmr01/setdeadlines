@@ -441,6 +441,8 @@
             }
 
             function getUserHolidays($userId){
+
+                $this->db->order_by("date", "asc");
                 return $this->db->where('userId',$userId)->get('userholidays')->result();
             }
 

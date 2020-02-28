@@ -9,7 +9,7 @@
 			if(!$this->session->userdata('userId'))
 				return redirect('loginUser');
 
-			if(!isset($_SESSION['access_token'])) {
+			if(isset($_SESSION['access_token'])) {
 					$this->session->set_flashdata('warning','Connect Google Account to Continue');
 					 return redirect('user/UserProfile');
 			}
@@ -469,12 +469,12 @@
 		//////////////////////////////////////////////////
 		// Adding Deadline by User
 
-		function userDeadlines($ruleId)
+		function userDeadlines($ruleId,$ruleTitle)
 		{
 			//Loading Rule Page
 			$this->session->set_userdata('ruleId',$ruleId);
 			$rules = $this->UserModel->getDeadlines($ruleId);
-				$this->load->view('user/userDeadlines',['deadlines'=>$rules]);
+				$this->load->view('user/userDeadlines',['deadlines'=>$rules,'ruleTitile'=>$ruleTitle]);
 		}
 
 

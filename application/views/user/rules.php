@@ -112,7 +112,7 @@
 						<?php
 						foreach ($holidays as $holiday) {
 							?>
-							<div class="row"><label class="col-sm-6" style="font-weight: 900"><?= $holiday->title?></label><label class="col-sm-6"><?= date("M / d / Y", strtotime($holiday->date)) ?></label></div>
+							<div class="row"><label class="col-sm-6" style="font-weight: 900"><?= $holiday->title?></label><label class="col-sm-6"><?= date("F d, Y", strtotime($holiday->date)) ?></label></div>
 							<?php
 						}
 					}

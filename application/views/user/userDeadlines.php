@@ -36,7 +36,7 @@
 		<div class="container">
 			<ul class="nav nav-tabs">
 			  <li class="nav-item">
-			    <a class="nav-link active" data-toggle="tab" href="#deadlines">Deadlines</a>
+			    <a class="nav-link active" data-toggle="tab" href="#deadlines"><?= $ruleTitile?></a>
 			  </li>
 			</ul>
 			<div id="myTabContent" class="tab-content">
@@ -122,7 +122,7 @@
 						</tfoot>
 						<?= form_close();?>
 			</table>
-			<?php } else{echo "No data to show";} ?>
+			<?php } else{echo "There are currently no deadlines under this rule.";} ?>
 		</div>
 	</div>
 	<!-- Modal Popup -->
@@ -137,7 +137,7 @@
 		      </div>
 		      <div class="modal-body">
 			  <fieldset>
-			    <legend>Add Deadline</legend>
+			    <legend><?= $ruleTitile?></legend>
 			    <span class="text-muted">Add new Deadline By filling this form</span>
 				<?= form_open('addUserDeadline'); ?>
 			    <div class="form-group margin-top-25">
