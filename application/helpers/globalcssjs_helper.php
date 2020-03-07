@@ -3,6 +3,7 @@
 	function globalCss()
 	{
 		?>
+		<link rel="shortcut icon" href="<?= base_url('assets/img/icons/favicon.ico')?>">
 		<?= link_tag("https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css")?>
 		<?= link_tag("assets/css/lux-css/lux-bootstrap.css")?>
 		<?= link_tag("assets/css/custom-css.css")?>

@@ -37,7 +37,7 @@
 						
 						<tr class="sorter-header">
 							<th class="no-sort">S.no</th>
-							<th class="is-date">Deadlines</th><th>Deadline Date</th>
+							<th>Deadlines</th><th>Deadline Date</th>
 						</tr>
 							<?php
 	                    		if(!empty($rules->caseDeadlines)){
@@ -51,7 +51,7 @@
 									<small class="form-text text-muted" ><?=$deadline->deadlineDescription?></small>
 							</td>
 							<td>
-								<?= date('d/m/Y', strtotime($deadline->deadlineDate)); ?>
+								<?= date('m/d/Y', strtotime($deadline->deadlineDate)); ?>
 							</td>
 						</tr>
 		                        <?php

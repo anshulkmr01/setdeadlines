@@ -72,7 +72,7 @@
 			     			 <small id="newCategory" class="form-text text-muted"><?= $rule->description;?></small>
 						</td>
 						<td>
-							<?= anchor("user/MainController/userDeadlines/{$rule->ID}/{$rule->title}",'Deadlines',['class'=>'btn btn-primary']); ?>
+							<?= anchor("user/MainController/userDeadlines/{$rule->ID}",'Deadlines',['class'=>'btn btn-primary']); ?>
 						</td>
 						<td>
 							<a data-toggle="modal" data-id="<?= $rule->ID; ?>" data-title="<?= $rule->title; ?>" data-desc="<?= $rule->description; ?>" href="#editRule" class="btn btn-primary editRule">Edit</a>

@@ -148,7 +148,7 @@
                     $this->email->from('setdeadlines@gmail.com', 'Set Deadlines');
                     $this->email->to($user);
 
-                    $this->email->subject('Thank you so much to register with Set Deadlines, Please Verify your Email');
+                    $this->email->subject('Recovery of Set Deadlines Password, Please Verify your Email');
                     $this->email->message($message);
                     $this->email->send();
                     
@@ -229,7 +229,7 @@
                     if ($query == 0) {
                     $key = (md5(time()));
                     $query2 = $this->db->where('email',$userdata['userEmail'])->update('users',['verificationkey'=>$key]);
-                    $this->verifyEmail($key,$userData['userEmail']);
+                    $this->verifyEmail($key,$userdata['userEmail']);
                     //A veryfied user exist
                     $this->session->set_flashdata('warning','Congo! You are already a registered User, Please verify your email address');
                     return redirect('loginUser');
@@ -412,7 +412,10 @@
             }
 
             function getDeadlines($ruleId){
-                return $this->db->where(['rule_id'=>$ruleId])->get('userdeadlines')->result();
+
+                $ruleData[] = $this->db->where(['ID'=>$ruleId])->get('userrules')->row('title');
+                $ruleData[] = $this->db->where(['rule_id'=>$ruleId])->get('userdeadlines')->result();
+                return $ruleData;
             }
 
             function editUserDeadline($deadlineUpdatedData){

@@ -9,12 +9,13 @@
 			if(!$this->session->userdata('userId'))
 				return redirect('loginUser');
 
-			if(isset($_SESSION['access_token'])) {
+			if(!isset($_SESSION['access_token'])) {
 					$this->session->set_flashdata('warning','Connect Google Account to Continue');
 					 return redirect('user/UserProfile');
 			}
 
 			require_once('google-calendar-api.php');
+			
 			$this->load->model('AdminModel');
 			$this->load->model('UserModel');
 			$this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
@@ -469,12 +470,12 @@
 		//////////////////////////////////////////////////
 		// Adding Deadline by User
 
-		function userDeadlines($ruleId,$ruleTitle)
+		function userDeadlines($ruleId)
 		{
 			//Loading Rule Page
 			$this->session->set_userdata('ruleId',$ruleId);
 			$rules = $this->UserModel->getDeadlines($ruleId);
-				$this->load->view('user/userDeadlines',['deadlines'=>$rules,'ruleTitile'=>$ruleTitle]);
+			$this->load->view('user/userDeadlines',['deadlines'=>$rules]);
 		}
 
 

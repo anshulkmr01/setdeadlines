@@ -21,12 +21,21 @@
 			// Get the access token 
 			$data = $capi->GetAccessToken(CLIENT_ID, CLIENT_REDIRECT_URL, CLIENT_SECRET, $_GET['code']);
 			
+			// Refresh Token
+			if(array_key_exists('refresh_token', $data))
+			$_SESSION['refresh_token'] = $data['refresh_token'];
+			
+			// Save the access token expiry timestamp
+			$_SESSION['access_token_expiry'] = time() + $data['expires_in'];
+
+
 			// Save the access token as a session variable
 			$_SESSION['access_token'] = $data['access_token'];
-
+			
 			// Redirect to the page where user can create event
 			header('Location: userProfile');
 			exit();
+
 		}
 		catch(Exception $e) {
 			echo $e->getMessage();
@@ -34,12 +43,23 @@
 		}
 	}
 
+	if(time() > $_SESSION['access_token_expiry']) {
+	// Get a new access token using the refresh token
+	$data = $capi->GetRefreshedAccessToken(CLIENT_ID, $_SESSION['refresh_token'], CLIENT_SECRET);
+	
+	// Again save the expiry time of the new token
+	$_SESSION['access_token_expiry'] = time() + $data['expires_in'];
+
+	// The new access token
+	$_SESSION['access_token'] = $data['access_token'];
+}
+
 	if(isset($_SESSION['access_token'])) {
 	$isGooogleConnected = true;
 	}
 
 		//Login Url
-		$login_url = 'https://accounts.google.com/o/oauth2/auth?scope=' . urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar') . '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID . '&access_type=online';
+		$login_url = 'https://accounts.google.com/o/oauth2/auth?scope=' . urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar') . '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID . '&access_type=offline&prompt=consent';
 
 	?>
 </head>
@@ -63,6 +83,7 @@
 				  <li class="breadcrumb-item"><a href="home">Home</a></li>
 				  <li class="breadcrumb-item active">Settings</li>
 				 </ol>
+				 
 				  <?php
 				  if (isset($user_info['email'])) {
 				  	?>
