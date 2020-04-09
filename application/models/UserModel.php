@@ -289,7 +289,6 @@
 
             function deleteSavedDeadline($deadlineID){
                 return $this->db->delete('saveddeadlinesforsavedcases',['ID'=>$deadlineID]);
-                //return $this->db->delete('savedcases',['ID'=>$deadlineID]);
             }
 
             function userCases(){

@@ -97,8 +97,7 @@
 					<?= $deadline->deadlineDate?>
 				</td>
 				<td>
-					<!-- <?#= anchor("user/MainController/deleteSavedDeadline/{$deadline->ID}/{$deadline->deadlineGoogleID}",'Delete',['class'=>'btn btn-danger delete']);?> -->
-					<?= anchor("user/MainController/deleteSavedCase/{$case->ID}",'Delete',['class'=>'delete btn btn-danger']);?>
+					<?= anchor("user/MainController/deleteSavedDeadline/{$deadline->ID}/{$deadline->deadlineGoogleID}",'Delete',['class'=>'btn btn-danger delete']);?>
 				</td>
 				</tr>
 					<?php endforeach; endif; endforeach; ?>
