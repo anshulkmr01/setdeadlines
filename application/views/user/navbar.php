@@ -11,7 +11,7 @@
         <?= anchor('userCases','My Cases',array('class' => 'nav-link'));?>
       </li>
       <li class="nav-item">
-       <?= anchor('populatedCase','See all Deadlines',array('class' => 'nav-link'));?>
+       <?= anchor('populatedCase','See all Events',array('class' => 'nav-link'));?>
       </li>
       <li class="nav-item">
        <?= anchor('userRules','Setup My Rules',array('class' => 'nav-link'));?>

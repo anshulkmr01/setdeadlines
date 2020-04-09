@@ -104,3 +104,6 @@ $route['userProfile'] = 'user/UserProfile';
 
 $route['setAdminNewPassword'] = 'admin/AdminLogin/setAdminNewPassword';
 $route['newAdminPassword'] = 'admin/AdminLogin/newAdminPassword';
+$route['searchCasesForDate'] = 'user/MainController/searchCasesForDate';
+$route['policy'] = 'user/UserController/policy';
+$route['terms'] = 'user/UserController/terms';

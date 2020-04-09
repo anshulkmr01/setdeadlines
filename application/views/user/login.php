@@ -67,6 +67,10 @@
 			<h6><small class="text-muted">Developed & Designed by </small><?= anchor('https://Kbrostechno.com','KBros Technologies')?></h6>
 		</div>
 	</div>
+	<hr>
+	<div class="links"><span><a target="new" href="<?= base_url('policy')?>">Policy</a></span> |
+		<span><a target="new" href="<?= base_url('terms')?>">Terms & Conditions</a></span>
+	</div>
 	</div>
 
 </body>

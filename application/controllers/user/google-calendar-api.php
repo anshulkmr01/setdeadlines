@@ -95,8 +95,8 @@ class GoogleCalendarApi
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer '. $access_token, 'Content-Type: application/json'));		
 		$data = json_decode(curl_exec($ch), true);
 		$http_code = curl_getinfo($ch,CURLINFO_HTTP_CODE);
-		if($http_code != 204) 
-			throw new Exception('Error : Failed to delete event');
+		//if($http_code != 204) 
+		//	throw new Exception('Error : Failed to delete event');
 	}
 
 		public function GetRefreshedAccessToken($client_id, $refresh_token, $client_secret) {	

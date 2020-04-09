@@ -25,7 +25,7 @@
       </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">
-        <a href="<?= base_url("home"); ?>"><button class="btn btn-secondary my-2 my-sm-0" type="button">User Dashboard</button></a>
+        <a href="<?= base_url("users"); ?>"><button class="btn btn-secondary my-2 my-sm-0" type="button">User Dashboard</button></a>
       </form>
       <form class="form-inline my-2 my-lg-0">
         <a href="<?= base_url("adminSettings"); ?>"><button class="btn btn-secondary my-2 my-sm-0" type="button">Settings</button></a>

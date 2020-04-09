@@ -48,9 +48,9 @@
 						<input type="hidden" name="ruleDescription" value="<?= $case[0]->description?>">
 					<div class="category col-sm-12"><label class="dateRevised" style="float: right;">Deadline Date</label>
 
-						<span class="rule active-list"><?=$case[0]->title ?></span>
+						<legend class="rule active-list"><?=$case[0]->title ?></legend>
+						<small>Click on Deadline to edit</small>
 		                <ul class="list-panel" style="max-height: fit-content">
-		                	<?php ?>
 		                    <div>
 		                    	<?php
 		                    		if(!empty($case[0]->sub)){
@@ -59,7 +59,13 @@
 		                    	?>
 		                        <li>
 								      <label>
-								      		<?= $deadline->title ?>
+								      	<input type="text" name="deadlineTitle[]" required="required" value="<?= $deadline->title ?>" style="outline:none; border: 0px;">
+								      	<style type="text/css">
+								      		input:focus {
+												background-color: yellow;
+												}
+								      	</style>
+								      		<!-- <?= $deadline->title ?> -->
 								  	  </label>
 								  	  <?php $date = "" ?>
 								  	  <?php $numberOfDays =  $deadline->deadline_days; ?>
@@ -68,21 +74,16 @@
 
 								  	  	<?php if($deadline->day_type == "courtDay"){
 								  	  		$date = date('m/d/Y', strtotime($motionDate.'+'.$numberOfDays.'weekdays'));
-								  	  		$count = 0; $i = 0;
-								  	  		foreach ($holidays as $holiday) {
-											if(strtotime($holiday->date) > strtotime($motionDate) && strtotime($holiday->date) <= strtotime($date)){
-												$count++;
-												if(date('D',strtotime($holiday->date)) == "Sun" || date('D',strtotime($holiday->date)) == "Sat"){
-													$count--;
-												}
-											}
-											}
-											$date = date('m/d/Y', strtotime($date.'+'.$count.'weekdays')); 
-								  	  		}
 
+								  	  		$newDate = checkHolidays($holidays,$motionDate,$date);
+								  	  		$date = checkHolidays($holidays,$date,$newDate);
+								  	  		if($newDate != $date){
+								  	  			$date = checkHolidays($holidays,$newDate,$date);
+								  	  		}
+								  	  		}
 								  	  	?>
 								  	  	<?= $date ?>
-								      <input type="hidden" value="<?= $deadline->title ?>/amg/<?= $deadline->description ?>/amg/ <?= $date ?>" name="deadlineData[]">
+								      <input type="hidden" value="<?= $deadline->description ?>/amg/ <?= $date ?>" name="deadlineData[]">
 										</label>
 		                        </li>
 		                        <?php
@@ -108,6 +109,30 @@
 			<?php } else{echo "No data to show";} ?>
 		</div>
 	</div>
+	<?php
+
+  	function checkHolidays($holidays,$motionDate,$date){
+  	$count = 0;
+  	foreach ($holidays as $holiday) {
+	if(strtotime($holiday->date) > strtotime($motionDate) && strtotime($holiday->date) <= strtotime($date)){
+		$count++;
+		if(date('D',strtotime($holiday->date)) == "Sun" || date('D',strtotime($holiday->date)) == "Sat"){
+			$count--;
+		}
+		}
+
+	if(strtotime($holiday->date) < strtotime($motionDate) && strtotime($holiday->date) >= strtotime($date)){
+		$count--;
+		if(date('D',strtotime($holiday->date)) == "Sun" || date('D',strtotime($holiday->date)) == "Sat"){
+			$count--;
+		}
+		}
+
+		}
+		$newDate = date('m/d/Y', strtotime($date.'+'.$count.'weekdays'));
+		return $newDate;
+  	}
+	?>
 </body>
 	<?php 
 			globalJs(); 

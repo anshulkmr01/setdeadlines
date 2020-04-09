@@ -24,7 +24,8 @@
 				<li class="breadcrumb-item active"><?= $rules->caseTitle?></li>
 			</ol>
 
-			<legend>Case: <?= $rules->caseTitle?></legend>
+			<legend class="pull-left">Case: <?= $rules->caseTitle?></legend>
+			<span class="pull-right"><?= anchor("user/MainController/deleteSavedCase/{$rules->ID}",'Delete',['class'=>'delete btn btn-danger btn-sm']);?></span>
 			<small id="fileHelp" class="form-text">Trigger Date: <?= date('m/d/Y', strtotime($rules->motionDate)); ?></small>
 			<div class="category-container"><!-- 
 				<legend>Rules:</legend>
@@ -37,7 +38,8 @@
 						
 						<tr class="sorter-header">
 							<th class="no-sort">S.no</th>
-							<th>Deadlines</th><th>Deadline Date</th>
+							<th class="no-sort">Events</th>
+							<th class="is-date">Deadline Date</th>
 						</tr>
 							<?php
 	                    		if(!empty($rules->caseDeadlines)){
@@ -47,7 +49,8 @@
 	                    	?>
 						<tr>
 	                    	<td><?= $i; ?></td>
-							<td><?= $deadline->deadlineTitle ?><br>
+							<td><?= $deadline->deadlineTitle ?>
+									<br>
 									<small class="form-text text-muted" ><?=$deadline->deadlineDescription?></small>
 							</td>
 							<td>

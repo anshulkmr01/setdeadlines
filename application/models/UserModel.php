@@ -91,8 +91,11 @@
                     if(md5($userData['userPassword'])==$userPassword){
                         if($query->row()->is_verified){
 
+                            $user = $query->row()->id;
+                            
+                            $_SESSION['refresh_token'] = $query->row()->googleRefreshToken;
                             //User is Verified 
-                            return $query->row()->id;
+                            return $user;
                         }
                         else{
                             //User is not verified yet
@@ -284,6 +287,11 @@
 
             }
 
+            function deleteSavedDeadline($deadlineID){
+                return $this->db->delete('saveddeadlinesforsavedcases',['ID'=>$deadlineID]);
+                //return $this->db->delete('savedcases',['ID'=>$deadlineID]);
+            }
+
             function userCases(){
                 $userId = $this->session->userData('userId');
                 $cases = $this->db->where(['userId'=>$userId])->get('savedcases')->result();
@@ -312,7 +320,7 @@
             }
 
             function userSavedRulesDeadlines($caseID){
-                $cases = $this->db->where(['caseID'=>$caseID])->get('saveddeadlinesforsavedcases')->result();
+                $cases = $this->db->where(['caseID'=>$caseID])->order_by("deadlineTitle", "asc")->get('saveddeadlinesforsavedcases')->result();
                 return $cases;
             }
 
@@ -329,7 +337,10 @@
             }
 
             function editCase($caseId,$caseTitle){
-                return $this->db->where('ID',$caseId)->update('cases',['title'=>$caseTitle]);
+                $ok = $this->db->where('ID',$caseId)->update('cases',['title'=>$caseTitle]);
+                if($ok){
+                    return $this->db->where('caseID',$caseId)->update('savedcases',['caseTitle'=>$caseTitle]);   
+                }
             }
 
             function deleteCase($caseId){
@@ -418,6 +429,10 @@
                 return $ruleData;
             }
 
+            function saveRefreshToken($refreshToken){
+            $this->db->where('id', $this->session->userData('userId'))->update('users',['googleRefreshToken'=>$refreshToken]);
+            }
+
             function editUserDeadline($deadlineUpdatedData){
             return $this->db->where('ID',$deadlineUpdatedData['deadlineId'])
             ->update('userdeadlines'
@@ -448,6 +463,22 @@
                 $this->db->order_by("date", "asc");
                 return $this->db->where('userId',$userId)->get('userholidays')->result();
             }
+
+            function searchCasesForDate($dateForCases){
+                $parent =  $this->db->where('deadlineDate',$dateForCases)->get('saveddeadlinesforsavedcases')->result();
+                $i=0;
+                foreach ($parent as $p_cat) {
+                    $parent[$i]->sub = $this->searchCaseforDeadline($p_cat->caseID);
+                    $i++;
+                }
+                return $parent;
+            }
+
+            function searchCaseforDeadline($id){
+            $child = $this->db->where('ID', $id)->get('savedcases');
+            $categories = $child->result();
+            return $categories;       
+        }
 
     }
 ?>

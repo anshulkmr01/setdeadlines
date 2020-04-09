@@ -3,10 +3,23 @@
 	{
 		function __construct(){
 			parent::__construct();
+
+			require_once('google-calendar-api.php');
+			require_once('settings.php');
+
 			$this->load->model('AdminModel');
 			$this->load->model('UserModel');
 			$this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
 		}
+		
+	    function policy(){
+	    	$this->load->view('user/policy');
+	    }
+
+	    function terms(){
+	    	$this->load->view('user/terms');
+	    }
+
 		function loginUser()
 		{
 			//load login Page
@@ -86,6 +99,8 @@
 		{
 
 			$this->session->unset_userdata('userId');
+			// $this->session->unset_userdata('refresh_token');
+			// $this->session->unset_userdata('access_token');
 			$this->session->set_flashdata('success',"Logout successfully");
 			//load Signup Page
 			return redirect('loginUser');
@@ -138,6 +153,21 @@
 					//Set user Id into user session
 					$this->session->set_userdata('userId',$userId);
 
+					if(isset($_SESSION['refresh_token'])){
+						$capi = new GoogleCalendarApi();
+
+						$data = $capi->GetRefreshedAccessToken(CLIENT_ID, $_SESSION['refresh_token'], CLIENT_SECRET);
+	
+						// Again save the expiry time of the new token
+						$_SESSION['access_token_expiry'] = time() + $data['expires_in'];
+
+						// The new access token
+						$_SESSION['access_token'] = $data['access_token'];
+
+					}
+					if($_SESSION['refresh_token'] == NULL){
+						$_SESSION['access_token'] = NULL;
+					}
 					//Redired Authenticated to User Homepage
 					return redirect('userCases');
 			}

@@ -30,7 +30,7 @@
 			// $this->load->view('user/homepage',['rules'=>$rules,'userrules'=>$userRules]);
 			// //return redirect('userCases');
 	    }
-
+	    
 		function importRules()
 		{
 			//load rules by admin on User Homepage
@@ -102,6 +102,13 @@
 				$this->session->set_flashdata('error', 'Error');
 		        return redirect('userRules');
 			}
+		}
+
+		function searchCasesForDate(){
+			$dateForCases = $this->input->post('dateForCases');
+			$dateForCases = " ".date('m/d/Y',strtotime($dateForCases));
+			$deadlinesData = $this->UserModel->searchCasesForDate($dateForCases);
+			$this->load->view('user/deadlineSearchResult',['deadlines'=>$deadlinesData]);
 		}
 
 		function addUserRule(){
@@ -303,6 +310,13 @@
 
 		function saveCase(){
 			$caseData = $this->input->post();
+			
+			$j = 0;
+			foreach ($caseData['deadlineData'] as $value) {				
+					$caseData['deadlineData'][$j] = $caseData['deadlineTitle'][$j]."/amg/".$caseData['deadlineData'][$j];
+					$j++;
+				}	
+			unset($caseData['deadlineTitle']);
 			$i = 0;
 			foreach ($caseData['deadlineData'] as $deadlines) {
 					 $deadlines = explode ("/amg/", $deadlines);
@@ -348,8 +362,9 @@
 				$calendar_id = 'primary';
 				foreach ($deadlineGoogleID as $event_id) {
 					// Event on primary calendar
-				$capi->DeleteCalendarEvent($event_id->deadlineGoogleID, $calendar_id, $access_token);
+					$capi->DeleteCalendarEvent($event_id->deadlineGoogleID, $calendar_id, $access_token);
 				}
+
 				$this->session->set_flashdata("success","Case Deleted Successfully");
 				return redirect('populatedCase');
 			}
@@ -358,6 +373,27 @@
 				return redirect('populatedCase');
 			}
 		}
+
+		function deleteSavedDeadline($deadlineID,$googleID =''){
+
+				if($this->UserModel->deleteSavedDeadline($deadlineID)){
+				$capi = new GoogleCalendarApi();
+				$access_token = $_SESSION['access_token'];
+				// deleting event on the primary calendar
+				$calendar_id = 'primary';
+					// Event on primary calendar
+				$capi->DeleteCalendarEvent($googleID, $calendar_id, $access_token);
+
+				$this->session->set_flashdata("success","Deadline Deleted Successfully");
+				return redirect('populatedCase');
+			}
+			else{
+				$this->session->set_flashdata("error","Deadline could not deleted");
+				return redirect('populatedCase');
+
+			}
+		}
+
 		function populatedCase(){
 			$cases = $this->UserModel->userCases();
 			$this->load->view('user/populatedCase',['cases'=>$cases]);
@@ -393,7 +429,6 @@
 		function editCase(){
 			$caseId = $this->input->post('caseId');
 			$caseTitle = $this->input->post('caseTitle');
-
 			if($this->UserModel->editCase($caseId,$caseTitle)){
 				$this->session->set_flashdata('success', 'Cases Updated Successfully');
 		        return redirect('userCases');
@@ -459,8 +494,8 @@
 		
 
 		function googleDisconnect(){
-			session_start();
 			unset($_SESSION['access_token']);
+			unset($_SESSION['refresh_token']);
 			return redirect('user/UserProfile');
 		}
 
@@ -476,6 +511,10 @@
 			$this->session->set_userdata('ruleId',$ruleId);
 			$rules = $this->UserModel->getDeadlines($ruleId);
 			$this->load->view('user/userDeadlines',['deadlines'=>$rules]);
+		}
+
+		function destroySession(){
+			$this->session->sess_destroy();
 		}
 
 

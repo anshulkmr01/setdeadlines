@@ -70,40 +70,42 @@
 		</div>
 		<div class="container">
 			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><?=anchor('userCases','Cases')?></li>
-				<li class="breadcrumb-item active">Saved Deadlines</li>
+				<li class="breadcrumb-item"><?=anchor('populatedCase','See All Events')?></li>
+				<li class="breadcrumb-item active">Search Results</li>
 			</ol>
-			<?php if($cases): ?>
+			<?php if($deadlines){
+				?>
 
 			<table id="myTable" class="sortable-table">
 				<tr class="sorter-header">
-					<th>Case Name</th>
-					<th class="no-sort">Events</th>
-					<th class="is-date"><center>Date</center></span></th>
+					<th class="no-sort">Case Name</th>
+					<th>Events</th>
+					<th class="is-date"><center>Date<center></th>
 					<th class="no-sort"><center>Action<center></th>
 				</tr>
-				<?php
-				foreach($cases as $case):
-				if ($case->caseDeadlines) :
-				foreach($case->caseDeadlines as $deadline) : ?>
-				<tr>
-				<td>
-					<a href="user/MainController/populatedRules/<?= $case->ID ?>"><?= $case->caseTitle?></a>
-				</td>
-				<td>
-					(<?= $deadline->deadlineTitle?>)
-				</td>
-				<td>
-					<?= $deadline->deadlineDate?>
-				</td>
-				<td>
-					<!-- <?#= anchor("user/MainController/deleteSavedDeadline/{$deadline->ID}/{$deadline->deadlineGoogleID}",'Delete',['class'=>'btn btn-danger delete']);?> -->
-					<?= anchor("user/MainController/deleteSavedCase/{$case->ID}",'Delete',['class'=>'delete btn btn-danger']);?>
-				</td>
-				</tr>
-					<?php endforeach; endif; endforeach; ?>
+					<?php
+						foreach($deadlines as $deadline):?> <?php if ($deadline->sub) {
+						foreach($deadline->sub as $case){ ?>
+							<tr>
+									<td>
+										<a href="user/MainController/populatedRules/<?= $case->ID ?>"><?= $case->caseTitle?></a>
+									</td>
+									<td>
+										<?= $deadline->deadlineTitle?>
+									</td>
+									<td>
+										<?= date('m/d/Y', strtotime( $deadline->deadlineDate)); ?>
+									</td>
+									<td><center>
+										<?= anchor("user/MainController/deleteSavedDeadline/{$deadline->ID}/{$deadline->deadlineGoogleID}",'Delete',['class'=>'btn btn-danger delete']);?>
+									</center>
+									</td>
+							</tr>
+									<?php	}	}?>
+					<?php endforeach  ?>
+						<?= form_close();?>
 			</table>
-			<?php else: echo "No data to show"; endif; ?>
+			<?php } else{echo "No data to show";} ?>
 		</div>
 	</div>
 </body>

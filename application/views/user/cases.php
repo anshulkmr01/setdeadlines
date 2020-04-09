@@ -17,7 +17,7 @@
 			<div class="container">
 				<div class="row">
 			<div class="col-sm-8">
-					<a data-toggle="modal" class="open-updateFields btn btn-primary btn-sm" href="#addCase">Add Case</a>
+					<a data-toggle="modal" class="open-updateFields btn btn-primary btn-sm" href="#addCase">New Case</a>
 			</div>
 			<div class="col-sm-3">
 			<form class=" my-2 my-lg-0">
@@ -54,7 +54,7 @@
 				<?= form_open('deleteSelectedCases'); ?>
 				<tr class="sorter-header">
 					<th class="no-sort">S.no</th>
-					<th>Cases</th>
+					<th>Case</th>
 					<th colspan="2" class="no-sort"><center>Action<center></th>
 					<th class="no-sort"><center><label><input type="checkbox" name="sample" class="selectall" style="display:none;"/> <span style="cursor: pointer;">Select</span></label></center></th>
 				</tr>
@@ -65,10 +65,10 @@
 						<td><?= $i?></td>
 						<td><?= $case->title; ?></td>
 						<td>
-							<a data-toggle="modal" data-id="<?= $case->ID; ?>" data-item="<?= $case->title; ?>"  href="#editCase" class="btn btn-primary editCase">Rename</a>
+							<a data-toggle="modal" data-id="<?= $case->ID; ?>" data-item="<?= $case->title; ?>"  href="#editCase" class="btn btn-primary editCase">Edit</a>
 						</td>
 						<td>
-							<?= anchor("user/MainController/listedRules/{$case->ID}/?case={$case->title}","Add Deadline", ['class'=>'btn btn-primary'])?>
+							<?= anchor("user/MainController/listedRules/{$case->ID}/?case={$case->title}","Add Event", ['class'=>'btn btn-primary'])?>
 						</td>
 						<!-- 
 						<td>

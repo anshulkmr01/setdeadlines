@@ -24,7 +24,7 @@
 			// Refresh Token
 			if(array_key_exists('refresh_token', $data))
 			$_SESSION['refresh_token'] = $data['refresh_token'];
-			
+
 			// Save the access token expiry timestamp
 			$_SESSION['access_token_expiry'] = time() + $data['expires_in'];
 
@@ -43,6 +43,7 @@
 		}
 	}
 
+	if (isset($_SESSION['refresh_token'])) {
 	if(time() > $_SESSION['access_token_expiry']) {
 	// Get a new access token using the refresh token
 	$data = $capi->GetRefreshedAccessToken(CLIENT_ID, $_SESSION['refresh_token'], CLIENT_SECRET);
@@ -52,7 +53,8 @@
 
 	// The new access token
 	$_SESSION['access_token'] = $data['access_token'];
-}
+	}
+	}
 
 	if(isset($_SESSION['access_token'])) {
 	$isGooogleConnected = true;
