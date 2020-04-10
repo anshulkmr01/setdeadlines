@@ -338,8 +338,17 @@
             function editCase($caseId,$caseTitle){
                 $ok = $this->db->where('ID',$caseId)->update('cases',['title'=>$caseTitle]);
                 if($ok){
-                    return $this->db->where('caseID',$caseId)->update('savedcases',['caseTitle'=>$caseTitle]);   
+                    $this->db->where('caseID',$caseId)->update('savedcases',['caseTitle'=>$caseTitle]);
+
+                    $ID = $this->db->where('caseID',$caseId)->get('savedcases')->result_array();
+
+                    foreach ($ID as $caseId) {
+                        $deadlines[] = $this->db->where('caseID',$caseId['ID'])->get('saveddeadlinesforsavedcases')->result_array();
+                    }
+                    $deadlines = call_user_func_array('array_merge', $deadlines);
+
                 }
+                return $deadlines;
             }
 
             function deleteCase($caseId){

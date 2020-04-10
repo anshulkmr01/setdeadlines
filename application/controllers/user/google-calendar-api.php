@@ -132,6 +132,31 @@ class GoogleCalendarApi
 			
 		return $data;
 	}
+
+	public function UpdateCalendarEvent($event_id, $calendar_id, $summary, $event_description, $all_day, $event_time, $event_timezone, $access_token) {
+		$url_events = 'https://www.googleapis.com/calendar/v3/calendars/' . $calendar_id . '/events/' . $event_id;
+
+		$curlPost = array('summary' => $summary, 'description' => $event_description);
+		if($all_day == 1) {
+			$curlPost['start'] = array('date' => $event_time['event_date']);
+			$curlPost['end'] = array('date' => $event_time['event_date']);
+		}
+		else {
+			$curlPost['start'] = array('dateTime' => $event_time['start_time'], 'timeZone' => $event_timezone);
+			$curlPost['end'] = array('dateTime' => $event_time['end_time'], 'timeZone' => $event_timezone);
+		}
+		$ch = curl_init();		
+		curl_setopt($ch, CURLOPT_URL, $url_events);		
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);		
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');		
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer '. $access_token, 'Content-Type: application/json'));	
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($curlPost));	
+		$data = json_decode(curl_exec($ch), true);
+		$http_code = curl_getinfo($ch,CURLINFO_HTTP_CODE);		
+		if($http_code != 200) 
+			throw new Exception('Error : Failed to update event');
+	}
 }
 
 ?>

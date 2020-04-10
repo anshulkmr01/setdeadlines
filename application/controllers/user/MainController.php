@@ -429,7 +429,13 @@
 		function editCase(){
 			$caseId = $this->input->post('caseId');
 			$caseTitle = $this->input->post('caseTitle');
-			if($this->UserModel->editCase($caseId,$caseTitle)){
+			$caseData['caseName'] = $caseTitle;
+			$caseData['deadlineData'] = $this->UserModel->editCase($caseId,$caseTitle);
+			if($caseData['deadlineData']){
+				foreach ($caseData['deadlineData'] as $deadlines) {
+					$this->updateEventCaseInGoogleCalendar($deadlines,$caseData['caseName']);
+				}
+
 				$this->session->set_flashdata('success', 'Cases Updated Successfully');
 		        return redirect('userCases');
 			}
@@ -438,6 +444,31 @@
 		        return redirect('userCases');
 			}
 		}
+
+
+		function updateEventCaseInGoogleCalendar($caseData,$caseTitle)
+		{
+			$capi = new GoogleCalendarApi();
+
+			// updating event on the primary calendar
+			$calendar_id = 'primary';
+			// Get user calendar timezone
+			$user_timezone = $capi->GetUserCalendarTimezone($_SESSION['access_token']);
+
+			// Event on primary calendar
+			$event_id = $caseData['deadlineGoogleID'];
+
+			$event_title = $caseTitle." [".$caseData['deadlineTitle']."]";
+
+			$event_description = $caseData['deadlineDescription'];
+
+			// Full day event
+			$full_day_event = 1; 
+			$event_time = [ 'event_date' => date("Y-m-d", strtotime($caseData["deadlineDate"]))];
+			//$event_time = date('Y-m-d', strtotime($caseData['deadlineDate']));
+			$capi->UpdateCalendarEvent($event_id, $calendar_id, $event_title, $event_description, $full_day_event, $event_time, $user_timezone, $_SESSION['access_token']);
+		}
+
 
 		function deleteCase($caseId){
 			if($this->UserModel->deleteCase($caseId)){
@@ -516,7 +547,6 @@
 		function destroySession(){
 			$this->session->sess_destroy();
 		}
-
 
 	}
 ?>
