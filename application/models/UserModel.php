@@ -429,8 +429,9 @@
             }
 
             function getDeadlines($ruleId){
-
                 $ruleData[] = $this->db->where(['ID'=>$ruleId])->get('userrules')->row('title');
+                
+                $this->db->order_by('deadline_days', 'ASC');
                 $ruleData[] = $this->db->where(['rule_id'=>$ruleId])->get('userdeadlines')->result();
                 return $ruleData;
             }

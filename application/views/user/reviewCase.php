@@ -59,7 +59,8 @@
 		                    	?>
 		                        <li>
 								      <label>
-								      	<input type="text" name="deadlineTitle[]" required="required" value="<?= $deadline->title ?>" style="outline:none; border: 0px;">
+								      	<!-- onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px';" -->
+								      	<input  type="text" id="txt" name="deadlineTitle[]" required="required" style="border: 0px" value="<?= $deadline->title ?>" style="outline:none; border: 0px;">
 								      	<style type="text/css">
 								      		input:focus {
 												background-color: yellow;
@@ -137,4 +138,15 @@
 	<?php 
 			globalJs(); 
 	?>
+	<script type="text/javascript">
+		
+			function resizable (el, factor) {
+			  var int = Number(factor) || 7.7;
+			  function resize() {el.style.width = ((el.value.length+1) * int) + 'px'}
+			  var e = 'keyup,keypress,focus,blur,change'.split(',');
+			  for (var i in e) el.addEventListener(e[i],resize,false);
+			  resize();
+			}
+			resizable(document.getElementById('txt'),8);
+	</script>
 </html>

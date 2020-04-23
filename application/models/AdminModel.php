@@ -135,11 +135,14 @@
 	    public function ruleDeadlines($id){
 	        $child = $this->db->where('rule_id', $id)->get('deadlines');
 	        $categories = $child->result();
-	        $i=0;
-	        foreach($categories as $p_cat){
-	            $categories[$i]->sub = $this->ruleDeadlines($p_cat->ID);
-	            $i++;
-	        }
+
+	        //This section Comment by Anshul after seeing SQL Memory Size error 
+	        // $i=0;
+	        // foreach($categories as $p_cat){
+	        //     $categories[$i]->sub = $this->ruleDeadlines($p_cat->ID);
+	        //     $i++;
+	        // }
+
 	        return $categories;       
 	    }
 
