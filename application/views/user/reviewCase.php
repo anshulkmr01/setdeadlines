@@ -57,10 +57,10 @@
 
 		                    			foreach($case[0]->sub as $deadline){
 		                    	?>
-		                        <li>
-								      <label>
+		                        <li class="row">
+								      <label class="col-10">
 								      	<!-- onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px';" -->
-								      	<input  type="text" id="txt" name="deadlineTitle[]" required="required" style="border: 0px" value="<?= $deadline->title ?>" style="outline:none; border: 0px;">
+								      	<input  type="text" name="deadlineTitle[]" required="required" style="border: 0px; outline: none; width: 100%;" value="<?= $deadline->title ?>">
 								      	<style type="text/css">
 								      		input:focus {
 												background-color: yellow;
@@ -70,7 +70,7 @@
 								  	  </label>
 								  	  <?php $date = "" ?>
 								  	  <?php $numberOfDays =  $deadline->deadline_days; ?>
-								  		<label style="float: right; cursor: default;">
+								  		<label class="col-2">
 								  	  	<?php if($deadline->day_type == "calendarDay") $date = date('m/d/Y', strtotime($motionDate.'+'.$numberOfDays.'days'));?>
 
 								  	  	<?php if($deadline->day_type == "courtDay"){
@@ -83,7 +83,9 @@
 								  	  		}
 								  	  		}
 								  	  	?>
-								  	  	<?= $date ?>
+								  	  	<span  style="float: right; cursor: default;">
+								  	  		<?= $date ?>
+								  	  	</span>
 								      <input type="hidden" value="<?= $deadline->description ?>/amg/ <?= $date ?>" name="deadlineData[]">
 										</label>
 		                        </li>
@@ -138,7 +140,7 @@
 	<?php 
 			globalJs(); 
 	?>
-	<script type="text/javascript">
+<!-- 	<script type="text/javascript">
 		
 			function resizable (el, factor) {
 			  var int = Number(factor) || 7.7;
@@ -148,5 +150,5 @@
 			  resize();
 			}
 			resizable(document.getElementById('txt'),8);
-	</script>
+	</script> -->
 </html>
