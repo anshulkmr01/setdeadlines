@@ -213,7 +213,26 @@
                     $url = base_url('admin/adminLogin/resetPassword/'.$userEmail.'/'.$recoveryKey);
 
                     $this->load->library('email');
-                    $this->email->from('kbrostechno@gmail.com', 'Anshul');
+					
+					$config['protocol']    = 'smtpout.secureserver.net';
+					$config['smtp_host']    = 'localhost';
+					$config['smtp_port']    = '25';
+					$config['smtp_timeout'] = '600';
+
+					$config['smtp_user']    = 'info@kennerlawgroup.com';    //Important
+					$config['smtp_pass']    = 'Maria!$%';  //Important
+
+
+					$config['charset']    = 'utf-8';
+					$config['newline']    = "\r\n";
+					$config['mailtype'] = 'html'; // or html
+					$config['validation'] = TRUE; // bool whether to validate email or not 
+
+					$this->email->initialize($config);
+					$this->email->set_mailtype("html"); 
+					$this->email->set_newline("\r\n");
+
+                    $this->email->from('info@kennerlawgroup.com', 'Set Deadlines');
                     $this->email->to($userEmail);
 
                     $this->email->subject('Password Recovery for Law Calendar');
