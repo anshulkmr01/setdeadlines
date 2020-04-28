@@ -336,14 +336,8 @@
 		function saveEventInGoogle($eventTitle,$eventDesc,$eventDate){
 			try {
 
-				// Get event details
-				$capi = new GoogleCalendarApi();
-
-				// Get user calendar timezone
-				$user_timezone = $capi->GetUserCalendarTimezone($_SESSION['access_token']);
-
 				// Create event on primary calendar
-				$event_id = $capi->CreateCalendarEvent('primary', $eventTitle,$eventDesc,1,$eventDate, $user_timezone, $_SESSION['access_token']);
+				$event_id = $this->google->CreateCalendarEvent('primary', $eventTitle,$eventDesc,1,$eventDate);
 				return $event_id;
 				echo json_encode([ 'event_id' => $event_id ]);
 				exit();
@@ -356,13 +350,12 @@
 		
 		function deleteSavedCase($caseID){
 			if($deadlineGoogleID = $this->UserModel->deleteSavedCase($caseID)){
-				$capi = new GoogleCalendarApi();
-				$access_token = $_SESSION['access_token'];
+
 				// deleting event on the primary calendar
 				$calendar_id = 'primary';
 				foreach ($deadlineGoogleID as $event_id) {
 					// Event on primary calendar
-					$capi->DeleteCalendarEvent($event_id->deadlineGoogleID, $calendar_id, $access_token);
+					$this->google->DeleteCalendarEvent($event_id->deadlineGoogleID, $calendar_id);
 				}
 
 				$this->session->set_flashdata("success","Case Deleted Successfully");
@@ -377,12 +370,10 @@
 		function deleteSavedDeadline($deadlineID,$googleID =''){
 
 				if($this->UserModel->deleteSavedDeadline($deadlineID)){
-				$capi = new GoogleCalendarApi();
-				$access_token = $_SESSION['access_token'];
 				// deleting event on the primary calendar
 				$calendar_id = 'primary';
 					// Event on primary calendar
-				$capi->DeleteCalendarEvent($googleID, $calendar_id, $access_token);
+				$this->google->DeleteCalendarEvent($googleID, $calendar_id);
 
 				$this->session->set_flashdata("success","Deadline Deleted Successfully");
 				return redirect('populatedCase');
@@ -448,12 +439,8 @@
 
 		function updateEventCaseInGoogleCalendar($caseData,$caseTitle)
 		{
-			$capi = new GoogleCalendarApi();
-
 			// updating event on the primary calendar
 			$calendar_id = 'primary';
-			// Get user calendar timezone
-			$user_timezone = $capi->GetUserCalendarTimezone($_SESSION['access_token']);
 
 			// Event on primary calendar
 			$event_id = $caseData['deadlineGoogleID'];
@@ -466,7 +453,7 @@
 			$full_day_event = 1; 
 			$event_time = [ 'event_date' => date("Y-m-d", strtotime($caseData["deadlineDate"]))];
 			//$event_time = date('Y-m-d', strtotime($caseData['deadlineDate']));
-			$capi->UpdateCalendarEvent($event_id, $calendar_id, $event_title, $event_description, $full_day_event, $event_time, $user_timezone, $_SESSION['access_token']);
+			$this->google->UpdateCalendarEvent($event_id, $calendar_id, $event_title, $event_description, $full_day_event, $event_time);
 		}
 
 
@@ -525,8 +512,7 @@
 		
 
 		function googleDisconnect(){
-			unset($_SESSION['access_token']);
-			unset($_SESSION['refresh_token']);
+			$this->google->disconnect();
 			return redirect('user/UserProfile');
 		}
 

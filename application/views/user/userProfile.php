@@ -8,29 +8,15 @@
 	?>
 	<!--/ Global Css using Helper -->
 	<?php
-	//session_start();
-
-	require_once('google-calendar-api.php');
-	require_once('settings.php');
-	$capi = new GoogleCalendarApi();
+	
 	$isGooogleConnected = false;
 	$error = "";
+
 	// Google passes a parameter 'code' in the Redirect Url
 	if(isset($_GET['code'])) {
 		try {
 			// Get the access token 
-			$data = $capi->GetAccessToken(CLIENT_ID, CLIENT_REDIRECT_URL, CLIENT_SECRET, $_GET['code']);
-			
-			// Refresh Token
-			if(array_key_exists('refresh_token', $data))
-			$_SESSION['refresh_token'] = $data['refresh_token'];
-
-			// Save the access token expiry timestamp
-			$_SESSION['access_token_expiry'] = time() + $data['expires_in'];
-
-
-			// Save the access token as a session variable
-			$_SESSION['access_token'] = $data['access_token'];
+			$this->google->GetAccessToken($_GET['code']);
 			
 			// Redirect to the page where user can create event
 			header('Location: userProfile');
@@ -43,25 +29,13 @@
 		}
 	}
 
-	if (isset($_SESSION['refresh_token'])) {
-	if(time() > $_SESSION['access_token_expiry']) {
-	// Get a new access token using the refresh token
-	$data = $capi->GetRefreshedAccessToken(CLIENT_ID, $_SESSION['refresh_token'], CLIENT_SECRET);
-	
-	// Again save the expiry time of the new token
-	$_SESSION['access_token_expiry'] = time() + $data['expires_in'];
 
-	// The new access token
-	$_SESSION['access_token'] = $data['access_token'];
-	}
-	}
-
-	if(isset($_SESSION['access_token'])) {
+	if($this->google->access_token()) {
 	$isGooogleConnected = true;
 	}
 
-		//Login Url
-		$login_url = 'https://accounts.google.com/o/oauth2/auth?scope=' . urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar') . '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID . '&access_type=offline&prompt=consent';
+	//Login Url
+	$login_url = $this->gogole->login_url();
 
 	?>
 </head>
@@ -70,9 +44,9 @@
 		<?php include 'navbar.php'?>
 	<!--/ Navbar -->
 		<?php 
-		if(isset($_SESSION['access_token'])){
+		if($this->google->access_token()){
 		try{
-		$user_info = $capi->GetUserProfileInfo($_SESSION['access_token']);
+		$user_info = $this->google->GetUserProfileInfo();
 		}
 		catch(Exception $e){
 			$error = $e->getMessage();
