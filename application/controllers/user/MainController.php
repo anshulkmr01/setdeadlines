@@ -13,8 +13,6 @@
 					$this->session->set_flashdata('warning','Connect Google Account to Continue');
 					 return redirect('user/UserProfile');
 			}
-
-			require_once('google-calendar-api.php');
 			
 			$this->load->model('AdminModel');
 			$this->load->model('UserModel');
