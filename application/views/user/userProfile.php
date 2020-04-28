@@ -35,7 +35,7 @@
 	}
 
 	//Login Url
-	$login_url = $this->gogole->login_url();
+	$login_url = $this->google->login_url();
 
 	?>
 </head>
